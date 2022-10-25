@@ -13,6 +13,7 @@ func InitRouter(log *logrus.Logger) *gin.Engine {
 	router.Use(middlewares.Logger(log), gin.Recovery())
 
 	router.POST("/graphql", handlers.GraphqlHandler())
+	router.GET("/playground", handlers.PlaygroundHandler())
 
 	return router
 }
