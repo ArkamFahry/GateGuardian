@@ -1,17 +1,32 @@
 package main
 
 import (
-	"log"
-
-	"github.com/gofiber/fiber/v2"
+	"github.com/ArkamFahry/GateGuardian/server/constants"
+	"github.com/ArkamFahry/GateGuardian/server/db"
+	"github.com/ArkamFahry/GateGuardian/server/routes"
+	"github.com/sirupsen/logrus"
 )
 
+var VERSION string
+
 func main() {
-	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON("hello")
-	})
+	constants.VERSION = VERSION
 
-	log.Fatal(app.Listen(":3000"))
+	// initialize db provider
+	err := db.InitDB()
+	if err != nil {
+		logrus.Fatalln("Error while initializing db: ", err)
+	}
+
+	router := routes.InitRouter(logrus.New())
+	logrus.Info("Starting GateGuardian: ", VERSION)
+	port := "3000"
+	logrus.Info("GateGuardian running at PORT: ", port)
+	if err != nil {
+		logrus.Info("Error while getting port from env using default port 3000: ", err)
+		port = "3000"
+	}
+
+	router.Run(":" + port)
 }

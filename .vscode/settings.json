@@ -5,12 +5,14 @@
     "godotenv",
     "gofiber",
     "Infof",
+    "inmemory",
     "joho",
     "logrus",
     "memorystore",
     "otps",
     "Signin",
     "sirupsen",
-    "surrealdb"
+    "surrealdb",
+    "unmarshalling"
   ]
 }
