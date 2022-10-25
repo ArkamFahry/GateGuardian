@@ -1,7 +1,7 @@
 package providers
 
 type Provider interface {
-	// User provider interface
+	// User provider interfaces
 	AddUser()
 	UpdateUser()
 	DeleteUser()

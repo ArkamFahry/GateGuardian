@@ -32,7 +32,7 @@ func NewSurrealDbProvider() (*provider, error) {
 	dbNameSpace := env.EnvGet().DatabaseNameSpace
 	_, err = surrealdb.Use(dbNameSpace, dbName)
 	if err != nil {
-		logrus.Fatal("Failed to select surrealdb database and namespace")
+		logrus.Fatal("Failed to select surrealdb database or namespace")
 	}
 
 	return &provider{

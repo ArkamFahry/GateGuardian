@@ -10,6 +10,8 @@ type CollectionList struct {
 	WebhookLog          string
 	EmailTemplate       string
 	OTP                 string
+	Metadata            string
+	Permissions         string
 }
 
 var (

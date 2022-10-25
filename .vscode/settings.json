@@ -10,6 +10,7 @@
     "logrus",
     "memorystore",
     "middlewares",
+    "minio",
     "otps",
     "Signin",
     "sirupsen",
