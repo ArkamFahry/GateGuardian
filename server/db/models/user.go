@@ -18,10 +18,10 @@ type User struct {
 	PhoneNumber              *string  `json:"phone_number"`
 	PhoneNumberVerifiedAt    *int64   `json:"phone_number_verified_at"`
 	Picture                  *string  `json:"picture"`
+	Roles                    []string `json:"roles"`
 	DefaultRole              string   `json:"default_role"`
 	AssignedRole             string   `json:"assigned_role"`
 	AssignedRoles            []string `json:"assigned_roles"`
-	Roles                    []string `json:"roles"`
 	RevokedTimestamp         *int64   `json:"revoked_timestamp"`
 	IsMultiFactorAuthEnabled *bool    `json:"is_multi_factor_auth_enabled"`
 	UpdatedAt                int64    `json:"updated_at"`
