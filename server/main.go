@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db"
+	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/routes"
 	"github.com/sirupsen/logrus"
 )
@@ -21,12 +22,8 @@ func main() {
 
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)
-	port := "3000"
+	port := env.EnvGet().Port
 	logrus.Info("GateGuardian running at PORT: ", port)
-	if err != nil {
-		logrus.Info("Error while getting port from env using default port 3000: ", err)
-		port = "3000"
-	}
 
 	router.Run(":" + port)
 }

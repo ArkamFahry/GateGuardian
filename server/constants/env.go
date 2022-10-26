@@ -10,7 +10,7 @@ const (
 	// GateGuardianURL key for env variable GATE_GUARDIAN_URL
 	GateGuardianURL = "GATE_GUARDIAN_URL"
 	// KeyPort key for env variable PORT
-	KeyPort = "PORT"
+	Port = "PORT"
 	// AccessTokenExpiryTime key for env variable ACCESS_TOKEN_EXPIRY_TIME
 	AccessTokenExpiryTime = "ACCESS_TOKEN_EXPIRY_TIME"
 	// AdminSecret key for env variable ADMIN_SECRET

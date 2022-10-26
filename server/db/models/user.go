@@ -11,6 +11,7 @@ type User struct {
 	FirstName                *string  `json:"first_name"`
 	MiddleName               *string  `json:"middle_name"`
 	LastName                 *string  `json:"last_name"`
+	FullName                 *string  `json:"full_name"`
 	NickName                 *string  `json:"nick_name"`
 	Gender                   *string  `json:"gender"`
 	BirthDate                *string  `json:"birth_date"`

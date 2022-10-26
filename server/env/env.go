@@ -14,6 +14,11 @@ type Env struct {
 	DatabaseNameSpace string
 	DatabaseUsername  string
 	DatabasePassword  string
+	Port              string
+	EncryptionKey     string
+	JwtType           string
+	JwtSecret         string
+	ClientID          string
 }
 
 func EnvGet() Env {
@@ -27,6 +32,11 @@ func EnvGet() Env {
 	dbNameSpace := os.Getenv(constants.DatabaseNameSpace)
 	dbUserName := os.Getenv(constants.DatabaseUsername)
 	dbPassword := os.Getenv(constants.DatabasePassword)
+	port := os.Getenv(constants.Port)
+	encryptionKey := os.Getenv(constants.EncryptionKey)
+	jwtType := os.Getenv(constants.JwtType)
+	jwtSecret := os.Getenv(constants.JwtSecret)
+	clientID := os.Getenv(constants.ClientID)
 
 	env := Env{
 		DatabaseURL:       dbUrl,
@@ -34,6 +44,11 @@ func EnvGet() Env {
 		DatabaseNameSpace: dbNameSpace,
 		DatabaseUsername:  dbUserName,
 		DatabasePassword:  dbPassword,
+		Port:              port,
+		EncryptionKey:     encryptionKey,
+		JwtType:           jwtType,
+		JwtSecret:         jwtSecret,
+		ClientID:          clientID,
 	}
 
 	return env
