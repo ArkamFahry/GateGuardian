@@ -24,7 +24,7 @@ type Env struct {
 func EnvGet() Env {
 	err := godotenv.Load(".env")
 	if err != nil {
-		logrus.Info("Failed To Load .env file switch to os env")
+		logrus.Info("Failed to load .env file: ", err, "|switched to os env|")
 	}
 
 	dbUrl := os.Getenv(constants.DatabaseURL)

@@ -14,7 +14,7 @@ func NewSurrealDbProvider() (*provider, error) {
 	dbUrl := env.EnvGet().DatabaseURL
 	surrealdb, err := surrealdb.New(dbUrl)
 	if err != nil {
-		logrus.Fatal("Failed to create connection to surrealdb")
+		logrus.Fatal("Failed to create a connection to surrealdb: ", err)
 		return nil, err
 	}
 
@@ -25,14 +25,14 @@ func NewSurrealDbProvider() (*provider, error) {
 		"pass": dbPassword,
 	})
 	if err != nil {
-		logrus.Fatal("Failed to sign in to surrealdb with username and password")
+		logrus.Fatal("Failed to sign in to surrealdb with username and password: ", err)
 	}
 
 	dbName := env.EnvGet().DatabaseName
 	dbNameSpace := env.EnvGet().DatabaseNameSpace
 	_, err = surrealdb.Use(dbNameSpace, dbName)
 	if err != nil {
-		logrus.Fatal("Failed to select surrealdb database or namespace")
+		logrus.Fatal("Failed to select surrealdb database or namespace: ", err)
 	}
 
 	return &provider{

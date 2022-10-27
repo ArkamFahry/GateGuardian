@@ -13,7 +13,7 @@ func InitMemoryDB() error {
 
 	Provider, err = genjidb.NewGenjiDbProvider()
 	if err != nil {
-		logrus.Fatal("Failed Initializing genjidb")
+		logrus.Fatal("Failed Initializing genjidb: ", err)
 		return err
 	} else {
 		logrus.Info("Genjidb successfully initialized")

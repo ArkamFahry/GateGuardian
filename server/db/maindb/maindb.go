@@ -13,7 +13,7 @@ func InitMainDB() error {
 
 	Provider, err = surrealdb.NewSurrealDbProvider()
 	if err != nil {
-		logrus.Fatal("Failed Initializing surrealdb")
+		logrus.Fatal("Failed Initializing surrealdb: ", err)
 		return err
 	} else {
 		logrus.Info("Surrealdb successfully initialized")
