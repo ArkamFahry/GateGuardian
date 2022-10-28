@@ -24,7 +24,7 @@ func NewSqliteProvider() (*provider, error) {
 			id 			TEXT PRIMARY KEY, 
 			env_data 	TEXT 
 		);
-		INSERT INTO env(id, env_data) VALUES('DB','mongodb');
+		INSERT INTO env (id, env_data) VALUES ('DB','mongodb');
 	`)
 	if err != nil {
 		logrus.Fatal("SqlLite Failed to create table env: ", err)
