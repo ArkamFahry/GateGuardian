@@ -16,8 +16,16 @@ func InitMemoryDB() error {
 		logrus.Fatal("Failed Initializing genjidb: ", err)
 		return err
 	} else {
-		logrus.Info("Genjidb successfully initialized")
+		logrus.Info("GenjiDb successfully initialized")
 	}
+
+	// Provider, err = sqlite.NewSqliteProvider()
+	// if err != nil {
+	// 	logrus.Fatal("Failed Initializing sqlite: ", err)
+	// 	return err
+	// } else {
+	// 	logrus.Info("Sqlite successfully initialized")
+	// }
 
 	return nil
 }

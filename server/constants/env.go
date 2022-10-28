@@ -15,7 +15,11 @@ const (
 	AccessTokenExpiryTime = "ACCESS_TOKEN_EXPIRY_TIME"
 	// AdminSecret key for env variable ADMIN_SECRET
 	AdminSecret = "ADMIN_SECRET"
+	// CacheDatabaseType key for env variable CACHE_DATABASE_TYPE
+	CacheDatabaseType = "CACHE_DATABASE_TYPE"
 	// DatabaseType key for env variable DATABASE_TYPE
+	DatabaseType = "DATABASE_TYPE"
+	// DatabaseUrl key for env variable DATABASE_URL
 	DatabaseURL = "DATABASE_URL"
 	// DatabaseName key for env variable DATABASE_NAME
 	DatabaseName = "DATABASE_NAME"

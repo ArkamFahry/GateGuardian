@@ -14,13 +14,15 @@ func NewGenjiDbProvider() (*provider, error) {
 	if err != nil {
 		logrus.Fatal("GenjiDb failed to create a new inmemory instance: ", err)
 	}
-	defer genjidb.Close()
 
 	// GenjiDb creates a new env table
-	err = genjidb.Exec(`CREATE TABLE env (
-		id			TEXT PRIMARY KEY,
-		env_data	TEXT	
-	);`)
+	err = genjidb.Exec(`
+		CREATE TABLE env(
+			id 			TEXT PRIMARY KEY, 
+			env_data 	TEXT 
+		);
+		INSERT INTO env (id, env_data) VALUES ('DB', 'mongodb');
+	`)
 	if err != nil {
 		logrus.Fatal("GenjiDb Failed to create table env: ", err)
 	}
