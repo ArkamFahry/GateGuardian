@@ -3,7 +3,6 @@ package memorydb
 import (
 	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/providers"
 	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/providers/genjidb"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/providers/sqlite"
 	"github.com/sirupsen/logrus"
 )
 
@@ -18,14 +17,6 @@ func InitMemoryDB() error {
 		return err
 	} else {
 		logrus.Info("GenjiDb successfully initialized")
-	}
-
-	Provider, err = sqlite.NewSqliteProvider()
-	if err != nil {
-		logrus.Fatal("Failed Initializing sqlite: ", err)
-		return err
-	} else {
-		logrus.Info("Sqlite successfully initialized")
 	}
 
 	return nil

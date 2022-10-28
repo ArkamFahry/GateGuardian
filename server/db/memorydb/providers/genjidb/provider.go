@@ -19,9 +19,10 @@ func NewGenjiDbProvider() (*provider, error) {
 	err = genjidb.Exec(`
 		CREATE TABLE env(
 			id 			TEXT PRIMARY KEY, 
-			env_data 	TEXT 
+			env_data 	TEXT,
+			created_at  INT,
+			updated_at  INT 
 		);
-		INSERT INTO env (id, env_data) VALUES ('DB', 'mongodb');
 	`)
 	if err != nil {
 		logrus.Fatal("GenjiDb Failed to create table env: ", err)

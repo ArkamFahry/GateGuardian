@@ -27,8 +27,6 @@ func main() {
 		logrus.Fatalln("Error while initializing maindb: ", err)
 	}
 
-	memorydb.Provider.AddEnv()
-
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)
 	port := env.EnvGet().Port
