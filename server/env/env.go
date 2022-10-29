@@ -19,6 +19,7 @@ type Env struct {
 	JwtType           string
 	JwtSecret         string
 	ClientID          string
+	JwtPublicKey      string
 }
 
 func EnvGet() Env {
@@ -37,6 +38,7 @@ func EnvGet() Env {
 	jwtType := os.Getenv(constants.JwtType)
 	jwtSecret := os.Getenv(constants.JwtSecret)
 	clientID := os.Getenv(constants.ClientID)
+	jwtPublicKey := os.Getenv(constants.JwtPublicKey)
 
 	env := Env{
 		DatabaseURL:       dbUrl,
@@ -49,6 +51,7 @@ func EnvGet() Env {
 		JwtType:           jwtType,
 		JwtSecret:         jwtSecret,
 		ClientID:          clientID,
+		JwtPublicKey:      jwtPublicKey,
 	}
 
 	return env

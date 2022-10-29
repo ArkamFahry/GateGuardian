@@ -2,6 +2,10 @@
 #
 # https://gqlgen.com/getting-started/
 
+type Response {
+  message: String!
+}
+
 type Env {
   DATABASE_URL: String
   DATABASE_NAME: String
@@ -13,6 +17,16 @@ type Env {
   CLIENT_ID: String
 }
 
+input UpdateEnvInput {
+  JWT_TYPE: String
+  JWT_SECRET: String
+  CLIENT_ID: String
+}
+
 type Query {
   _env: Env!
+}
+
+type Mutation {
+  _update_env(params: UpdateEnvInput!): Response!
 }

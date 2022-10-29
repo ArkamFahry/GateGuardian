@@ -12,3 +12,13 @@ type Env struct {
 	JwtSecret         *string `json:"JWT_SECRET"`
 	ClientID          *string `json:"CLIENT_ID"`
 }
+
+type Response struct {
+	Message string `json:"message"`
+}
+
+type UpdateEnvInput struct {
+	JwtType   *string `json:"JWT_TYPE"`
+	JwtSecret *string `json:"JWT_SECRET"`
+	ClientID  *string `json:"CLIENT_ID"`
+}

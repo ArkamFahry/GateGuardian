@@ -16,4 +16,5 @@ func PersistEnvToCache() {
 	memorydb.Provider.AddEnv(constants.JwtType, EnvGet().JwtType)
 	memorydb.Provider.AddEnv(constants.JwtSecret, EnvGet().JwtSecret)
 	memorydb.Provider.AddEnv(constants.ClientID, EnvGet().ClientID)
+	memorydb.Provider.AddEnv(constants.JwtPublicKey, EnvGet().JwtPublicKey)
 }

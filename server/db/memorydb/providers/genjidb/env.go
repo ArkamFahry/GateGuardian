@@ -2,6 +2,7 @@ package genjidb
 
 import (
 	"strings"
+	"time"
 
 	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/models"
 	"github.com/genjidb/genji/document"
@@ -10,7 +11,7 @@ import (
 )
 
 func (p *provider) AddEnv(key string, data string) (string, error) {
-	err := p.memorydb.Exec(`INSERT INTO env (id, data) VALUES (?, ?);`, key, data)
+	err := p.memorydb.Exec(`INSERT INTO env (id, data, created_at) VALUES (?, ?, ?);`, key, data, time.Now().Unix())
 	if err != nil {
 		logrus.Info("Failed to insert env: ", err)
 	}
@@ -19,7 +20,7 @@ func (p *provider) AddEnv(key string, data string) (string, error) {
 }
 
 func (p *provider) UpdateEnv(key string, data string) (string, error) {
-	err := p.memorydb.Exec(`UPDATE env SET data = ? WHERE id == ?`, data, key)
+	err := p.memorydb.Exec(`UPDATE env SET data = ?, updated_at = ? WHERE id == ?`, data, time.Now().Unix(), key)
 	if err != nil {
 		logrus.Info("Failed to update env: ", err)
 	}
