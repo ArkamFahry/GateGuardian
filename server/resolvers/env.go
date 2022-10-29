@@ -2,7 +2,6 @@ package resolvers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
@@ -28,8 +27,6 @@ func EnvResolver(ctx context.Context) (*model.Env, error) {
 	res.JwtSecret = &jwtSecret
 	clientId, _ := memorydb.Provider.GetEnvByKey(constants.ClientID)
 	res.ClientID = &clientId
-
-	fmt.Println(memorydb.Provider.ListEnv())
 
 	return res, nil
 }
