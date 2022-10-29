@@ -6,6 +6,7 @@ require (
 	github.com/99designs/gqlgen v0.17.20
 	github.com/genjidb/genji v0.15.1
 	github.com/vektah/gqlparser/v2 v2.5.1
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 )
 
 require (
@@ -43,7 +44,6 @@ require (
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/urfave/cli/v2 v2.8.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/exp v0.0.0-20200513190911-00229845015e // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
