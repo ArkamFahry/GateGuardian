@@ -19,7 +19,7 @@ func NewGenjiDbProvider() (*provider, error) {
 	err = genjidb.Exec(`
 		CREATE TABLE env(
 			id 			TEXT PRIMARY KEY, 
-			env_data 	TEXT,
+			data 	TEXT,
 			created_at  INT,
 			updated_at  INT 
 		);

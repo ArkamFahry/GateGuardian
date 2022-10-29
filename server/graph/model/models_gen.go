@@ -2,19 +2,13 @@
 
 package model
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
-}
-
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
-}
-
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type Env struct {
+	DatabaseURL       *string `json:"DATABASE_URL"`
+	DatabaseName      *string `json:"DATABASE_NAME"`
+	DatabaseNamespace *string `json:"DATABASE_NAMESPACE"`
+	DatabaseUsername  *string `json:"DATABASE_USERNAME"`
+	Port              *string `json:"PORT"`
+	JwtType           *string `json:"JWT_TYPE"`
+	JwtSecret         *string `json:"JWT_SECRET"`
+	ClientID          *string `json:"CLIENT_ID"`
 }

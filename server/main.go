@@ -21,6 +21,9 @@ func main() {
 		logrus.Fatalln("Error while initializing memorydb: ", err)
 	}
 
+	// persists all envs to cache
+	env.PersistEnvToCache()
+
 	// initialize maindb provider
 	err = maindb.InitMainDB()
 	if err != nil {
@@ -29,7 +32,12 @@ func main() {
 
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)
-	port := env.EnvGet().Port
+	port, err := memorydb.Provider.GetEnvByKey(constants.Port)
+	if err != nil {
+		logrus.Error("Error getting port from env: ", err)
+		port = "3000"
+		logrus.Info("Switching to default port: ", port)
+	}
 	logrus.Info("GateGuardian running at PORT: ", port)
 
 	router.Run(":" + port)

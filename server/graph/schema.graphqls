@@ -2,11 +2,17 @@
 #
 # https://gqlgen.com/getting-started/
 
-
-type Query {
-  
+type Env {
+  DATABASE_URL: String
+  DATABASE_NAME: String
+  DATABASE_NAMESPACE: String
+  DATABASE_USERNAME: String
+  PORT: String
+  JWT_TYPE: String
+  JWT_SECRET: String
+  CLIENT_ID: String
 }
 
-type Mutation {
-  
+type Query {
+  _env: Env!
 }
