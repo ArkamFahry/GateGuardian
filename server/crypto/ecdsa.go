@@ -52,34 +52,34 @@ func IsECDSA(algo string) bool {
 }
 
 // ExportEcdsaPrivateKeyAsPemStr to get ECDSA private key as pem string
-func ExportEcdsaPrivateKeyAsPemStr(privkey *ecdsa.PrivateKey) (string, error) {
-	privkeyBytes, err := x509.MarshalECPrivateKey(privkey)
+func ExportEcdsaPrivateKeyAsPemStr(privateKey *ecdsa.PrivateKey) (string, error) {
+	privateKeyBytes, err := x509.MarshalECPrivateKey(privateKey)
 	if err != nil {
 		return "", err
 	}
-	privkeyPem := pem.EncodeToMemory(
+	privateKeyPem := pem.EncodeToMemory(
 		&pem.Block{
 			Type:  "ECDSA PRIVATE KEY",
-			Bytes: privkeyBytes,
+			Bytes: privateKeyBytes,
 		},
 	)
-	return string(privkeyPem), nil
+	return string(privateKeyPem), nil
 }
 
 // ExportEcdsaPublicKeyAsPemStr to get ECDSA public key as pem string
-func ExportEcdsaPublicKeyAsPemStr(pubkey *ecdsa.PublicKey) (string, error) {
-	pubkeyBytes, err := x509.MarshalPKIXPublicKey(pubkey)
+func ExportEcdsaPublicKeyAsPemStr(publicKey *ecdsa.PublicKey) (string, error) {
+	publicKeyBytes, err := x509.MarshalPKIXPublicKey(publicKey)
 	if err != nil {
 		return "", err
 	}
-	pubkeyPem := pem.EncodeToMemory(
+	publicKeyPem := pem.EncodeToMemory(
 		&pem.Block{
 			Type:  "ECDSA PUBLIC KEY",
-			Bytes: pubkeyBytes,
+			Bytes: publicKeyBytes,
 		},
 	)
 
-	return string(pubkeyPem), nil
+	return string(publicKeyPem), nil
 }
 
 // ParseEcdsaPrivateKeyFromPemStr to parse ECDSA private key from pem string
