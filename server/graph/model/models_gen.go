@@ -20,9 +20,7 @@ type Response struct {
 }
 
 type UpdateEnvInput struct {
-	JwtType       *string `json:"JWT_TYPE"`
-	JwtSecret     *string `json:"JWT_SECRET"`
-	JwtPrivateKey *string `json:"JWT_PRIVATE_KEY"`
-	JwtPublicKey  *string `json:"JWT_PUBLIC_KEY"`
-	ClientID      *string `json:"CLIENT_ID"`
+	JwtType   *string `json:"JWT_TYPE"`
+	JwtSecret *string `json:"JWT_SECRET"`
+	ClientID  *string `json:"CLIENT_ID"`
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/db/maindb"
 	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/routes"
@@ -25,10 +24,10 @@ func main() {
 	env.EnvGet()
 
 	// initialize maindb provider
-	err = maindb.InitMainDB()
-	if err != nil {
-		logrus.Fatalln("Error while initializing maindb: ", err)
-	}
+	// err = maindb.InitMainDB()
+	// if err != nil {
+	// 	logrus.Fatalln("Error while initializing maindb: ", err)
+	// }
 
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)

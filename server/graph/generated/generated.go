@@ -281,8 +281,6 @@ type Env {
 input UpdateEnvInput {
   JWT_TYPE: String
   JWT_SECRET: String
-  JWT_PRIVATE_KEY: String
-  JWT_PUBLIC_KEY: String
   CLIENT_ID: String
 }
 
@@ -2857,7 +2855,7 @@ func (ec *executionContext) unmarshalInputUpdateEnvInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"JWT_TYPE", "JWT_SECRET", "JWT_PRIVATE_KEY", "JWT_PUBLIC_KEY", "CLIENT_ID"}
+	fieldsInOrder := [...]string{"JWT_TYPE", "JWT_SECRET", "CLIENT_ID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2877,22 +2875,6 @@ func (ec *executionContext) unmarshalInputUpdateEnvInput(ctx context.Context, ob
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("JWT_SECRET"))
 			it.JwtSecret, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "JWT_PRIVATE_KEY":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("JWT_PRIVATE_KEY"))
-			it.JwtPrivateKey, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "JWT_PUBLIC_KEY":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("JWT_PUBLIC_KEY"))
-			it.JwtPublicKey, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}

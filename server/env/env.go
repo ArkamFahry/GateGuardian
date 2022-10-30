@@ -1,7 +1,6 @@
 package env
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
@@ -57,8 +56,6 @@ func EnvGet() Env {
 	if jwtPrivateKey == "" || jwtPublicKey == "" {
 		if crypto.IsRSA(jwtType) {
 			_, jwtPrivateKey, jwtPublicKey, _, _ = crypto.NewRSAKey(jwtType, clientID)
-			fmt.Println(jwtPrivateKey)
-			fmt.Println(jwtPublicKey)
 		} else if crypto.IsECDSA(jwtType) {
 			_, jwtPrivateKey, jwtPublicKey, _, _ = crypto.NewECDSAKey(jwtType, clientID)
 		}

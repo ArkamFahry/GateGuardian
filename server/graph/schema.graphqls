@@ -22,8 +22,6 @@ type Env {
 input UpdateEnvInput {
   JWT_TYPE: String
   JWT_SECRET: String
-  JWT_PRIVATE_KEY: String
-  JWT_PUBLIC_KEY: String
   CLIENT_ID: String
 }
 

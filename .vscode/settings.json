@@ -7,6 +7,8 @@
     "genjidb",
     "godotenv",
     "gofiber",
+    "gqlgen",
+    "gqlparser",
     "HMACA",
     "Infof",
     "inmemory",
@@ -22,6 +24,7 @@
     "Signin",
     "sirupsen",
     "surrealdb",
-    "unmarshalling"
+    "unmarshalling",
+    "vektah"
   ]
 }
