@@ -1,9 +1,13 @@
 package env
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
+	"github.com/ArkamFahry/GateGuardian/server/crypto"
+	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
@@ -18,8 +22,9 @@ type Env struct {
 	EncryptionKey     string
 	JwtType           string
 	JwtSecret         string
-	ClientID          string
+	JwtPrivateKey     string
 	JwtPublicKey      string
+	ClientID          string
 }
 
 func EnvGet() Env {
@@ -37,8 +42,27 @@ func EnvGet() Env {
 	encryptionKey := os.Getenv(constants.EncryptionKey)
 	jwtType := os.Getenv(constants.JwtType)
 	jwtSecret := os.Getenv(constants.JwtSecret)
-	clientID := os.Getenv(constants.ClientID)
+	jwtPrivateKey := os.Getenv(constants.JwtPrivateKey)
 	jwtPublicKey := os.Getenv(constants.JwtPublicKey)
+	clientID := os.Getenv(constants.ClientID)
+
+	if clientID == "" {
+		clientID = uuid.New().String()
+	}
+
+	if jwtType == "" {
+		jwtType = "RS256"
+	}
+
+	if jwtPrivateKey == "" || jwtPublicKey == "" {
+		if crypto.IsRSA(jwtType) {
+			_, jwtPrivateKey, jwtPublicKey, _, _ = crypto.NewRSAKey(jwtType, clientID)
+			fmt.Println(jwtPrivateKey)
+			fmt.Println(jwtPublicKey)
+		} else if crypto.IsECDSA(jwtType) {
+			_, jwtPrivateKey, jwtPublicKey, _, _ = crypto.NewECDSAKey(jwtType, clientID)
+		}
+	}
 
 	env := Env{
 		DatabaseURL:       dbUrl,
@@ -50,9 +74,23 @@ func EnvGet() Env {
 		EncryptionKey:     encryptionKey,
 		JwtType:           jwtType,
 		JwtSecret:         jwtSecret,
-		ClientID:          clientID,
+		JwtPrivateKey:     jwtPrivateKey,
 		JwtPublicKey:      jwtPublicKey,
+		ClientID:          clientID,
 	}
+
+	memorydb.Provider.AddEnv(constants.DatabaseURL, env.DatabaseURL)
+	memorydb.Provider.AddEnv(constants.DatabaseName, env.DatabaseName)
+	memorydb.Provider.AddEnv(constants.DatabaseNameSpace, env.DatabaseNameSpace)
+	memorydb.Provider.AddEnv(constants.DatabaseUsername, env.DatabaseUsername)
+	memorydb.Provider.AddEnv(constants.DatabasePassword, env.DatabasePassword)
+	memorydb.Provider.AddEnv(constants.Port, env.Port)
+	memorydb.Provider.AddEnv(constants.EncryptionKey, env.EncryptionKey)
+	memorydb.Provider.AddEnv(constants.JwtType, env.JwtType)
+	memorydb.Provider.AddEnv(constants.JwtSecret, env.JwtSecret)
+	memorydb.Provider.AddEnv(constants.JwtPrivateKey, env.JwtPrivateKey)
+	memorydb.Provider.AddEnv(constants.JwtPublicKey, env.JwtPublicKey)
+	memorydb.Provider.AddEnv(constants.ClientID, env.ClientID)
 
 	return env
 }

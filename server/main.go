@@ -21,8 +21,8 @@ func main() {
 		logrus.Fatalln("Error while initializing memorydb: ", err)
 	}
 
-	// persists all envs to cache
-	env.PersistEnvToCache()
+	// get envs and persists envs to cache
+	env.EnvGet()
 
 	// initialize maindb provider
 	err = maindb.InitMainDB()

@@ -50,6 +50,8 @@ type ComplexityRoot struct {
 		DatabaseNamespace func(childComplexity int) int
 		DatabaseURL       func(childComplexity int) int
 		DatabaseUsername  func(childComplexity int) int
+		JwtPrivateKey     func(childComplexity int) int
+		JwtPublicKey      func(childComplexity int) int
 		JwtSecret         func(childComplexity int) int
 		JwtType           func(childComplexity int) int
 		Port              func(childComplexity int) int
@@ -124,6 +126,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Env.DatabaseUsername(childComplexity), true
+
+	case "Env.JWT_PRIVATE_KEY":
+		if e.complexity.Env.JwtPrivateKey == nil {
+			break
+		}
+
+		return e.complexity.Env.JwtPrivateKey(childComplexity), true
+
+	case "Env.JWT_PUBLIC_KEY":
+		if e.complexity.Env.JwtPublicKey == nil {
+			break
+		}
+
+		return e.complexity.Env.JwtPublicKey(childComplexity), true
 
 	case "Env.JWT_SECRET":
 		if e.complexity.Env.JwtSecret == nil {
@@ -257,12 +273,16 @@ type Env {
   PORT: String
   JWT_TYPE: String
   JWT_SECRET: String
+  JWT_PRIVATE_KEY: String
+  JWT_PUBLIC_KEY: String
   CLIENT_ID: String
 }
 
 input UpdateEnvInput {
   JWT_TYPE: String
   JWT_SECRET: String
+  JWT_PRIVATE_KEY: String
+  JWT_PUBLIC_KEY: String
   CLIENT_ID: String
 }
 
@@ -636,6 +656,88 @@ func (ec *executionContext) fieldContext_Env_JWT_SECRET(ctx context.Context, fie
 	return fc, nil
 }
 
+func (ec *executionContext) _Env_JWT_PRIVATE_KEY(ctx context.Context, field graphql.CollectedField, obj *model.Env) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Env_JWT_PRIVATE_KEY(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.JwtPrivateKey, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Env_JWT_PRIVATE_KEY(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Env",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Env_JWT_PUBLIC_KEY(ctx context.Context, field graphql.CollectedField, obj *model.Env) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Env_JWT_PUBLIC_KEY(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.JwtPublicKey, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Env_JWT_PUBLIC_KEY(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Env",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Env_CLIENT_ID(ctx context.Context, field graphql.CollectedField, obj *model.Env) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Env_CLIENT_ID(ctx, field)
 	if err != nil {
@@ -789,6 +891,10 @@ func (ec *executionContext) fieldContext_Query__env(ctx context.Context, field g
 				return ec.fieldContext_Env_JWT_TYPE(ctx, field)
 			case "JWT_SECRET":
 				return ec.fieldContext_Env_JWT_SECRET(ctx, field)
+			case "JWT_PRIVATE_KEY":
+				return ec.fieldContext_Env_JWT_PRIVATE_KEY(ctx, field)
+			case "JWT_PUBLIC_KEY":
+				return ec.fieldContext_Env_JWT_PUBLIC_KEY(ctx, field)
 			case "CLIENT_ID":
 				return ec.fieldContext_Env_CLIENT_ID(ctx, field)
 			}
@@ -2751,7 +2857,7 @@ func (ec *executionContext) unmarshalInputUpdateEnvInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"JWT_TYPE", "JWT_SECRET", "CLIENT_ID"}
+	fieldsInOrder := [...]string{"JWT_TYPE", "JWT_SECRET", "JWT_PRIVATE_KEY", "JWT_PUBLIC_KEY", "CLIENT_ID"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2771,6 +2877,22 @@ func (ec *executionContext) unmarshalInputUpdateEnvInput(ctx context.Context, ob
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("JWT_SECRET"))
 			it.JwtSecret, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "JWT_PRIVATE_KEY":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("JWT_PRIVATE_KEY"))
+			it.JwtPrivateKey, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "JWT_PUBLIC_KEY":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("JWT_PUBLIC_KEY"))
+			it.JwtPublicKey, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2833,6 +2955,14 @@ func (ec *executionContext) _Env(ctx context.Context, sel ast.SelectionSet, obj 
 		case "JWT_SECRET":
 
 			out.Values[i] = ec._Env_JWT_SECRET(ctx, field, obj)
+
+		case "JWT_PRIVATE_KEY":
+
+			out.Values[i] = ec._Env_JWT_PRIVATE_KEY(ctx, field, obj)
+
+		case "JWT_PUBLIC_KEY":
+
+			out.Values[i] = ec._Env_JWT_PUBLIC_KEY(ctx, field, obj)
 
 		case "CLIENT_ID":
 
