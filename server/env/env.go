@@ -24,6 +24,8 @@ type Env struct {
 	JwtPrivateKey     string
 	JwtPublicKey      string
 	ClientID          string
+	Roles             string
+	DefaultRoles      string
 }
 
 func EnvGet() Env {
@@ -44,6 +46,8 @@ func EnvGet() Env {
 	jwtPrivateKey := os.Getenv(constants.JwtPrivateKey)
 	jwtPublicKey := os.Getenv(constants.JwtPublicKey)
 	clientID := os.Getenv(constants.ClientID)
+	roles := os.Getenv(constants.Roles)
+	defaultRoles := os.Getenv(constants.DefaultRoles)
 
 	if clientID == "" {
 		clientID = uuid.New().String()
@@ -61,6 +65,14 @@ func EnvGet() Env {
 		}
 	}
 
+	if roles == "" {
+		roles = "user,anon"
+	}
+
+	if defaultRoles == "" {
+		defaultRoles = "user"
+	}
+
 	env := Env{
 		DatabaseURL:       dbUrl,
 		DatabaseName:      dbName,
@@ -74,6 +86,8 @@ func EnvGet() Env {
 		JwtPrivateKey:     jwtPrivateKey,
 		JwtPublicKey:      jwtPublicKey,
 		ClientID:          clientID,
+		Roles:             roles,
+		DefaultRoles:      defaultRoles,
 	}
 
 	memorydb.Provider.AddEnv(constants.DatabaseURL, env.DatabaseURL)
@@ -88,6 +102,8 @@ func EnvGet() Env {
 	memorydb.Provider.AddEnv(constants.JwtPrivateKey, env.JwtPrivateKey)
 	memorydb.Provider.AddEnv(constants.JwtPublicKey, env.JwtPublicKey)
 	memorydb.Provider.AddEnv(constants.ClientID, env.ClientID)
+	memorydb.Provider.AddEnv(constants.DefaultRoles, env.DefaultRoles)
+	memorydb.Provider.AddEnv(constants.Roles, env.Roles)
 
 	return env
 }
