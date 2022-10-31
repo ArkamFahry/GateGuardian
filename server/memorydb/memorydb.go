@@ -1,8 +1,8 @@
 package memorydb
 
 import (
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/providers"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/providers/genjidb"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb/providers"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb/providers/genjidb"
 	"github.com/sirupsen/logrus"
 )
 

@@ -1,8 +1,8 @@
 package maindb
 
 import (
-	"github.com/ArkamFahry/GateGuardian/server/db/maindb/providers"
-	"github.com/ArkamFahry/GateGuardian/server/db/maindb/providers/surrealdb"
+	"github.com/ArkamFahry/GateGuardian/server/db/providers"
+	"github.com/ArkamFahry/GateGuardian/server/db/providers/surrealdb"
 	"github.com/sirupsen/logrus"
 )
 

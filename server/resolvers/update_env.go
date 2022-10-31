@@ -7,8 +7,8 @@ import (
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/validators"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -38,7 +38,6 @@ func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model
 		isJwtUpdated = true
 	}
 
-	// update jwt secret
 	if params.JwtSecret != nil {
 		if err := validators.IsValidJwtSecret(*params.JwtSecret); err != nil {
 			logrus.Debug("Invalid Jwt Secret")

@@ -2,7 +2,7 @@ package surrealdb
 
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 	"github.com/sirupsen/logrus"
 	"github.com/surrealdb/surrealdb.go"
 )

@@ -5,7 +5,7 @@ import (
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
@@ -28,7 +28,7 @@ type Env struct {
 	DefaultRoles      string
 }
 
-func EnvGet() Env {
+func GetEnv() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		logrus.Info("Failed to load .env file: ", err, "|switched to os env|")
@@ -53,6 +53,10 @@ func EnvGet() Env {
 		port = "8080"
 	}
 
+	if encryptionKey == "" {
+		encryptionKey = uuid.New().String()[:36-4]
+	}
+
 	if clientID == "" {
 		clientID = uuid.New().String()
 	}
@@ -71,6 +75,7 @@ func EnvGet() Env {
 
 	if roles == "" {
 		roles = "user"
+		defaultRoles = "user"
 	}
 
 	if defaultRoles == "" {
@@ -94,6 +99,11 @@ func EnvGet() Env {
 		DefaultRoles:      defaultRoles,
 	}
 
+	PersistEnv(env)
+
+}
+
+func PersistEnv(env Env) {
 	memorydb.Provider.AddEnv(constants.DatabaseURL, env.DatabaseURL)
 	memorydb.Provider.AddEnv(constants.DatabaseName, env.DatabaseName)
 	memorydb.Provider.AddEnv(constants.DatabaseNameSpace, env.DatabaseNameSpace)
@@ -108,6 +118,4 @@ func EnvGet() Env {
 	memorydb.Provider.AddEnv(constants.ClientID, env.ClientID)
 	memorydb.Provider.AddEnv(constants.DefaultRoles, env.DefaultRoles)
 	memorydb.Provider.AddEnv(constants.Roles, env.Roles)
-
-	return env
 }

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/env"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/routes"
 	"github.com/sirupsen/logrus"
 )
@@ -21,7 +21,7 @@ func main() {
 	}
 
 	// get envs and persists envs to cache
-	env.EnvGet()
+	env.GetEnv()
 
 	// initialize maindb provider
 	// err = maindb.InitMainDB()

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb/models"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb/models"
 	"github.com/genjidb/genji/document"
 	"github.com/genjidb/genji/types"
 	"github.com/sirupsen/logrus"
@@ -13,7 +13,7 @@ import (
 func (p *provider) AddEnv(key string, data string) (string, error) {
 	err := p.memorydb.Exec(`INSERT INTO env (id, data, created_at) VALUES (?, ?, ?);`, key, data, time.Now().Unix())
 	if err != nil {
-		logrus.Info("Failed to insert env: ", err)
+		logrus.Debug("Failed to insert env: ", err)
 	}
 
 	return key, err
@@ -22,7 +22,7 @@ func (p *provider) AddEnv(key string, data string) (string, error) {
 func (p *provider) UpdateEnv(key string, data string) (string, error) {
 	err := p.memorydb.Exec(`UPDATE env SET data = ?, updated_at = ? WHERE id == ?`, data, time.Now().Unix(), key)
 	if err != nil {
-		logrus.Info("Failed to update env: ", err)
+		logrus.Debug("Failed to update env: ", err)
 	}
 
 	return key, err
@@ -40,7 +40,7 @@ func (p *provider) DeleteEnv(key string) error {
 func (p *provider) ListEnv() ([]models.Env, error) {
 	res, err := p.memorydb.Query(`SELECT * FROM env;`)
 	if err != nil {
-		logrus.Info("Failed to get envs: ", err)
+		logrus.Debug("Failed to get envs: ", err)
 	}
 
 	var envs []models.Env
@@ -65,7 +65,7 @@ func (p *provider) GetEnvByKey(key string) (string, error) {
 	var env string
 	res, err := p.memorydb.QueryDocument(`SELECT data FROM env WHERE id == ?;`, key)
 	if err != nil {
-		logrus.Info("No such env present in db: ", err)
+		logrus.Debug("No such env present in db: ", err)
 	} else {
 		data, err := res.GetByField("data")
 		if err != nil {

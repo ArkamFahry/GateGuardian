@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
+	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 )
 
 func EnvResolver(ctx context.Context) (*model.Env, error) {
