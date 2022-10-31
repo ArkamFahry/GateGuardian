@@ -8,8 +8,6 @@ import (
 	"errors"
 )
 
-// NewRSAKey to generate new RSA Key if env is not set
-// returns key instance, private key string, public key string, jwk string, error
 func NewRSAKey(algo, keyID string) (*rsa.PrivateKey, string, string, string, error) {
 	key, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
@@ -29,7 +27,6 @@ func NewRSAKey(algo, keyID string) (*rsa.PrivateKey, string, string, string, err
 	return key, privateKey, publicKey, string(jwkPublicKey), err
 }
 
-// IsRSA checks if given string is valid RSA algo
 func IsRSA(algo string) bool {
 	switch algo {
 	case "RS256", "RS384", "RS512":
@@ -39,7 +36,6 @@ func IsRSA(algo string) bool {
 	}
 }
 
-// ExportRsaPrivateKeyAsPemStr to get RSA private key as pem string
 func ExportRsaPrivateKeyAsPemStr(privkey *rsa.PrivateKey) string {
 	privkeyBytes := x509.MarshalPKCS1PrivateKey(privkey)
 	privkeyPem := pem.EncodeToMemory(
@@ -51,7 +47,6 @@ func ExportRsaPrivateKeyAsPemStr(privkey *rsa.PrivateKey) string {
 	return string(privkeyPem)
 }
 
-// ExportRsaPublicKeyAsPemStr to get RSA public key as pem string
 func ExportRsaPublicKeyAsPemStr(pubkey *rsa.PublicKey) string {
 	pubkeyBytes := x509.MarshalPKCS1PublicKey(pubkey)
 	pubkeyPem := pem.EncodeToMemory(
@@ -64,7 +59,6 @@ func ExportRsaPublicKeyAsPemStr(pubkey *rsa.PublicKey) string {
 	return string(pubkeyPem)
 }
 
-// ParseRsaPrivateKeyFromPemStr to parse RSA private key from pem string
 func ParseRsaPrivateKeyFromPemStr(privPEM string) (*rsa.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(privPEM))
 	if block == nil {
@@ -79,7 +73,6 @@ func ParseRsaPrivateKeyFromPemStr(privPEM string) (*rsa.PrivateKey, error) {
 	return priv, nil
 }
 
-// ParseRsaPublicKeyFromPemStr to parse RSA public key from pem string
 func ParseRsaPublicKeyFromPemStr(pubPEM string) (*rsa.PublicKey, error) {
 	block, _ := pem.Decode([]byte(pubPEM))
 	if block == nil {
@@ -94,9 +87,7 @@ func ParseRsaPublicKeyFromPemStr(pubPEM string) (*rsa.PublicKey, error) {
 	return pub, nil
 }
 
-// AsRSAStr returns private, public key string or error
 func AsRSAStr(privateKey *rsa.PrivateKey, publickKey *rsa.PublicKey) (string, string, error) {
-	// Export the keys to pem string
 	privPem := ExportRsaPrivateKeyAsPemStr(privateKey)
 	pubPem := ExportRsaPublicKeyAsPemStr(publickKey)
 
@@ -110,7 +101,6 @@ func AsRSAStr(privateKey *rsa.PrivateKey, publickKey *rsa.PublicKey) (string, st
 		return "", "", err
 	}
 
-	// Export the newly imported keys
 	privParsedPem := ExportRsaPrivateKeyAsPemStr(privParsed)
 	pubParsedPem := ExportRsaPublicKeyAsPemStr(pubParsed)
 

@@ -22,6 +22,8 @@
     "objectdb",
     "objectstore",
     "otps",
+    "privkey",
+    "pubkey",
     "Signin",
     "signup",
     "sirupsen",

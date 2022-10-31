@@ -9,8 +9,6 @@ import (
 	"errors"
 )
 
-// NewECDSAKey to generate new ECDSA Key if env is not set
-// returns key instance, private key string, public key string, jwk string, error
 func NewECDSAKey(algo, keyID string) (*ecdsa.PrivateKey, string, string, string, error) {
 	var curve elliptic.Curve
 	switch algo {
@@ -41,7 +39,6 @@ func NewECDSAKey(algo, keyID string) (*ecdsa.PrivateKey, string, string, string,
 	return key, privateKey, publicKey, string(jwkPublicKey), err
 }
 
-// IsECDSA checks if given string is valid ECDSA algo
 func IsECDSA(algo string) bool {
 	switch algo {
 	case "ES256", "ES384", "ES512":
@@ -51,7 +48,6 @@ func IsECDSA(algo string) bool {
 	}
 }
 
-// ExportEcdsaPrivateKeyAsPemStr to get ECDSA private key as pem string
 func ExportEcdsaPrivateKeyAsPemStr(privateKey *ecdsa.PrivateKey) (string, error) {
 	privateKeyBytes, err := x509.MarshalECPrivateKey(privateKey)
 	if err != nil {
@@ -66,7 +62,6 @@ func ExportEcdsaPrivateKeyAsPemStr(privateKey *ecdsa.PrivateKey) (string, error)
 	return string(privateKeyPem), nil
 }
 
-// ExportEcdsaPublicKeyAsPemStr to get ECDSA public key as pem string
 func ExportEcdsaPublicKeyAsPemStr(publicKey *ecdsa.PublicKey) (string, error) {
 	publicKeyBytes, err := x509.MarshalPKIXPublicKey(publicKey)
 	if err != nil {
@@ -82,7 +77,6 @@ func ExportEcdsaPublicKeyAsPemStr(publicKey *ecdsa.PublicKey) (string, error) {
 	return string(publicKeyPem), nil
 }
 
-// ParseEcdsaPrivateKeyFromPemStr to parse ECDSA private key from pem string
 func ParseEcdsaPrivateKeyFromPemStr(privPEM string) (*ecdsa.PrivateKey, error) {
 	block, _ := pem.Decode([]byte(privPEM))
 	if block == nil {
@@ -97,7 +91,6 @@ func ParseEcdsaPrivateKeyFromPemStr(privPEM string) (*ecdsa.PrivateKey, error) {
 	return priv, nil
 }
 
-// ParseEcdsaPublicKeyFromPemStr to parse ECDSA public key from pem string
 func ParseEcdsaPublicKeyFromPemStr(pubPEM string) (*ecdsa.PublicKey, error) {
 	block, _ := pem.Decode([]byte(pubPEM))
 	if block == nil {
@@ -113,14 +106,12 @@ func ParseEcdsaPublicKeyFromPemStr(pubPEM string) (*ecdsa.PublicKey, error) {
 	case *ecdsa.PublicKey:
 		return pub, nil
 	default:
-		break // fall through
+		break
 	}
 	return nil, errors.New("key type is not ecdsa")
 }
 
-// AsECDSAStr returns private, public key string or error
 func AsECDSAStr(privateKey *ecdsa.PrivateKey, publicKey *ecdsa.PublicKey) (string, string, error) {
-	// Export the keys to pem string
 	privPem, err := ExportEcdsaPrivateKeyAsPemStr(privateKey)
 	if err != nil {
 		return "", "", err
