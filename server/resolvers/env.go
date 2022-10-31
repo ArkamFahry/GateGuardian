@@ -2,6 +2,7 @@ package resolvers
 
 import (
 	"context"
+	"strings"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
@@ -40,6 +41,12 @@ func EnvResolver(ctx context.Context) (*model.Env, error) {
 
 	clientId, _ := memorydb.Provider.GetEnvByKey(constants.ClientID)
 	res.ClientID = &clientId
+
+	roles, _ := memorydb.Provider.GetEnvByKey(constants.Roles)
+	res.Roles = strings.Split(roles, ",")
+
+	defaultRoles, _ := memorydb.Provider.GetEnvByKey(constants.DefaultRoles)
+	res.DefaultRoles = strings.Split(defaultRoles, ",")
 
 	return res, nil
 }

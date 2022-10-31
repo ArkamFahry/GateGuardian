@@ -2,13 +2,6 @@ package validators
 
 import "errors"
 
-// ValidatePassword to validate the password against the following policy
-// min char length: 6
-// max char length: 36
-// at least one upper case letter
-// at least one lower case letter
-// at least one digit
-// at least one special character
 func IsValidJwtSecret(jwtSecret string) error {
 	if len(jwtSecret) < 32 {
 		return errors.New("jwt secret must be of minimum 32 characters")

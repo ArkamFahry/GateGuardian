@@ -17,63 +17,67 @@ type Env {
   JWT_PRIVATE_KEY: String
   JWT_PUBLIC_KEY: String
   CLIENT_ID: String
+  ROLES: [String!]
+  DEFAULT_ROLES: [String!]
 }
 
 input UpdateEnvInput {
   JWT_TYPE: String
   JWT_SECRET: String
   CLIENT_ID: String
+  ROLES: [String!]
+  DEFAULT_ROLES: [String!]
 }
 
-input SignUpInput {
-  email: String!
-  password: String!
-  confirm_password: String!
-  user_name: String
-  first_name: String
-  middle_name: String
-  last_name: String
-  nickname: String
-  gender: String
-  birth_date: String
-  phone_number: String
-  picture: String
-  roles: [String!]
-  redirect_uri: String
-  is_multi_factor_auth_enabled: Boolean
-}
+# input SignUpInput {
+#   email: String!
+#   password: String!
+#   confirm_password: String!
+#   user_name: String
+#   first_name: String
+#   middle_name: String
+#   last_name: String
+#   nickname: String
+#   gender: String
+#   birth_date: String
+#   phone_number: String
+#   picture: String
+#   roles: [String!]
+#   redirect_uri: String
+#   is_multi_factor_auth_enabled: Boolean
+# }
 
-type AuthResponse {
-  message: String!
-  should_show_otp_screen: Boolean
-  access_token: String
-  id_token: String
-  refresh_token: String
-  expires_in: Int64
-  user: User
-}
+# type AuthResponse {
+#   message: String!
+#   should_show_otp_screen: Boolean
+#   access_token: String
+#   id_token: String
+#   refresh_token: String
+#   expires_in: Int64
+#   user: User
+# }
 
-type User {
-  id: ID!
-  email: String!
-  email_verified: Boolean!
-  signup_methods: String!
-  user_name: String
-  first_name: String
-  middle_name: String
-  last_name: String
-  nickname: String
-  gender: String
-  birth_date: String
-  phone_number: String
-  phone_number_verified: Boolean
-  picture: String
-  roles: [String!]!
-  created_at: Int64
-  updated_at: Int64
-  revoked_timestamp: Int64
-  is_multi_factor_auth_enabled: Boolean
-}
+# type User {
+#   id: ID!
+#   email: String!
+#   email_verified: Boolean!
+#   signup_methods: String!
+#   user_name: String
+#   first_name: String
+#   middle_name: String
+#   last_name: String
+#   nickname: String
+#   gender: String
+#   birth_date: String
+#   phone_number: String
+#   phone_number_verified: Boolean
+#   picture: String
+#   roles: [String!]!
+#   created_at: Int64
+#   updated_at: Int64
+#   revoked_timestamp: Int64
+#   is_multi_factor_auth_enabled: Boolean
+# }
 
 type Query {
   # admin only query
@@ -81,7 +85,6 @@ type Query {
 }
 
 type Mutation {
-  signup(params: SignUpInput!): AuthResponse!
   # admin only mutation
   _update_env(params: UpdateEnvInput!): Response!
 }

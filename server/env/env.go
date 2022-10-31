@@ -49,6 +49,10 @@ func EnvGet() Env {
 	roles := os.Getenv(constants.Roles)
 	defaultRoles := os.Getenv(constants.DefaultRoles)
 
+	if port == "" {
+		port = "8080"
+	}
+
 	if clientID == "" {
 		clientID = uuid.New().String()
 	}
@@ -66,7 +70,7 @@ func EnvGet() Env {
 	}
 
 	if roles == "" {
-		roles = "user,anon"
+		roles = "user"
 	}
 
 	if defaultRoles == "" {

@@ -3,6 +3,7 @@ package resolvers
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
@@ -16,7 +17,7 @@ import (
 func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model.Response, error) {
 	var res *model.Response
 
-	if params.JwtType == nil && params.JwtSecret == nil && params.ClientID == nil {
+	if params.JwtType == nil && params.JwtSecret == nil && params.ClientID == nil && params.Roles == nil && params.DefaultRoles == nil {
 		logrus.Debug("No params to update")
 		return res, fmt.Errorf("please enter at least one param to update")
 	}
@@ -66,6 +67,23 @@ func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model
 			_, jwtPrivateKey, jwtPublicKey, _, _ := crypto.NewECDSAKey(algo, clientId)
 			memorydb.Provider.UpdateEnv(constants.JwtPrivateKey, jwtPrivateKey)
 			memorydb.Provider.UpdateEnv(constants.JwtPrivateKey, jwtPublicKey)
+		}
+	}
+
+	if params.Roles != nil {
+		if len(params.Roles) > 0 {
+			memorydb.Provider.UpdateEnv(constants.Roles, strings.Join(params.Roles, ","))
+		}
+	}
+
+	if params.DefaultRoles != nil {
+		if len(params.DefaultRoles) > 0 {
+			roles, _ := memorydb.Provider.GetEnvByKey(constants.Roles)
+			if !validators.IsValidRoles(params.DefaultRoles, strings.Split(roles, ",")) {
+				return res, fmt.Errorf("invalid list of default roles")
+			} else {
+				memorydb.Provider.UpdateEnv(constants.DefaultRoles, strings.Join(params.DefaultRoles, ","))
+			}
 		}
 	}
 

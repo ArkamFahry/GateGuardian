@@ -3,16 +3,18 @@
 package model
 
 type Env struct {
-	DatabaseURL       *string `json:"DATABASE_URL"`
-	DatabaseName      *string `json:"DATABASE_NAME"`
-	DatabaseNamespace *string `json:"DATABASE_NAMESPACE"`
-	DatabaseUsername  *string `json:"DATABASE_USERNAME"`
-	Port              *string `json:"PORT"`
-	JwtType           *string `json:"JWT_TYPE"`
-	JwtSecret         *string `json:"JWT_SECRET"`
-	JwtPrivateKey     *string `json:"JWT_PRIVATE_KEY"`
-	JwtPublicKey      *string `json:"JWT_PUBLIC_KEY"`
-	ClientID          *string `json:"CLIENT_ID"`
+	DatabaseURL       *string  `json:"DATABASE_URL"`
+	DatabaseName      *string  `json:"DATABASE_NAME"`
+	DatabaseNamespace *string  `json:"DATABASE_NAMESPACE"`
+	DatabaseUsername  *string  `json:"DATABASE_USERNAME"`
+	Port              *string  `json:"PORT"`
+	JwtType           *string  `json:"JWT_TYPE"`
+	JwtSecret         *string  `json:"JWT_SECRET"`
+	JwtPrivateKey     *string  `json:"JWT_PRIVATE_KEY"`
+	JwtPublicKey      *string  `json:"JWT_PUBLIC_KEY"`
+	ClientID          *string  `json:"CLIENT_ID"`
+	Roles             []string `json:"ROLES"`
+	DefaultRoles      []string `json:"DEFAULT_ROLES"`
 }
 
 type Response struct {
@@ -20,7 +22,9 @@ type Response struct {
 }
 
 type UpdateEnvInput struct {
-	JwtType   *string `json:"JWT_TYPE"`
-	JwtSecret *string `json:"JWT_SECRET"`
-	ClientID  *string `json:"CLIENT_ID"`
+	JwtType      *string  `json:"JWT_TYPE"`
+	JwtSecret    *string  `json:"JWT_SECRET"`
+	ClientID     *string  `json:"CLIENT_ID"`
+	Roles        []string `json:"ROLES"`
+	DefaultRoles []string `json:"DEFAULT_ROLES"`
 }

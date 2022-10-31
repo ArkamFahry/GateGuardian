@@ -50,11 +50,13 @@ type ComplexityRoot struct {
 		DatabaseNamespace func(childComplexity int) int
 		DatabaseURL       func(childComplexity int) int
 		DatabaseUsername  func(childComplexity int) int
+		DefaultRoles      func(childComplexity int) int
 		JwtPrivateKey     func(childComplexity int) int
 		JwtPublicKey      func(childComplexity int) int
 		JwtSecret         func(childComplexity int) int
 		JwtType           func(childComplexity int) int
 		Port              func(childComplexity int) int
+		Roles             func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -127,6 +129,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Env.DatabaseUsername(childComplexity), true
 
+	case "Env.DEFAULT_ROLES":
+		if e.complexity.Env.DefaultRoles == nil {
+			break
+		}
+
+		return e.complexity.Env.DefaultRoles(childComplexity), true
+
 	case "Env.JWT_PRIVATE_KEY":
 		if e.complexity.Env.JwtPrivateKey == nil {
 			break
@@ -161,6 +170,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Env.Port(childComplexity), true
+
+	case "Env.ROLES":
+		if e.complexity.Env.Roles == nil {
+			break
+		}
+
+		return e.complexity.Env.Roles(childComplexity), true
 
 	case "Mutation._update_env":
 		if e.complexity.Mutation.UpdateEnv == nil {
@@ -276,19 +292,75 @@ type Env {
   JWT_PRIVATE_KEY: String
   JWT_PUBLIC_KEY: String
   CLIENT_ID: String
+  ROLES: [String!]
+  DEFAULT_ROLES: [String!]
 }
 
 input UpdateEnvInput {
   JWT_TYPE: String
   JWT_SECRET: String
   CLIENT_ID: String
+  ROLES: [String!]
+  DEFAULT_ROLES: [String!]
 }
 
+# input SignUpInput {
+#   email: String!
+#   password: String!
+#   confirm_password: String!
+#   user_name: String
+#   first_name: String
+#   middle_name: String
+#   last_name: String
+#   nickname: String
+#   gender: String
+#   birth_date: String
+#   phone_number: String
+#   picture: String
+#   roles: [String!]
+#   redirect_uri: String
+#   is_multi_factor_auth_enabled: Boolean
+# }
+
+# type AuthResponse {
+#   message: String!
+#   should_show_otp_screen: Boolean
+#   access_token: String
+#   id_token: String
+#   refresh_token: String
+#   expires_in: Int64
+#   user: User
+# }
+
+# type User {
+#   id: ID!
+#   email: String!
+#   email_verified: Boolean!
+#   signup_methods: String!
+#   user_name: String
+#   first_name: String
+#   middle_name: String
+#   last_name: String
+#   nickname: String
+#   gender: String
+#   birth_date: String
+#   phone_number: String
+#   phone_number_verified: Boolean
+#   picture: String
+#   roles: [String!]!
+#   created_at: Int64
+#   updated_at: Int64
+#   revoked_timestamp: Int64
+#   is_multi_factor_auth_enabled: Boolean
+# }
+
 type Query {
+  # admin only query
   _env: Env!
 }
 
 type Mutation {
+  # admin only mutation
   _update_env(params: UpdateEnvInput!): Response!
 }
 `, BuiltIn: false},
@@ -777,6 +849,88 @@ func (ec *executionContext) fieldContext_Env_CLIENT_ID(ctx context.Context, fiel
 	return fc, nil
 }
 
+func (ec *executionContext) _Env_ROLES(ctx context.Context, field graphql.CollectedField, obj *model.Env) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Env_ROLES(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Roles, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Env_ROLES(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Env",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Env_DEFAULT_ROLES(ctx context.Context, field graphql.CollectedField, obj *model.Env) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Env_DEFAULT_ROLES(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DefaultRoles, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Env_DEFAULT_ROLES(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Env",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Mutation__update_env(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Mutation__update_env(ctx, field)
 	if err != nil {
@@ -895,6 +1049,10 @@ func (ec *executionContext) fieldContext_Query__env(ctx context.Context, field g
 				return ec.fieldContext_Env_JWT_PUBLIC_KEY(ctx, field)
 			case "CLIENT_ID":
 				return ec.fieldContext_Env_CLIENT_ID(ctx, field)
+			case "ROLES":
+				return ec.fieldContext_Env_ROLES(ctx, field)
+			case "DEFAULT_ROLES":
+				return ec.fieldContext_Env_DEFAULT_ROLES(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Env", field.Name)
 		},
@@ -2855,7 +3013,7 @@ func (ec *executionContext) unmarshalInputUpdateEnvInput(ctx context.Context, ob
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"JWT_TYPE", "JWT_SECRET", "CLIENT_ID"}
+	fieldsInOrder := [...]string{"JWT_TYPE", "JWT_SECRET", "CLIENT_ID", "ROLES", "DEFAULT_ROLES"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -2883,6 +3041,22 @@ func (ec *executionContext) unmarshalInputUpdateEnvInput(ctx context.Context, ob
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("CLIENT_ID"))
 			it.ClientID, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "ROLES":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("ROLES"))
+			it.Roles, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "DEFAULT_ROLES":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("DEFAULT_ROLES"))
+			it.DefaultRoles, err = ec.unmarshalOString2ᚕstringᚄ(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2949,6 +3123,14 @@ func (ec *executionContext) _Env(ctx context.Context, sel ast.SelectionSet, obj 
 		case "CLIENT_ID":
 
 			out.Values[i] = ec._Env_CLIENT_ID(ctx, field, obj)
+
+		case "ROLES":
+
+			out.Values[i] = ec._Env_ROLES(ctx, field, obj)
+
+		case "DEFAULT_ROLES":
+
+			out.Values[i] = ec._Env_DEFAULT_ROLES(ctx, field, obj)
 
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -3751,6 +3933,44 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	}
 	res := graphql.MarshalBoolean(*v)
 	return res
+}
+
+func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		vSlice = graphql.CoerceList(v)
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
