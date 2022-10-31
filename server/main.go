@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
+	"github.com/ArkamFahry/GateGuardian/server/crypto"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/routes"
@@ -37,6 +38,7 @@ func main() {
 		port = "3000"
 		logrus.Info("Switching to default port: ", port)
 	}
+	port, _ = crypto.DecryptAES(port)
 	logrus.Info("GateGuardian running at PORT: ", port)
 
 	router.Run(":" + port)

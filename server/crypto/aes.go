@@ -15,6 +15,10 @@ func EncryptAES(text string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	k, err = DecryptB64(k)
+	if err != nil {
+		return "", err
+	}
 	key := []byte(k)
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -29,6 +33,10 @@ func EncryptAES(text string) (string, error) {
 
 func DecryptAES(text string) (string, error) {
 	k, err := memorydb.Provider.GetEnvByKey(constants.EncryptionKey)
+	if err != nil {
+		return "", err
+	}
+	k, err = DecryptB64(k)
 	if err != nil {
 		return "", err
 	}

@@ -104,18 +104,45 @@ func GetEnv() {
 }
 
 func PersistEnv(env Env) {
-	memorydb.Provider.AddEnv(constants.DatabaseURL, env.DatabaseURL)
-	memorydb.Provider.AddEnv(constants.DatabaseName, env.DatabaseName)
-	memorydb.Provider.AddEnv(constants.DatabaseNameSpace, env.DatabaseNameSpace)
-	memorydb.Provider.AddEnv(constants.DatabaseUsername, env.DatabaseUsername)
-	memorydb.Provider.AddEnv(constants.DatabasePassword, env.DatabasePassword)
-	memorydb.Provider.AddEnv(constants.Port, env.Port)
-	memorydb.Provider.AddEnv(constants.EncryptionKey, env.EncryptionKey)
-	memorydb.Provider.AddEnv(constants.JwtType, env.JwtType)
-	memorydb.Provider.AddEnv(constants.JwtSecret, env.JwtSecret)
-	memorydb.Provider.AddEnv(constants.JwtPrivateKey, env.JwtPrivateKey)
-	memorydb.Provider.AddEnv(constants.JwtPublicKey, env.JwtPublicKey)
-	memorydb.Provider.AddEnv(constants.ClientID, env.ClientID)
-	memorydb.Provider.AddEnv(constants.DefaultRoles, env.DefaultRoles)
-	memorydb.Provider.AddEnv(constants.Roles, env.Roles)
+	EncryptionKey := crypto.EncryptB64(env.EncryptionKey)
+	memorydb.Provider.AddEnv(constants.EncryptionKey, EncryptionKey)
+
+	DatabaseURL, _ := crypto.EncryptAES(env.DatabaseURL)
+	memorydb.Provider.AddEnv(constants.DatabaseURL, DatabaseURL)
+
+	DatabaseName, _ := crypto.EncryptAES(env.DatabaseName)
+	memorydb.Provider.AddEnv(constants.DatabaseName, DatabaseName)
+
+	DatabaseNameSpace, _ := crypto.EncryptAES(env.DatabaseNameSpace)
+	memorydb.Provider.AddEnv(constants.DatabaseNameSpace, DatabaseNameSpace)
+
+	DatabaseUsername, _ := crypto.EncryptAES(env.DatabaseUsername)
+	memorydb.Provider.AddEnv(constants.DatabaseUsername, DatabaseUsername)
+
+	DatabasePassword, _ := crypto.EncryptAES(env.DatabasePassword)
+	memorydb.Provider.AddEnv(constants.DatabasePassword, DatabasePassword)
+
+	Port, _ := crypto.EncryptAES(env.Port)
+	memorydb.Provider.AddEnv(constants.Port, Port)
+
+	JwtType, _ := crypto.EncryptAES(env.JwtType)
+	memorydb.Provider.AddEnv(constants.JwtType, JwtType)
+
+	JwtSecret, _ := crypto.EncryptAES(env.JwtSecret)
+	memorydb.Provider.AddEnv(constants.JwtSecret, JwtSecret)
+
+	JwtPrivateKey, _ := crypto.EncryptAES(env.JwtPrivateKey)
+	memorydb.Provider.AddEnv(constants.JwtPrivateKey, JwtPrivateKey)
+
+	JwtPublicKey, _ := crypto.EncryptAES(env.JwtPublicKey)
+	memorydb.Provider.AddEnv(constants.JwtPublicKey, JwtPublicKey)
+
+	ClientID, _ := crypto.EncryptAES(env.ClientID)
+	memorydb.Provider.AddEnv(constants.ClientID, ClientID)
+
+	DefaultRoles, _ := crypto.EncryptAES(env.DefaultRoles)
+	memorydb.Provider.AddEnv(constants.DefaultRoles, DefaultRoles)
+
+	Roles, _ := crypto.EncryptAES(env.Roles)
+	memorydb.Provider.AddEnv(constants.Roles, Roles)
 }

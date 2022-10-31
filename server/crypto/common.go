@@ -36,12 +36,24 @@ func GenerateJWKBasedOnEnv() (string, error) {
 	if err != nil {
 		return jwk, err
 	}
+	algo, err = DecryptAES(algo)
+	if err != nil {
+		return jwk, err
+	}
 	clientID, err := memorydb.Provider.GetEnvByKey(constants.ClientID)
+	if err != nil {
+		return jwk, err
+	}
+	clientID, err = DecryptAES(clientID)
 	if err != nil {
 		return jwk, err
 	}
 
 	jwtSecret, err := memorydb.Provider.GetEnvByKey(constants.JwtSecret)
+	if err != nil {
+		return jwk, err
+	}
+	jwtSecret, err = DecryptAES(jwtSecret)
 	if err != nil {
 		return jwk, err
 	}
@@ -55,6 +67,10 @@ func GenerateJWKBasedOnEnv() (string, error) {
 	}
 
 	jwtPublicKey, err := memorydb.Provider.GetEnvByKey(constants.JwtPublicKey)
+	if err != nil {
+		return jwk, err
+	}
+	jwtPublicKey, err = DecryptAES(jwtPublicKey)
 	if err != nil {
 		return jwk, err
 	}
@@ -73,6 +89,10 @@ func GenerateJWKBasedOnEnv() (string, error) {
 
 	if IsECDSA(algo) {
 		jwtPublicKey, err = memorydb.Provider.GetEnvByKey(constants.JwtPublicKey)
+		if err != nil {
+			return jwk, err
+		}
+		jwtPublicKey, err = DecryptAES(jwtPublicKey)
 		if err != nil {
 			return jwk, err
 		}
