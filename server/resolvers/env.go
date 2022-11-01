@@ -5,60 +5,47 @@ import (
 	"strings"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/crypto"
+	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 )
 
 func EnvResolver(ctx context.Context) (*model.Env, error) {
 	res := &model.Env{}
 
-	dbUrl, _ := memorydb.Provider.GetEnvByKey(constants.DatabaseURL)
-	dbUrl, _ = crypto.DecryptAES(dbUrl)
+	dbUrl, _ := env.GetEnvByKey(constants.DatabaseURL)
 	res.DatabaseURL = &dbUrl
 
-	dbName, _ := memorydb.Provider.GetEnvByKey(constants.DatabaseName)
-	dbName, _ = crypto.DecryptAES(dbName)
+	dbName, _ := env.GetEnvByKey(constants.DatabaseName)
 	res.DatabaseName = &dbName
 
-	dbNameSpace, _ := memorydb.Provider.GetEnvByKey(constants.DatabaseNameSpace)
-	dbNameSpace, _ = crypto.DecryptAES(dbNameSpace)
+	dbNameSpace, _ := env.GetEnvByKey(constants.DatabaseNameSpace)
 	res.DatabaseNamespace = &dbNameSpace
 
-	dbUserName, _ := memorydb.Provider.GetEnvByKey(constants.DatabaseUsername)
-	dbUserName, _ = crypto.DecryptAES(dbUserName)
+	dbUserName, _ := env.GetEnvByKey(constants.DatabaseUsername)
 	res.DatabaseUsername = &dbUserName
 
-	port, _ := memorydb.Provider.GetEnvByKey(constants.Port)
-	port, _ = crypto.DecryptAES(port)
+	port, _ := env.GetEnvByKey(constants.Port)
 	res.Port = &port
 
-	jwtType, _ := memorydb.Provider.GetEnvByKey(constants.JwtType)
-	jwtType, _ = crypto.DecryptAES(jwtType)
+	jwtType, _ := env.GetEnvByKey(constants.JwtType)
 	res.JwtType = &jwtType
 
-	jwtSecret, _ := memorydb.Provider.GetEnvByKey(constants.JwtSecret)
-	jwtSecret, _ = crypto.DecryptAES(jwtSecret)
+	jwtSecret, _ := env.GetEnvByKey(constants.JwtSecret)
 	res.JwtSecret = &jwtSecret
 
-	jwtPrivateKey, _ := memorydb.Provider.GetEnvByKey(constants.JwtPrivateKey)
-	jwtPrivateKey, _ = crypto.DecryptAES(jwtPrivateKey)
+	jwtPrivateKey, _ := env.GetEnvByKey(constants.JwtPrivateKey)
 	res.JwtPrivateKey = &jwtPrivateKey
 
-	jwtPublicKey, _ := memorydb.Provider.GetEnvByKey(constants.JwtPublicKey)
-	jwtPublicKey, _ = crypto.DecryptAES(jwtPublicKey)
+	jwtPublicKey, _ := env.GetEnvByKey(constants.JwtPublicKey)
 	res.JwtPublicKey = &jwtPublicKey
 
-	clientId, _ := memorydb.Provider.GetEnvByKey(constants.ClientID)
-	clientId, _ = crypto.DecryptAES(clientId)
+	clientId, _ := env.GetEnvByKey(constants.ClientID)
 	res.ClientID = &clientId
 
-	roles, _ := memorydb.Provider.GetEnvByKey(constants.Roles)
-	roles, _ = crypto.DecryptAES(roles)
+	roles, _ := env.GetEnvByKey(constants.Roles)
 	res.Roles = strings.Split(roles, ",")
 
-	defaultRoles, _ := memorydb.Provider.GetEnvByKey(constants.DefaultRoles)
-	defaultRoles, _ = crypto.DecryptAES(defaultRoles)
+	defaultRoles, _ := env.GetEnvByKey(constants.DefaultRoles)
 	res.DefaultRoles = strings.Split(defaultRoles, ",")
 
 	return res, nil
