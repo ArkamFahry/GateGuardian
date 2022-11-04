@@ -5,20 +5,32 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/ArkamFahry/GateGuardian/server/graph/generated"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
-	"github.com/ArkamFahry/GateGuardian/server/resolvers"
+	"github.com/ArkamFahry/GateGuardian/server/resolvers/mutations"
+	"github.com/ArkamFahry/GateGuardian/server/resolvers/queries"
 )
+
+// Signup is the resolver for the signup field.
+func (r *mutationResolver) Signup(ctx context.Context, params model.SignUpInput) (*model.AuthResponse, error) {
+	panic(fmt.Errorf("not implemented: Signup - signup"))
+}
 
 // UpdateEnv is the resolver for the _update_env field.
 func (r *mutationResolver) UpdateEnv(ctx context.Context, params model.UpdateEnvInput) (*model.Response, error) {
-	return resolvers.UpdateEnvResolver(ctx, params)
+	return mutations.UpdateEnvResolver(ctx, params)
+}
+
+// Profile is the resolver for the profile field.
+func (r *queryResolver) Profile(ctx context.Context) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: Profile - profile"))
 }
 
 // Env is the resolver for the _env field.
 func (r *queryResolver) Env(ctx context.Context) (*model.Env, error) {
-	return resolvers.EnvResolver(ctx)
+	return queries.EnvResolver(ctx)
 }
 
 // Mutation returns generated.MutationResolver implementation.

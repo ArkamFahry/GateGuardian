@@ -2,6 +2,16 @@
 
 package model
 
+type AuthResponse struct {
+	Message             string  `json:"message"`
+	ShouldShowOtpScreen *bool   `json:"should_show_otp_screen"`
+	AccessToken         *string `json:"access_token"`
+	IDToken             *string `json:"id_token"`
+	RefreshToken        *string `json:"refresh_token"`
+	ExpiresIn           *string `json:"expires_in"`
+	User                *User   `json:"user"`
+}
+
 type Env struct {
 	DatabaseURL       *string  `json:"DATABASE_URL"`
 	DatabaseName      *string  `json:"DATABASE_NAME"`
@@ -21,10 +31,50 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+type SignUpInput struct {
+	Email                    string   `json:"email"`
+	Password                 string   `json:"password"`
+	ConfirmPassword          string   `json:"confirm_password"`
+	UserName                 *string  `json:"user_name"`
+	FirstName                *string  `json:"first_name"`
+	MiddleName               *string  `json:"middle_name"`
+	LastName                 *string  `json:"last_name"`
+	Nickname                 *string  `json:"nickname"`
+	Gender                   *string  `json:"gender"`
+	BirthDate                *string  `json:"birth_date"`
+	PhoneNumber              *string  `json:"phone_number"`
+	Picture                  *string  `json:"picture"`
+	Roles                    []string `json:"roles"`
+	RedirectURI              *string  `json:"redirect_uri"`
+	IsMultiFactorAuthEnabled *bool    `json:"is_multi_factor_auth_enabled"`
+}
+
 type UpdateEnvInput struct {
 	JwtType      *string  `json:"JWT_TYPE"`
 	JwtSecret    *string  `json:"JWT_SECRET"`
 	ClientID     *string  `json:"CLIENT_ID"`
 	Roles        []string `json:"ROLES"`
 	DefaultRoles []string `json:"DEFAULT_ROLES"`
+}
+
+type User struct {
+	ID                       string   `json:"id"`
+	Email                    string   `json:"email"`
+	EmailVerified            bool     `json:"email_verified"`
+	SignupMethods            string   `json:"signup_methods"`
+	UserName                 *string  `json:"user_name"`
+	FirstName                *string  `json:"first_name"`
+	MiddleName               *string  `json:"middle_name"`
+	LastName                 *string  `json:"last_name"`
+	Nickname                 *string  `json:"nickname"`
+	Gender                   *string  `json:"gender"`
+	BirthDate                *string  `json:"birth_date"`
+	PhoneNumber              *string  `json:"phone_number"`
+	PhoneNumberVerified      *bool    `json:"phone_number_verified"`
+	Picture                  *string  `json:"picture"`
+	Roles                    []string `json:"roles"`
+	CreatedAt                *string  `json:"created_at"`
+	UpdatedAt                *string  `json:"updated_at"`
+	RevokedTimestamp         *string  `json:"revoked_timestamp"`
+	IsMultiFactorAuthEnabled *bool    `json:"is_multi_factor_auth_enabled"`
 }

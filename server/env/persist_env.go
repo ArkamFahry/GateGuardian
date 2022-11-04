@@ -10,6 +10,7 @@ func PersistEnv(env Env) {
 	EncryptionKey := crypto.EncryptB64(env.EncryptionKey)
 	memorydb.Provider.AddEnv(constants.EncryptionKey, EncryptionKey)
 
+	AddEnv(constants.DatabaseType, env.DatabaseType)
 	AddEnv(constants.DatabaseURL, env.DatabaseURL)
 	AddEnv(constants.DatabaseName, env.DatabaseName)
 	AddEnv(constants.DatabaseNameSpace, env.DatabaseNameSpace)
