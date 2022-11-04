@@ -15,7 +15,7 @@ import (
 
 // Signup is the resolver for the signup field.
 func (r *mutationResolver) Signup(ctx context.Context, params model.SignUpInput) (*model.AuthResponse, error) {
-	panic(fmt.Errorf("not implemented: Signup - signup"))
+	return mutations.SignupResolver(ctx, params)
 }
 
 // UpdateEnv is the resolver for the _update_env field.
