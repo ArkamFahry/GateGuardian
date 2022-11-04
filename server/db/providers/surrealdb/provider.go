@@ -8,7 +8,7 @@ import (
 )
 
 type provider struct {
-	maindb *surrealdb.DB
+	db *surrealdb.DB
 }
 
 func NewSurrealDbProvider() (*provider, error) {
@@ -55,6 +55,6 @@ func NewSurrealDbProvider() (*provider, error) {
 	}
 
 	return &provider{
-		maindb: surrealdb,
+		db: surrealdb,
 	}, err
 }
