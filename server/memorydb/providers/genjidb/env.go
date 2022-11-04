@@ -11,7 +11,7 @@ import (
 )
 
 func (p *provider) AddEnv(key string, data string) (string, error) {
-	err := p.memorydb.Exec(`INSERT INTO env (id, data, created_at) VALUES (?, ?, ?);`, key, data, time.Now().Unix())
+	err := p.memorydb.Exec(`INSERT INTO env (id, data, created_at, updated_at) VALUES (?, ?, ?, ?);`, key, data, time.Now().Unix(), time.Now().Unix())
 	if err != nil {
 		logrus.Debug("Failed to insert env: ", err)
 	}
@@ -37,6 +37,23 @@ func (p *provider) DeleteEnv(key string) error {
 	return err
 }
 
+func (p *provider) GetEnvByKey(key string) (string, error) {
+	var env string
+	res, err := p.memorydb.QueryDocument(`SELECT data FROM env WHERE id == ?;`, key)
+	if err != nil {
+		logrus.Debug("No such env present in db: ", err)
+	} else {
+		data, err := res.GetByField("data")
+		if err != nil {
+			logrus.Error("No Such Field: ", err)
+		}
+
+		env = strings.Trim(data.String(), `"`)
+	}
+
+	return env, err
+}
+
 func (p *provider) ListEnv() ([]models.Env, error) {
 	res, err := p.memorydb.Query(`SELECT * FROM env;`)
 	if err != nil {
@@ -59,21 +76,4 @@ func (p *provider) ListEnv() ([]models.Env, error) {
 		})
 
 	return envs, err
-}
-
-func (p *provider) GetEnvByKey(key string) (string, error) {
-	var env string
-	res, err := p.memorydb.QueryDocument(`SELECT data FROM env WHERE id == ?;`, key)
-	if err != nil {
-		logrus.Debug("No such env present in db: ", err)
-	} else {
-		data, err := res.GetByField("data")
-		if err != nil {
-			logrus.Error("No Such Field: ", err)
-		}
-
-		env = strings.Trim(data.String(), `"`)
-	}
-
-	return env, err
 }
