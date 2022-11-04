@@ -11,6 +11,7 @@ import (
 )
 
 type Env struct {
+	DatabaseType      string
 	DatabaseURL       string
 	DatabaseName      string
 	DatabaseNameSpace string
@@ -33,6 +34,7 @@ func GetEnv() {
 		logrus.Info("Failed to load .env file: ", err, "|switched to os env|")
 	}
 
+	dbType := os.Getenv(constants.DatabaseType)
 	dbUrl := os.Getenv(constants.DatabaseURL)
 	dbName := os.Getenv(constants.DatabaseName)
 	dbNameSpace := os.Getenv(constants.DatabaseNameSpace)
@@ -82,6 +84,7 @@ func GetEnv() {
 	}
 
 	env := Env{
+		DatabaseType:      dbType,
 		DatabaseURL:       dbUrl,
 		DatabaseName:      dbName,
 		DatabaseNameSpace: dbNameSpace,
