@@ -13,7 +13,7 @@ type provider struct {
 }
 
 func NewGenjiDbProvider() (*provider, error) {
-	genjidb, err := genji.Open("auth")
+	genjidb, err := genji.Open("../data")
 	if err != nil {
 		logrus.Fatal("GenjiDb failed to create a new inmemory instance: ", err)
 	}
@@ -24,6 +24,7 @@ func NewGenjiDbProvider() (*provider, error) {
 			id TEXT PRIMARY KEY, 
 			email TEXT UNIQUE, 
 			email_verified_at INTEGER,
+			password TEXT,
 			sign_up_method TEXT,
 			user_name TEXT,
 			first_name TEXT,
@@ -54,7 +55,7 @@ func NewGenjiDbProvider() (*provider, error) {
 			ip TEXT,
 			refresh_token TEXT,
 			created_at INTEGER,
-			updated_at INTEGER,
+			updated_at INTEGER
 		)`, models.Collections.Session)
 	err = genjidb.Exec(sessionCollectionQuery)
 	if err != nil {

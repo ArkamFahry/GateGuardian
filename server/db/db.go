@@ -21,10 +21,10 @@ func InitMainDB() error {
 	if isGenjiDb {
 		Provider, err = genjidb.NewGenjiDbProvider()
 		if err != nil {
-			logrus.Fatal("Failed Initializing surrealdb: ", err)
+			logrus.Fatal("Failed Initializing genjidb: ", err)
 			return err
 		} else {
-			logrus.Info("Surrealdb successfully initialized")
+			logrus.Info("Genjidb successfully initialized")
 		}
 	}
 
