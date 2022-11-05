@@ -36,9 +36,9 @@ type SignUpInput struct {
 	Password                 string   `json:"password"`
 	ConfirmPassword          string   `json:"confirm_password"`
 	UserName                 *string  `json:"user_name"`
-	FirstName                *string  `json:"first_name"`
+	FamilyName               *string  `json:"family_name"`
+	GivenName                *string  `json:"given_name"`
 	MiddleName               *string  `json:"middle_name"`
-	LastName                 *string  `json:"last_name"`
 	Nickname                 *string  `json:"nickname"`
 	Gender                   *string  `json:"gender"`
 	BirthDate                *string  `json:"birth_date"`
@@ -63,9 +63,9 @@ type User struct {
 	EmailVerified            bool     `json:"email_verified"`
 	SignupMethods            string   `json:"signup_methods"`
 	UserName                 *string  `json:"user_name"`
-	FirstName                *string  `json:"first_name"`
+	FamilyName               *string  `json:"family_name"`
+	GivenName                *string  `json:"given_name"`
 	MiddleName               *string  `json:"middle_name"`
-	LastName                 *string  `json:"last_name"`
 	Nickname                 *string  `json:"nickname"`
 	Gender                   *string  `json:"gender"`
 	BirthDate                *string  `json:"birth_date"`
