@@ -132,7 +132,7 @@ func (p *provider) ListUser() {
 func (p *provider) GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 	getUserByEmailQuery := fmt.Sprintf(`SELECT * FROM %s WHERE email == '%s'`, models.Collections.User, email)
-	err := p.db.QueryRow(getUserByEmailQuery).Scan(&user)
+	err := p.db.QueryRow(getUserByEmailQuery).Scan(&user.ID, &user.Email, &user.EmailVerifiedAt, &user.Password, &user.SignUpMethods, &user.UserName, &user.FamilyName, &user.GivenName, &user.MiddleName, &user.NickName, &user.Gender, &user.BirthDate, &user.PhoneNumber, &user.PhoneNumberVerifiedAt, &user.Picture, &user.Roles, &user.RevokedTimestamp, &user.IsMultiFactorAuthEnabled, &user.UpdatedAt, &user.CreatedAt, &user.LastLoggedIn)
 	if err != nil {
 		return user, err
 	}
@@ -142,7 +142,7 @@ func (p *provider) GetUserByEmail(email string) (models.User, error) {
 func (p *provider) GetUserByID(id string) (models.User, error) {
 	var user models.User
 	getUserByIdQuery := fmt.Sprintf(`SELECT * FROM %s WHERE id == '%s'`, models.Collections.User, id)
-	err := p.db.QueryRow(getUserByIdQuery).Scan(&user)
+	err := p.db.QueryRow(getUserByIdQuery).Scan(&user.ID, &user.Email, &user.EmailVerifiedAt, &user.Password, &user.SignUpMethods, &user.UserName, &user.FamilyName, &user.GivenName, &user.MiddleName, &user.NickName, &user.Gender, &user.BirthDate, &user.PhoneNumber, &user.PhoneNumberVerifiedAt, &user.Picture, &user.Roles, &user.RevokedTimestamp, &user.IsMultiFactorAuthEnabled, &user.UpdatedAt, &user.CreatedAt, &user.LastLoggedIn)
 	if err != nil {
 		return user, err
 	}
