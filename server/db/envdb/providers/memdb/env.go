@@ -8,7 +8,6 @@ import (
 )
 
 func (p *provider) AddEnv(key string, data string) (string, error) {
-	txn := p.db.Txn(true)
 
 	env := models.Env{
 		ID:        key,
@@ -16,6 +15,8 @@ func (p *provider) AddEnv(key string, data string) (string, error) {
 		CreatedAt: time.Now().Unix(),
 		UpdatedAt: time.Now().Unix(),
 	}
+
+	txn := p.db.Txn(true)
 
 	err := txn.Insert("env", env)
 	if err != nil {
@@ -28,13 +29,14 @@ func (p *provider) AddEnv(key string, data string) (string, error) {
 }
 
 func (p *provider) UpdateEnv(key string, data string) (string, error) {
-	txn := p.db.Txn(true)
 
 	env := models.Env{
 		ID:        key,
 		Data:      data,
 		UpdatedAt: time.Now().Unix(),
 	}
+
+	txn := p.db.Txn(true)
 
 	err := txn.Insert("env", env)
 	if err != nil {
@@ -47,11 +49,12 @@ func (p *provider) UpdateEnv(key string, data string) (string, error) {
 }
 
 func (p *provider) DeleteEnv(key string) error {
-	txn := p.db.Txn(true)
 
 	env := models.Env{
 		ID: key,
 	}
+
+	txn := p.db.Txn(true)
 
 	err := txn.Delete("env", env)
 	if err != nil {

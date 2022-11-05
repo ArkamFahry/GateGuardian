@@ -1,6 +1,5 @@
 package models
 
-// Tables available for GateGuardian in the database
 type CollectionList struct {
 	User                string
 	VerificationRequest string
@@ -15,9 +14,8 @@ type CollectionList struct {
 }
 
 var (
-	// Prefix for table name
 	Prefix = "gate_guardian_"
-	// Tables in the database
+
 	Collections = CollectionList{
 		User:                Prefix + "users",
 		VerificationRequest: Prefix + "verification_requests",

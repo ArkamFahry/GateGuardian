@@ -1,6 +1,5 @@
 package models
 
-// Session model for db
 type Session struct {
 	ID        string `json:"id" genji:"id"`
 	UserID    string `json:"user_id" genji:"user_id"`

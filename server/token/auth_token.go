@@ -7,6 +7,7 @@ import (
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/parsers"
 	"github.com/ArkamFahry/GateGuardian/server/utils"
@@ -117,7 +118,7 @@ func ValidateAccessToken(gc *gin.Context, accessToken string) (map[string]interf
 		sessionKey = loginMethod.(string) + ":" + userID
 	}
 
-	token, err := memorystore.Provider.GetUserSession(sessionKey, constants.TokenTypeAccessToken+"_"+nonce)
+	token, err := memorydb.Provider.GetSession(sessionKey)
 	if nonce == "" || err != nil {
 		return res, fmt.Errorf(`unauthorized`)
 	}
@@ -158,7 +159,7 @@ func ValidateRefreshToken(gc *gin.Context, refreshToken string) (map[string]inte
 		sessionKey = loginMethod.(string) + ":" + userID
 	}
 
-	token, err := memorystore.Provider.GetUserSession(sessionKey, constants.TokenTypeRefreshToken+"_"+nonce)
+	token, err := memorydb.Provider.GetSession(sessionKey)
 	if nonce == "" || err != nil {
 		return res, fmt.Errorf(`unauthorized`)
 	}

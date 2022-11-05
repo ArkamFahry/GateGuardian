@@ -93,6 +93,14 @@ func GetEnv() {
 		defaultRoles = "user"
 	}
 
+	if appURL == "" {
+		appURL = "*"
+	}
+
+	if gateGuardianURL == "" {
+		gateGuardianURL = "*"
+	}
+
 	env := Env{
 		DatabaseType:          dbType,
 		DatabaseURL:           dbUrl,

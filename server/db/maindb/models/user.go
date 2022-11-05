@@ -1,6 +1,5 @@
 package models
 
-// User model for db
 type User struct {
 	ID                       string  `json:"id" genji:"id"`
 	Email                    string  `json:"email" genji:"email"`
