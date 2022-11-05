@@ -22,8 +22,11 @@ func PersistEnv(env Env) {
 	AddEnv(constants.JwtPrivateKey, env.JwtPrivateKey)
 	AddEnv(constants.JwtPublicKey, env.JwtPublicKey)
 	AddEnv(constants.ClientID, env.ClientID)
+	AddEnv(constants.AccessTokenExpiryTime, env.AccessTokenExpiryTime)
 	AddEnv(constants.DefaultRoles, env.DefaultRoles)
 	AddEnv(constants.Roles, env.Roles)
+	AddEnv(constants.AppURL, env.AppURL)
+	AddEnv(constants.GateGuardianURL, env.GateGuardianURL)
 }
 
 func AddEnv(key string, data string) (string, error) {

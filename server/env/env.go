@@ -11,21 +11,24 @@ import (
 )
 
 type Env struct {
-	DatabaseType      string
-	DatabaseURL       string
-	DatabaseName      string
-	DatabaseNameSpace string
-	DatabaseUsername  string
-	DatabasePassword  string
-	Port              string
-	EncryptionKey     string
-	JwtType           string
-	JwtSecret         string
-	JwtPrivateKey     string
-	JwtPublicKey      string
-	ClientID          string
-	Roles             string
-	DefaultRoles      string
+	DatabaseType          string
+	DatabaseURL           string
+	DatabaseName          string
+	DatabaseNameSpace     string
+	DatabaseUsername      string
+	DatabasePassword      string
+	Port                  string
+	EncryptionKey         string
+	JwtType               string
+	JwtSecret             string
+	JwtPrivateKey         string
+	JwtPublicKey          string
+	ClientID              string
+	AccessTokenExpiryTime string
+	Roles                 string
+	DefaultRoles          string
+	AppURL                string
+	GateGuardianURL       string
 }
 
 func GetEnv() {
@@ -47,8 +50,11 @@ func GetEnv() {
 	jwtPrivateKey := os.Getenv(constants.JwtPrivateKey)
 	jwtPublicKey := os.Getenv(constants.JwtPublicKey)
 	clientID := os.Getenv(constants.ClientID)
+	accessTokenExpiryTime := os.Getenv(constants.AccessTokenExpiryTime)
 	roles := os.Getenv(constants.Roles)
 	defaultRoles := os.Getenv(constants.DefaultRoles)
+	appURL := os.Getenv(constants.AppURL)
+	gateGuardianURL := os.Getenv(constants.GateGuardianURL)
 
 	if port == "" {
 		port = "8080"
@@ -74,6 +80,10 @@ func GetEnv() {
 		}
 	}
 
+	if accessTokenExpiryTime == "" {
+		accessTokenExpiryTime = "15m"
+	}
+
 	if roles == "" {
 		roles = "user"
 		defaultRoles = "user"
@@ -84,21 +94,24 @@ func GetEnv() {
 	}
 
 	env := Env{
-		DatabaseType:      dbType,
-		DatabaseURL:       dbUrl,
-		DatabaseName:      dbName,
-		DatabaseNameSpace: dbNameSpace,
-		DatabaseUsername:  dbUserName,
-		DatabasePassword:  dbPassword,
-		Port:              port,
-		EncryptionKey:     encryptionKey,
-		JwtType:           jwtType,
-		JwtSecret:         jwtSecret,
-		JwtPrivateKey:     jwtPrivateKey,
-		JwtPublicKey:      jwtPublicKey,
-		ClientID:          clientID,
-		Roles:             roles,
-		DefaultRoles:      defaultRoles,
+		DatabaseType:          dbType,
+		DatabaseURL:           dbUrl,
+		DatabaseName:          dbName,
+		DatabaseNameSpace:     dbNameSpace,
+		DatabaseUsername:      dbUserName,
+		DatabasePassword:      dbPassword,
+		Port:                  port,
+		EncryptionKey:         encryptionKey,
+		JwtType:               jwtType,
+		JwtSecret:             jwtSecret,
+		JwtPrivateKey:         jwtPrivateKey,
+		JwtPublicKey:          jwtPublicKey,
+		AccessTokenExpiryTime: accessTokenExpiryTime,
+		ClientID:              clientID,
+		Roles:                 roles,
+		DefaultRoles:          defaultRoles,
+		AppURL:                appURL,
+		GateGuardianURL:       gateGuardianURL,
 	}
 
 	PersistEnv(env)
