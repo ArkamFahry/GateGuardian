@@ -23,6 +23,7 @@
     "objectdb",
     "objectstore",
     "otps",
+    "pebbledb",
     "privkey",
     "pubkey",
     "Signin",

@@ -43,7 +43,7 @@ func main() {
 
 	res, _ := memorydb.Provider.GetSession("basic_auth:uu1239800e03000")
 
-	fmt.Println(res)
+	fmt.Println("ses : ", res)
 
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)
