@@ -13,10 +13,10 @@ func InitMemoryDB() error {
 
 	Provider, err = pebbledb.NewPebbleDbProvider()
 	if err != nil {
-		logrus.Fatal("Failed Initializing pebbledb: ", err)
+		logrus.Fatal("Failed Initializing pebbledb memory store: ", err)
 		return err
 	} else {
-		logrus.Info("PebbleDb successfully initialized")
+		logrus.Info("PebbleDb memory store successfully initialized")
 	}
 
 	return nil

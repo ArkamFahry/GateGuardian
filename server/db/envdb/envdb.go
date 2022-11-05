@@ -13,10 +13,10 @@ func InitEnvDB() error {
 
 	Provider, err = pebbledb.NewPebbleDbProvider()
 	if err != nil {
-		logrus.Fatal("Failed Initializing pebbledb: ", err)
+		logrus.Fatal("Failed Initializing pebbledb env store: ", err)
 		return err
 	} else {
-		logrus.Info("PebbleDb successfully initialized")
+		logrus.Info("PebbleDb env store successfully initialized")
 	}
 
 	return nil
