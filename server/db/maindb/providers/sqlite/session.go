@@ -1,4 +1,4 @@
-package genjidb
+package sqlite
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ func (p *provider) AddSession(session models.Session) error {
 	session.UpdatedAt = time.Now().Unix()
 
 	insertSessionQuery := fmt.Sprintf("INSERT INTO %s (id, user_id, user_agent, ip, created_at, updated_at) VALUES ('%s', '%s', '%s', '%s', %d, %d)", models.Collections.Session, session.ID, session.UserID, session.UserAgent, session.IP, session.CreatedAt, session.UpdatedAt)
-	err := p.db.Exec(insertSessionQuery)
+	_, err := p.db.Exec(insertSessionQuery)
 	if err != nil {
 		return err
 	}

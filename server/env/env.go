@@ -56,6 +56,10 @@ func GetEnv() {
 	appURL := os.Getenv(constants.AppURL)
 	gateGuardianURL := os.Getenv(constants.GateGuardianURL)
 
+	if dbType == "" {
+		dbType = "sqlite"
+	}
+
 	if port == "" {
 		port = "8080"
 	}

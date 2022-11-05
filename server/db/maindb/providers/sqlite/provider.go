@@ -1,24 +1,24 @@
-package genjidb
+package sqlite
 
 import (
+	"database/sql"
 	"fmt"
 
 	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
-	"github.com/genjidb/genji"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/sirupsen/logrus"
 )
 
 type provider struct {
-	db *genji.DB
+	db *sql.DB
 }
 
-func NewGenjiDbProvider() (*provider, error) {
-	genjidb, err := genji.Open("../data")
+func NewSqliteProvider() (*provider, error) {
+	sqlite, err := sql.Open("sqlite3", "../data.db")
 	if err != nil {
-		logrus.Fatal("GenjiDb failed to create a new inmemory instance: ", err)
+		logrus.Fatal("Sqlite failed to create a new instance: ", err)
 	}
 
-	// GenjiDb creates a new user collection
 	userCollectionQuery := fmt.Sprintf(
 		`CREATE TABLE IF NOT EXISTS %s (
 			id TEXT PRIMARY KEY, 
@@ -43,9 +43,9 @@ func NewGenjiDbProvider() (*provider, error) {
 			created_at INTEGER,
 			last_logged_in INTEGER
 		)`, models.Collections.User)
-	err = genjidb.Exec(userCollectionQuery)
+	_, err = sqlite.Exec(userCollectionQuery)
 	if err != nil {
-		logrus.Fatal("GenjiDb Failed to create table users: ", err)
+		logrus.Fatal("Sqlite Failed to create table users: ", err)
 	}
 
 	sessionCollectionQuery := fmt.Sprintf(
@@ -56,12 +56,12 @@ func NewGenjiDbProvider() (*provider, error) {
 			created_at INTEGER,
 			updated_at INTEGER
 		)`, models.Collections.Session)
-	err = genjidb.Exec(sessionCollectionQuery)
+	_, err = sqlite.Exec(sessionCollectionQuery)
 	if err != nil {
-		logrus.Fatal("GenjiDb Failed to create table session: ", err)
+		logrus.Fatal("Sqlite Failed to create table session: ", err)
 	}
 
 	return &provider{
-		db: genjidb,
+		db: sqlite,
 	}, err
 }

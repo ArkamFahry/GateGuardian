@@ -1,4 +1,4 @@
-package genjidb
+package sqlite
 
 import (
 	"encoding/json"
@@ -10,7 +10,6 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
 	"github.com/ArkamFahry/GateGuardian/server/env"
-	"github.com/genjidb/genji/document"
 	"github.com/google/uuid"
 )
 
@@ -64,7 +63,7 @@ func (p *provider) AddUser(user models.User) (models.User, error) {
 	values = values[:len(values)-1] + ")"
 
 	insertUserQuery := fmt.Sprintf(`INSERT INTO %s %s VALUES %s`, models.Collections.User, fields, values)
-	err = p.db.Exec(insertUserQuery)
+	_, err = p.db.Exec(insertUserQuery)
 	if err != nil {
 		return user, err
 	}
@@ -114,7 +113,7 @@ func (p *provider) UpdateUser(user models.User) (models.User, error) {
 	updateFields = strings.TrimSuffix(updateFields, ",")
 
 	updateUserQuery := fmt.Sprintf("UPDATE %s SET %s WHERE id = '%s'", models.Collections.User, updateFields, user.ID)
-	err = p.db.Exec(updateUserQuery)
+	_, err = p.db.Exec(updateUserQuery)
 	if err != nil {
 		return user, err
 	}
@@ -133,23 +132,20 @@ func (p *provider) ListUser() {
 func (p *provider) GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 	getUserByEmailQuery := fmt.Sprintf(`SELECT * FROM %s WHERE email == '%s'`, models.Collections.User, email)
-	res, err := p.db.QueryDocument(getUserByEmailQuery)
+	err := p.db.QueryRow(getUserByEmailQuery).Scan(&user)
 	if err != nil {
 		return user, err
 	}
-	document.StructScan(res, &user)
-
 	return user, nil
 }
 
 func (p *provider) GetUserByID(id string) (models.User, error) {
 	var user models.User
 	getUserByIdQuery := fmt.Sprintf(`SELECT * FROM %s WHERE id == '%s'`, models.Collections.User, id)
-	res, err := p.db.QueryDocument(getUserByIdQuery)
+	err := p.db.QueryRow(getUserByIdQuery).Scan(&user)
 	if err != nil {
 		return user, err
 	}
-	document.StructScan(res, &user)
 
 	return user, nil
 }

@@ -39,11 +39,9 @@ func main() {
 		logrus.Fatalln("Error while initializing maindb: ", err)
 	}
 
-	memorydb.Provider.SetSession("basic_auth:uu1239800e03000", "session")
+	res, _ := maindb.Provider.GetUserByEmail("arkam@gmail.com")
 
-	res, _ := memorydb.Provider.GetSession("basic_auth:uu1239800e03000")
-
-	fmt.Println("ses : ", res)
+	fmt.Println(res)
 
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)

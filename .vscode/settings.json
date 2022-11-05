@@ -16,6 +16,7 @@
     "joho",
     "logrus",
     "maindb",
+    "mattn",
     "memorydb",
     "memorystore",
     "middlewares",

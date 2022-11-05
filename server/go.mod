@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/99designs/gqlgen v0.17.20
 	github.com/cockroachdb/pebble v0.0.0-20221104214247-8dc60b62ebbf
-	github.com/genjidb/genji v0.15.1
+	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/vektah/gqlparser/v2 v2.5.1
 	golang.org/x/crypto v0.1.0
 )
@@ -14,7 +14,6 @@ require (
 	github.com/DataDog/zstd v1.4.5 // indirect
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20211118104740-dabe8e521a4f // indirect
@@ -29,6 +28,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
+	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.11.13 // indirect
@@ -48,6 +48,7 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
+	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	github.com/urfave/cli/v2 v2.8.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
@@ -69,7 +70,6 @@ require (
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/joho/godotenv v1.4.0
 	github.com/sirupsen/logrus v1.9.0
-	github.com/surrealdb/surrealdb.go v0.1.1
 	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0
 )
