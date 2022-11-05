@@ -6,7 +6,7 @@ import (
 )
 
 type provider struct {
-	memorydb *memdb.MemDB
+	db *memdb.MemDB
 }
 
 func NewMemDbProvider() (*provider, error) {
@@ -40,12 +40,12 @@ func NewMemDbProvider() (*provider, error) {
 		},
 	}
 
-	db, err := memdb.NewMemDB(schema)
+	memdb, err := memdb.NewMemDB(schema)
 	if err != nil {
 		logrus.Fatal("memdb failed to create a new inmemory instance: ", err)
 	}
 
 	return &provider{
-		memorydb: db,
+		db: memdb,
 	}, err
 }

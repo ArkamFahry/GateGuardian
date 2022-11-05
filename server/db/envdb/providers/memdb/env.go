@@ -8,7 +8,7 @@ import (
 )
 
 func (p *provider) AddEnv(key string, data string) (string, error) {
-	txn := p.memorydb.Txn(true)
+	txn := p.db.Txn(true)
 
 	env := models.Env{
 		ID:        key,
@@ -28,7 +28,7 @@ func (p *provider) AddEnv(key string, data string) (string, error) {
 }
 
 func (p *provider) UpdateEnv(key string, data string) (string, error) {
-	txn := p.memorydb.Txn(true)
+	txn := p.db.Txn(true)
 
 	env := models.Env{
 		ID:        key,
@@ -47,7 +47,7 @@ func (p *provider) UpdateEnv(key string, data string) (string, error) {
 }
 
 func (p *provider) DeleteEnv(key string) error {
-	txn := p.memorydb.Txn(true)
+	txn := p.db.Txn(true)
 
 	env := models.Env{
 		ID: key,
@@ -64,7 +64,7 @@ func (p *provider) DeleteEnv(key string) error {
 }
 
 func (p *provider) GetEnvByKey(key string) (string, error) {
-	txn := p.memorydb.Txn(false)
+	txn := p.db.Txn(false)
 
 	raw, err := txn.First("env", "id", key)
 	if err != nil {
@@ -80,7 +80,7 @@ func (p *provider) ListEnv() ([]models.Env, error) {
 	var envs []models.Env
 	var env models.Env
 
-	txn := p.memorydb.Txn(false)
+	txn := p.db.Txn(false)
 
 	raw, err := txn.Get("env", "id")
 	if err != nil {
