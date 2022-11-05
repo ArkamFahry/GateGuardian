@@ -8,9 +8,9 @@ type User struct {
 	Password                 *string `json:"password" genji:"password"`
 	SignUpMethods            string  `json:"sign_up_method" genji:"sign_up_method"`
 	UserName                 *string `json:"user_name" genji:"user_name"`
-	FirstName                *string `json:"first_name" genji:"first_name"`
+	FamilyName               *string `json:"family_name" genji:"family_name"`
+	GivenName                *string `json:"given_name" genji:"given_name"`
 	MiddleName               *string `json:"middle_name" genji:"middle_name"`
-	LastName                 *string `json:"last_name" genji:"last_name"`
 	NickName                 *string `json:"nick_name" genji:"nick_name"`
 	Gender                   *string `json:"gender" genji:"gender"`
 	BirthDate                *string `json:"birth_date" genji:"birth_date"`

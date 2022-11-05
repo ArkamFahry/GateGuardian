@@ -88,16 +88,16 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 		user.UserName = params.UserName
 	}
 
-	if params.FirstName != nil {
-		user.FirstName = params.FirstName
+	if params.FamilyName != nil {
+		user.FamilyName = params.FamilyName
+	}
+
+	if params.GivenName != nil {
+		user.GivenName = params.GivenName
 	}
 
 	if params.MiddleName != nil {
 		user.MiddleName = params.MiddleName
-	}
-
-	if params.LastName != nil {
-		user.LastName = params.LastName
 	}
 
 	if params.Nickname != nil {
@@ -133,7 +133,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 	}
 
 	res = &model.AuthResponse{
-		Message: "good",
+		Message: `Signed up successfully.`,
 	}
 
 	return res, nil

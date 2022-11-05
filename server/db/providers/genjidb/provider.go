@@ -27,9 +27,9 @@ func NewGenjiDbProvider() (*provider, error) {
 			password TEXT,
 			sign_up_method TEXT,
 			user_name TEXT,
-			first_name TEXT,
+			family_name TEXT,
+			given_name TEXT,
 			middle_name TEXT,
-			last_name TEXT,
 			nick_name TEXT,
 			gender TEXT,
 			birth_date TEXT,
@@ -53,7 +53,6 @@ func NewGenjiDbProvider() (*provider, error) {
 			id TEXT PRIMARY KEY,
 			user_id TEXT UNIQUE,
 			ip TEXT,
-			refresh_token TEXT,
 			created_at INTEGER,
 			updated_at INTEGER
 		)`, models.Collections.Session)
