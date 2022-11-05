@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/parsers"
 	"github.com/ArkamFahry/GateGuardian/server/utils"

@@ -5,13 +5,13 @@ import (
 	"crypto/cipher"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb"
+	"github.com/ArkamFahry/GateGuardian/server/db/envdb"
 )
 
 var bytes = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 0o5}
 
 func EncryptAES(text string) (string, error) {
-	k, err := memorydb.Provider.GetEnvByKey(constants.EncryptionKey)
+	k, err := envdb.Provider.GetEnvByKey(constants.EncryptionKey)
 	if err != nil {
 		return "", err
 	}
@@ -32,7 +32,7 @@ func EncryptAES(text string) (string, error) {
 }
 
 func DecryptAES(text string) (string, error) {
-	k, err := memorydb.Provider.GetEnvByKey(constants.EncryptionKey)
+	k, err := envdb.Provider.GetEnvByKey(constants.EncryptionKey)
 	if err != nil {
 		return "", err
 	}

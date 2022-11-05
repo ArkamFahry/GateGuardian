@@ -3,7 +3,7 @@ package memdb
 import (
 	"time"
 
-	"github.com/ArkamFahry/GateGuardian/server/memorydb/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/envdb/models"
 	"github.com/sirupsen/logrus"
 )
 

@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
 )
 
 type Provider interface {

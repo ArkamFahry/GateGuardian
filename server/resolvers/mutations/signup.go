@@ -7,8 +7,8 @@ import (
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
-	"github.com/ArkamFahry/GateGuardian/server/db"
-	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
 	"github.com/ArkamFahry/GateGuardian/server/validators"
@@ -35,7 +35,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 
 	params.Email = strings.ToLower(params.Email)
 
-	existingUser, err := db.Provider.GetUserByEmail(params.Email)
+	existingUser, err := maindb.Provider.GetUserByEmail(params.Email)
 	if err == nil {
 		logrus.Debug("Failed to get user by email: ", err)
 	}
@@ -126,7 +126,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 
 	user.SignUpMethods = constants.AuthRecipeMethodBasicAuth
 
-	user, err = db.Provider.AddUser(user)
+	user, err = maindb.Provider.AddUser(user)
 	if err != nil {
 		logrus.Debug("Failed to add user: ", err)
 		return res, err

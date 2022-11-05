@@ -1,14 +1,14 @@
-package memorydb
+package envdb
 
 import (
-	"github.com/ArkamFahry/GateGuardian/server/memorydb/providers"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb/providers/memdb"
+	"github.com/ArkamFahry/GateGuardian/server/db/envdb/providers"
+	"github.com/ArkamFahry/GateGuardian/server/db/envdb/providers/memdb"
 	"github.com/sirupsen/logrus"
 )
 
 var Provider providers.Provider
 
-func InitMemoryDB() error {
+func InitEnvDB() error {
 	var err error
 
 	Provider, err = memdb.NewMemDbProvider()

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
 	"github.com/google/uuid"
 )
 

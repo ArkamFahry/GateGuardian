@@ -1,6 +1,6 @@
 package providers
 
-import "github.com/ArkamFahry/GateGuardian/server/memorydb/models"
+import "github.com/ArkamFahry/GateGuardian/server/db/envdb/models"
 
 type Provider interface {
 	// Env provider interfaces

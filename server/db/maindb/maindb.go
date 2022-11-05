@@ -1,9 +1,9 @@
-package db
+package maindb
 
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/db/providers"
-	"github.com/ArkamFahry/GateGuardian/server/db/providers/genjidb"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb/providers"
+	"github.com/ArkamFahry/GateGuardian/server/db/maindb/providers/genjidb"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/sirupsen/logrus"
 )

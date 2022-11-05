@@ -2,7 +2,7 @@ package surrealdb
 
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb"
+	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/sirupsen/logrus"
 	"github.com/surrealdb/surrealdb.go"
 )
@@ -12,7 +12,7 @@ type provider struct {
 }
 
 func NewSurrealDbProvider() (*provider, error) {
-	dbUrl, err := memorydb.Provider.GetEnvByKey(constants.DatabaseURL)
+	dbUrl, err := env.GetEnvByKey(constants.DatabaseURL)
 	if err != nil {
 		logrus.Fatal("Couldn't load dbUrl from cache: ", err)
 	}
@@ -23,11 +23,11 @@ func NewSurrealDbProvider() (*provider, error) {
 		return nil, err
 	}
 
-	dbUserName, err := memorydb.Provider.GetEnvByKey(constants.DatabaseUsername)
+	dbUserName, err := env.GetEnvByKey(constants.DatabaseUsername)
 	if err != nil {
 		logrus.Fatal("Couldn't load dbUserName from cache: ", err)
 	}
-	dbPassword, _ := memorydb.Provider.GetEnvByKey(constants.DatabasePassword)
+	dbPassword, _ := env.GetEnvByKey(constants.DatabasePassword)
 	if err != nil {
 		logrus.Fatal("Couldn't load dbPassword from cache: ", err)
 	}
@@ -40,11 +40,11 @@ func NewSurrealDbProvider() (*provider, error) {
 		logrus.Fatal("Failed to sign in to surrealdb with username and password: ", err)
 	}
 
-	dbName, err := memorydb.Provider.GetEnvByKey(constants.DatabaseName)
+	dbName, err := env.GetEnvByKey(constants.DatabaseName)
 	if err != nil {
 		logrus.Fatal("Couldn't load dbName from cache: ", err)
 	}
-	dbNameSpace, err := memorydb.Provider.GetEnvByKey(constants.DatabaseNameSpace)
+	dbNameSpace, err := env.GetEnvByKey(constants.DatabaseNameSpace)
 	if err != nil {
 		logrus.Fatal("Couldn't load dbNameSpace from cache: ", err)
 	}

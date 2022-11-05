@@ -4,7 +4,7 @@ import (
 	"crypto/x509"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb"
+	"github.com/ArkamFahry/GateGuardian/server/db/envdb"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/square/go-jose.v2"
 )
@@ -32,15 +32,14 @@ func GetPubJWK(algo, keyID string, publicKey interface{}) (string, error) {
 
 func GenerateJWKBasedOnEnv() (string, error) {
 	jwk := ""
-	algo, err := memorydb.Provider.GetEnvByKey(constants.JwtType)
+	algo, err := envdb.Provider.GetEnvByKey(constants.JwtType)
 	if err != nil {
 		return jwk, err
 	}
-	algo, err = DecryptAES(algo)
 	if err != nil {
 		return jwk, err
 	}
-	clientID, err := memorydb.Provider.GetEnvByKey(constants.ClientID)
+	clientID, err := envdb.Provider.GetEnvByKey(constants.ClientID)
 	if err != nil {
 		return jwk, err
 	}
@@ -49,7 +48,7 @@ func GenerateJWKBasedOnEnv() (string, error) {
 		return jwk, err
 	}
 
-	jwtSecret, err := memorydb.Provider.GetEnvByKey(constants.JwtSecret)
+	jwtSecret, err := envdb.Provider.GetEnvByKey(constants.JwtSecret)
 	if err != nil {
 		return jwk, err
 	}
@@ -66,7 +65,7 @@ func GenerateJWKBasedOnEnv() (string, error) {
 		}
 	}
 
-	jwtPublicKey, err := memorydb.Provider.GetEnvByKey(constants.JwtPublicKey)
+	jwtPublicKey, err := envdb.Provider.GetEnvByKey(constants.JwtPublicKey)
 	if err != nil {
 		return jwk, err
 	}
@@ -88,7 +87,7 @@ func GenerateJWKBasedOnEnv() (string, error) {
 	}
 
 	if IsECDSA(algo) {
-		jwtPublicKey, err = memorydb.Provider.GetEnvByKey(constants.JwtPublicKey)
+		jwtPublicKey, err = envdb.Provider.GetEnvByKey(constants.JwtPublicKey)
 		if err != nil {
 			return jwk, err
 		}

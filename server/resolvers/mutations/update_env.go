@@ -9,7 +9,6 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/validators"
 	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
@@ -58,8 +57,8 @@ func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model
 	}
 
 	if isJwtUpdated {
-		algo, _ := memorydb.Provider.GetEnvByKey(constants.JwtType)
-		clientId, _ := memorydb.Provider.GetEnvByKey(constants.ClientID)
+		algo, _ := env.GetEnvByKey(constants.JwtType)
+		clientId, _ := env.GetEnvByKey(constants.ClientID)
 		if crypto.IsRSA(algo) {
 			_, jwtPrivateKey, jwtPublicKey, _, _ := crypto.NewRSAKey(algo, clientId)
 			env.UpdateEnv(constants.JwtPrivateKey, jwtPrivateKey)

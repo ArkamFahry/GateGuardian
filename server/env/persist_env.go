@@ -3,12 +3,12 @@ package env
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
-	"github.com/ArkamFahry/GateGuardian/server/memorydb"
+	"github.com/ArkamFahry/GateGuardian/server/db/envdb"
 )
 
 func PersistEnv(env Env) {
 	EncryptionKey := crypto.EncryptB64(env.EncryptionKey)
-	memorydb.Provider.AddEnv(constants.EncryptionKey, EncryptionKey)
+	envdb.Provider.AddEnv(constants.EncryptionKey, EncryptionKey)
 
 	AddEnv(constants.DatabaseType, env.DatabaseType)
 	AddEnv(constants.DatabaseURL, env.DatabaseURL)
@@ -34,13 +34,13 @@ func AddEnv(key string, data string) (string, error) {
 	if err != nil {
 		return env, err
 	}
-	env, err = memorydb.Provider.AddEnv(key, env)
+	env, err = envdb.Provider.AddEnv(key, env)
 
 	return env, err
 }
 
 func GetEnvByKey(key string) (string, error) {
-	env, err := memorydb.Provider.GetEnvByKey(key)
+	env, err := envdb.Provider.GetEnvByKey(key)
 	if err != nil {
 		return env, err
 	}
@@ -54,7 +54,7 @@ func UpdateEnv(key string, data string) (string, error) {
 	if err != nil {
 		return env, err
 	}
-	env, err = memorydb.Provider.UpdateEnv(key, env)
+	env, err = envdb.Provider.UpdateEnv(key, env)
 
 	return env, err
 }
