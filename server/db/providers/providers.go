@@ -7,10 +7,13 @@ import (
 type Provider interface {
 	// User provider interfaces
 	AddUser(user models.User) (models.User, error)
-	UpdateUser()
+	UpdateUser(user models.User) (models.User, error)
 	DeleteUser()
 	ListUser()
 	GetUserByEmail(email string) (models.User, error)
-	GetUserByID()
+	GetUserByID(id string) (models.User, error)
 	UpdateUsers()
+
+	// Session provider interface
+	AddSession(session models.Session) error
 }

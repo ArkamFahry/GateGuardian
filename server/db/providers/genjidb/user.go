@@ -63,8 +63,8 @@ func (p *provider) AddUser(user models.User) (models.User, error) {
 	fields = fields[:len(fields)-1] + ")"
 	values = values[:len(values)-1] + ")"
 
-	query := fmt.Sprintf(`INSERT INTO %s %s VALUES %s`, models.Collections.User, fields, values)
-	err = p.db.Exec(query)
+	insertUserQuery := fmt.Sprintf(`INSERT INTO %s %s VALUES %s`, models.Collections.User, fields, values)
+	err = p.db.Exec(insertUserQuery)
 	if err != nil {
 		return user, err
 	}
@@ -72,8 +72,54 @@ func (p *provider) AddUser(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func (p *provider) UpdateUser() {
+func (p *provider) UpdateUser(user models.User) (models.User, error) {
+	user.UpdatedAt = time.Now().Unix()
 
+	bytes, err := json.Marshal(user)
+	if err != nil {
+		return user, err
+	}
+	// use decoder instead of json.Unmarshall, because it converts int64 -> float64 after unmarshalling
+	decoder := json.NewDecoder(strings.NewReader(string(bytes)))
+	decoder.UseNumber()
+	userMap := map[string]interface{}{}
+	err = decoder.Decode(&userMap)
+	if err != nil {
+		return user, err
+	}
+
+	updateFields := ""
+	for key, value := range userMap {
+		if key == "_id" {
+			continue
+		}
+
+		if key == "_key" {
+			continue
+		}
+
+		if value == nil {
+			updateFields += fmt.Sprintf("%s = null, ", key)
+			continue
+		}
+
+		valueType := reflect.TypeOf(value)
+		if valueType.Name() == "string" {
+			updateFields += fmt.Sprintf("%s = '%s', ", key, value.(string))
+		} else {
+			updateFields += fmt.Sprintf("%s = %v, ", key, value)
+		}
+	}
+	updateFields = strings.Trim(updateFields, " ")
+	updateFields = strings.TrimSuffix(updateFields, ",")
+
+	updateUserQuery := fmt.Sprintf("UPDATE %s SET %s WHERE id = '%s'", models.Collections.User, updateFields, user.ID)
+	err = p.db.Exec(updateUserQuery)
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
 
 func (p *provider) DeleteUser() {
@@ -86,8 +132,8 @@ func (p *provider) ListUser() {
 
 func (p *provider) GetUserByEmail(email string) (models.User, error) {
 	var user models.User
-	query := fmt.Sprintf(`SELECT * FROM %s WHERE email == '%s'`, models.Collections.User, email)
-	res, err := p.db.QueryDocument(query)
+	getUserByEmailQuery := fmt.Sprintf(`SELECT * FROM %s WHERE email == '%s'`, models.Collections.User, email)
+	res, err := p.db.QueryDocument(getUserByEmailQuery)
 	if err != nil {
 		return user, err
 	}
@@ -96,8 +142,16 @@ func (p *provider) GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func (p *provider) GetUserByID() {
+func (p *provider) GetUserByID(id string) (models.User, error) {
+	var user models.User
+	getUserByIdQuery := fmt.Sprintf(`SELECT * FROM %s WHERE id == '%s'`, models.Collections.User, id)
+	res, err := p.db.QueryDocument(getUserByIdQuery)
+	if err != nil {
+		return user, err
+	}
+	document.StructScan(res, &user)
 
+	return user, nil
 }
 
 func (p *provider) UpdateUsers() {
