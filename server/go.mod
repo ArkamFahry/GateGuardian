@@ -7,7 +7,7 @@ require (
 	github.com/genjidb/genji v0.15.1
 	github.com/hashicorp/go-memdb v1.3.4
 	github.com/vektah/gqlparser/v2 v2.5.1
-	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
+	golang.org/x/crypto v0.1.0
 )
 
 require (
@@ -29,7 +29,7 @@ require (
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
-	github.com/hashicorp/go-immutable-radix v1.3.0 // indirect
+	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
@@ -48,11 +48,12 @@ require (
 	github.com/urfave/cli/v2 v2.8.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/exp v0.0.0-20200513190911-00229845015e // indirect
-	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
-	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
-	golang.org/x/text v0.3.7 // indirect
-	golang.org/x/tools v0.1.12 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	golang.org/x/mod v0.6.0 // indirect
+	golang.org/x/net v0.1.0 // indirect
+	golang.org/x/sync v0.1.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/tools v0.2.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
@@ -65,6 +66,6 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/surrealdb/surrealdb.go v0.1.1
-	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0
 )
