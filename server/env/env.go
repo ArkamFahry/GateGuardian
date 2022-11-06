@@ -11,24 +11,26 @@ import (
 )
 
 type Env struct {
-	DatabaseType          string
-	DatabaseURL           string
-	DatabaseName          string
-	DatabaseNameSpace     string
-	DatabaseUsername      string
-	DatabasePassword      string
-	Port                  string
-	EncryptionKey         string
-	JwtType               string
-	JwtSecret             string
-	JwtPrivateKey         string
-	JwtPublicKey          string
-	ClientID              string
-	AccessTokenExpiryTime string
-	Roles                 string
-	DefaultRoles          string
-	AppURL                string
-	GateGuardianURL       string
+	DatabaseType            string
+	DatabaseURL             string
+	DatabaseName            string
+	DatabaseNameSpace       string
+	DatabaseUsername        string
+	DatabasePassword        string
+	Port                    string
+	EncryptionKey           string
+	JwtType                 string
+	JwtSecret               string
+	JwtPrivateKey           string
+	JwtPublicKey            string
+	JwtRoleClaim            string
+	ClientID                string
+	AccessTokenExpiryTime   string
+	CustomAccessTokenScript string
+	Roles                   string
+	DefaultRoles            string
+	AppURL                  string
+	GateGuardianURL         string
 }
 
 func GetEnv() {
@@ -49,8 +51,10 @@ func GetEnv() {
 	jwtSecret := os.Getenv(constants.JwtSecret)
 	jwtPrivateKey := os.Getenv(constants.JwtPrivateKey)
 	jwtPublicKey := os.Getenv(constants.JwtPublicKey)
+	jwtRoleClaim := os.Getenv(constants.JwtRoleClaim)
 	clientID := os.Getenv(constants.ClientID)
 	accessTokenExpiryTime := os.Getenv(constants.AccessTokenExpiryTime)
+	customAccessTokenScript := os.Getenv(constants.CustomAccessTokenScript)
 	roles := os.Getenv(constants.Roles)
 	defaultRoles := os.Getenv(constants.DefaultRoles)
 	appURL := os.Getenv(constants.AppURL)
@@ -84,6 +88,10 @@ func GetEnv() {
 		}
 	}
 
+	if jwtRoleClaim == "" {
+		jwtRoleClaim = "role"
+	}
+
 	if accessTokenExpiryTime == "" {
 		accessTokenExpiryTime = "15m"
 	}
@@ -106,24 +114,26 @@ func GetEnv() {
 	}
 
 	env := Env{
-		DatabaseType:          dbType,
-		DatabaseURL:           dbUrl,
-		DatabaseName:          dbName,
-		DatabaseNameSpace:     dbNameSpace,
-		DatabaseUsername:      dbUserName,
-		DatabasePassword:      dbPassword,
-		Port:                  port,
-		EncryptionKey:         encryptionKey,
-		JwtType:               jwtType,
-		JwtSecret:             jwtSecret,
-		JwtPrivateKey:         jwtPrivateKey,
-		JwtPublicKey:          jwtPublicKey,
-		AccessTokenExpiryTime: accessTokenExpiryTime,
-		ClientID:              clientID,
-		Roles:                 roles,
-		DefaultRoles:          defaultRoles,
-		AppURL:                appURL,
-		GateGuardianURL:       gateGuardianURL,
+		DatabaseType:            dbType,
+		DatabaseURL:             dbUrl,
+		DatabaseName:            dbName,
+		DatabaseNameSpace:       dbNameSpace,
+		DatabaseUsername:        dbUserName,
+		DatabasePassword:        dbPassword,
+		Port:                    port,
+		EncryptionKey:           encryptionKey,
+		JwtType:                 jwtType,
+		JwtSecret:               jwtSecret,
+		JwtPrivateKey:           jwtPrivateKey,
+		JwtPublicKey:            jwtPublicKey,
+		JwtRoleClaim:            jwtRoleClaim,
+		AccessTokenExpiryTime:   accessTokenExpiryTime,
+		CustomAccessTokenScript: customAccessTokenScript,
+		ClientID:                clientID,
+		Roles:                   roles,
+		DefaultRoles:            defaultRoles,
+		AppURL:                  appURL,
+		GateGuardianURL:         gateGuardianURL,
 	}
 
 	PersistEnv(env)

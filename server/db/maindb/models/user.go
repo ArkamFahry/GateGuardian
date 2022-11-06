@@ -28,7 +28,6 @@ type User struct {
 	IsMultiFactorAuthEnabled *bool   `json:"is_multi_factor_auth_enabled"`
 	CreatedAt                int64   `json:"created_at"`
 	UpdatedAt                int64   `json:"updated_at"`
-	LastLoggedIn             int64   `json:"last_logged_in"`
 }
 
 func (user *User) AsAPIUser() *model.User {

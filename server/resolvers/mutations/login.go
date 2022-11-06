@@ -13,7 +13,6 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
 	"github.com/ArkamFahry/GateGuardian/server/token"
 	"github.com/ArkamFahry/GateGuardian/server/utils"
-	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -55,7 +54,7 @@ func LoginResolver(ctx context.Context, params model.LoginInput) (*model.AuthRes
 	scope := []string{"email", "profile"}
 	authToken, err := token.CreateAuthTokens(gc, user, roles, scope, constants.AuthRecipeMethodBasicAuth)
 	if err != nil {
-		logrus.Debug("Failed to create auth tokens: ", err)
+		log.Debug("Failed to create auth tokens: ", err)
 		return res, err
 	}
 
@@ -67,7 +66,7 @@ func LoginResolver(ctx context.Context, params model.LoginInput) (*model.AuthRes
 	sessionKey := constants.AuthRecipeMethodBasicAuth + ":" + user.ID
 	refreshTokenHash, err := crypto.EncryptPassword(authToken.RefreshToken.Token)
 	if err != nil {
-		logrus.Debug("Failed to hash refresh tokens: ", err)
+		log.Debug("Failed to hash refresh tokens: ", err)
 		return res, err
 	}
 	memorydb.Provider.SetSession(ctx, sessionKey, refreshTokenHash)
@@ -77,6 +76,7 @@ func LoginResolver(ctx context.Context, params model.LoginInput) (*model.AuthRes
 		AccessToken:  &authToken.AccessToken.Token,
 		ExpiresIn:    &expiresIn,
 		RefreshToken: &authToken.RefreshToken.Token,
+		IDToken:      &authToken.IdToken.Token,
 		User:         user.AsAPIUser(),
 	}
 

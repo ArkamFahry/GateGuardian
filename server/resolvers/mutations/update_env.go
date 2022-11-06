@@ -11,14 +11,14 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
 	"github.com/ArkamFahry/GateGuardian/server/validators"
 	"github.com/google/uuid"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model.Response, error) {
 	var res *model.Response
 
 	if params.JwtType == nil && params.JwtSecret == nil && params.ClientID == nil && params.Roles == nil && params.DefaultRoles == nil {
-		logrus.Debug("No params to update")
+		log.Debug("No params to update")
 		return res, fmt.Errorf("please enter at least one param to update")
 	}
 
@@ -27,7 +27,7 @@ func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model
 	if params.JwtType != nil {
 		algo := *params.JwtType
 		if !crypto.IsHMACA(algo) && !crypto.IsECDSA(algo) && !crypto.IsRSA(algo) {
-			logrus.Debug("Invalid JWT type: ", algo)
+			log.Debug("Invalid JWT type: ", algo)
 			return res, fmt.Errorf("invalid jwt type")
 		}
 
@@ -40,7 +40,7 @@ func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model
 
 	if params.JwtSecret != nil {
 		if err := validators.IsValidJwtSecret(*params.JwtSecret); err != nil {
-			logrus.Debug("Invalid Jwt Secret")
+			log.Debug("Invalid Jwt Secret")
 			return res, fmt.Errorf("jwt secret is not valid. It needs to be at least 32 characters long and needs contain number, uppercase letter, lowercase letter and special character")
 		} else {
 			env.UpdateEnv(constants.JwtSecret, *params.JwtSecret)

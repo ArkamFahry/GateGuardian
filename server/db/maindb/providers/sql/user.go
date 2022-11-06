@@ -22,7 +22,6 @@ func (p *provider) AddUser(ctx context.Context, user models.User) (models.User, 
 
 	user.CreatedAt = time.Now().Unix()
 	user.UpdatedAt = time.Now().Unix()
-	user.LastLoggedIn = time.Now().Unix()
 
 	result := p.db.Create(&user)
 	if result.Error != nil {

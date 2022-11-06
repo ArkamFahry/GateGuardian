@@ -13,7 +13,6 @@ import (
 
 var timeFormat = "02/Jan/2006:15:04:05 -0700"
 
-// Logger is the logrus logger which handler logs info on routes
 func Logger(logger logrus.FieldLogger, notLogged ...string) gin.HandlerFunc {
 	hostname, err := os.Hostname()
 	if err != nil {
@@ -31,7 +30,6 @@ func Logger(logger logrus.FieldLogger, notLogged ...string) gin.HandlerFunc {
 	}
 
 	return func(c *gin.Context) {
-		// other handler can change c.Path so:
 		path := c.Request.URL.Path
 		start := time.Now()
 		c.Next()
@@ -53,7 +51,7 @@ func Logger(logger logrus.FieldLogger, notLogged ...string) gin.HandlerFunc {
 		entry := logger.WithFields(logrus.Fields{
 			"hostname":   hostname,
 			"statusCode": statusCode,
-			"latency":    latency, // time to process
+			"latency":    latency,
 			"clientIP":   clientIP,
 			"method":     c.Request.Method,
 			"path":       path,
