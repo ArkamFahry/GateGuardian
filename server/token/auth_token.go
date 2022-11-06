@@ -13,34 +13,38 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 )
 
-func CreateRefreshToken(user models.User, roles, scopes []string, hostname, nonce, loginMethod string) (string, int64, error) {
-	expiryBound := time.Hour * 8760
-	expiresAt := time.Now().Add(expiryBound).Unix()
-	clientID, err := env.GetEnvByKey(constants.ClientID)
+type JwtToken struct {
+	Token     string `json:"token"`
+	ExpiresAt int64  `json:"expires_at"`
+}
+
+type Token struct {
+	AccessToken  *JwtToken `json:"access_token"`
+	RefreshToken *JwtToken `json:"refresh_token"`
+}
+
+func CreateAuthTokens(gc *gin.Context, user models.User, roles, scopes []string, loginMethod string) (*Token, error) {
+	hostName := parsers.GetHost(gc)
+	nonce := uuid.New().String()
+
+	accessToken, accessTokenExpiresAt, err := CreateAccessToken(user, roles, scopes, hostName, nonce, loginMethod)
 	if err != nil {
-		return "", 0, err
+		return nil, err
 	}
-	customClaims := jwt.MapClaims{
-		"iss":          hostname,
-		"aud":          clientID,
-		"sub":          user.ID,
-		"exp":          expiresAt,
-		"iat":          time.Now().Unix(),
-		"token_type":   constants.TokenTypeRefreshToken,
-		"roles":        roles,
-		"scope":        scopes,
-		"nonce":        nonce,
-		"login_method": loginMethod,
+	refreshToken, refreshTokenExpiresAt, err := CreateRefreshToken(user, roles, scopes, hostName, nonce, loginMethod)
+	if err != nil {
+		return nil, err
 	}
 
-	token, err := SignJWTToken(customClaims)
-	if err != nil {
-		return "", 0, err
+	res := &Token{
+		AccessToken:  &JwtToken{Token: accessToken, ExpiresAt: accessTokenExpiresAt},
+		RefreshToken: &JwtToken{Token: refreshToken, ExpiresAt: refreshTokenExpiresAt},
 	}
 
-	return token, expiresAt, nil
+	return res, nil
 }
 
 func CreateAccessToken(user models.User, roles, scopes []string, hostName, nonce, loginMethod string) (string, int64, error) {
@@ -50,7 +54,7 @@ func CreateAccessToken(user models.User, roles, scopes []string, hostName, nonce
 	}
 	expiryBound, err := utils.ParseDurationInSeconds(expireTime)
 	if err != nil {
-		expiryBound = time.Minute * 30
+		expiryBound = time.Minute * 15
 	}
 
 	expiresAt := time.Now().Add(expiryBound).Unix()
@@ -68,6 +72,34 @@ func CreateAccessToken(user models.User, roles, scopes []string, hostName, nonce
 		"token_type":   constants.TokenTypeAccessToken,
 		"scope":        scopes,
 		"roles":        roles,
+		"login_method": loginMethod,
+	}
+
+	token, err := SignJWTToken(customClaims)
+	if err != nil {
+		return "", 0, err
+	}
+
+	return token, expiresAt, nil
+}
+
+func CreateRefreshToken(user models.User, roles, scopes []string, hostName, nonce, loginMethod string) (string, int64, error) {
+	expiryBound := time.Hour * 168
+	expiresAt := time.Now().Add(expiryBound).Unix()
+	clientID, err := env.GetEnvByKey(constants.ClientID)
+	if err != nil {
+		return "", 0, err
+	}
+	customClaims := jwt.MapClaims{
+		"iss":          hostName,
+		"aud":          clientID,
+		"sub":          user.ID,
+		"exp":          expiresAt,
+		"iat":          time.Now().Unix(),
+		"token_type":   constants.TokenTypeRefreshToken,
+		"roles":        roles,
+		"scope":        scopes,
+		"nonce":        nonce,
 		"login_method": loginMethod,
 	}
 
