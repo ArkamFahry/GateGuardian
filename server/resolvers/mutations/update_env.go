@@ -73,6 +73,10 @@ func UpdateEnvResolver(ctx context.Context, params model.UpdateEnvInput) (*model
 	if params.Roles != nil {
 		if len(params.Roles) > 0 {
 			env.UpdateEnv(constants.Roles, strings.Join(params.Roles, ","))
+			defaultRoles, _ := env.GetEnvByKey(constants.DefaultRoles)
+			if !validators.IsValidRoles(strings.Split(defaultRoles, ","), params.Roles) {
+				env.UpdateEnv(constants.DefaultRoles, strings.Join(params.Roles, ","))
+			}
 		}
 	}
 
