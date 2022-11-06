@@ -4,19 +4,29 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
 	"github.com/ArkamFahry/GateGuardian/server/db/maindb"
 	"github.com/ArkamFahry/GateGuardian/server/db/maindb/models"
+	"github.com/ArkamFahry/GateGuardian/server/db/memorydb"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/graph/model"
+	"github.com/ArkamFahry/GateGuardian/server/token"
+	"github.com/ArkamFahry/GateGuardian/server/utils"
 	"github.com/ArkamFahry/GateGuardian/server/validators"
 	"github.com/sirupsen/logrus"
 )
 
 func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthResponse, error) {
 	var res *model.AuthResponse
+
+	gc, err := utils.GinContextFromContext(ctx)
+	if err != nil {
+		logrus.Debug("Failed to get GinContext: ", err)
+		return res, err
+	}
 
 	if params.ConfirmPassword != params.Password {
 		logrus.Debug("Passwords do not match")
@@ -49,7 +59,6 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 	}
 
 	var roles []string
-	var inputRoles []string
 
 	if len(params.Roles) > 0 {
 		rolesString, err := env.GetEnvByKey(constants.Roles)
@@ -63,15 +72,15 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 			logrus.Debug("Invalid roles: ", params.Roles)
 			return res, fmt.Errorf(`invalid roles`)
 		} else {
-			inputRoles = params.Roles
+			roles = params.Roles
 		}
 	} else {
-		inputRolesString, err := env.GetEnvByKey(constants.Roles)
+		inputRolesString, err := env.GetEnvByKey(constants.DefaultRoles)
 		if err != nil {
 			logrus.Debug("Error getting default roles: ", err)
 			return res, err
 		} else {
-			inputRoles = strings.Split(inputRolesString, ",")
+			roles = strings.Split(inputRolesString, ",")
 		}
 	}
 
@@ -79,7 +88,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 		Email: params.Email,
 	}
 
-	user.Roles = strings.Join(inputRoles, ",")
+	user.Roles = strings.Join(roles, ",")
 
 	password, _ := crypto.EncryptPassword(params.Password)
 	user.Password = &password
@@ -132,8 +141,35 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 		return res, err
 	}
 
+	userToReturn := user.AsAPIUser()
+
+	scope := []string{"email", "profile"}
+
+	authToken, err := token.CreateAuthTokens(gc, user, roles, scope, constants.AuthRecipeMethodBasicAuth)
+	if err != nil {
+		logrus.Debug("Failed to create auth tokens: ", err)
+		return res, err
+	}
+
+	expiresIn := authToken.AccessToken.ExpiresAt - time.Now().Unix()
+	if expiresIn <= 0 {
+		expiresIn = 1
+	}
+
+	sessionKey := constants.AuthRecipeMethodBasicAuth + ":" + user.ID
+	refreshTokenHash, err := crypto.EncryptPassword(authToken.RefreshToken.Token)
+	if err != nil {
+		logrus.Debug("Failed to hash refresh tokens: ", err)
+		return res, err
+	}
+	memorydb.Provider.SetSession(sessionKey, refreshTokenHash)
+
 	res = &model.AuthResponse{
-		Message: `Signed up successfully.`,
+		Message:      `Signed up successfully.`,
+		AccessToken:  &authToken.AccessToken.Token,
+		ExpiresIn:    &expiresIn,
+		RefreshToken: &authToken.RefreshToken.Token,
+		User:         userToReturn,
 	}
 
 	return res, nil
