@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "Arkam",
+    "cockroachdb",
     "edsa",
     "envdb",
     "Fahry",
@@ -8,6 +9,7 @@
     "genjidb",
     "godotenv",
     "gofiber",
+    "gorm",
     "gqlgen",
     "gqlparser",
     "HMACA",
@@ -25,14 +27,17 @@
     "objectstore",
     "otps",
     "pebbledb",
+    "planetscale",
     "privkey",
     "pubkey",
     "Signin",
     "signup",
     "sirupsen",
+    "sqlserver",
     "surrealdb",
     "Unmarshall",
     "unmarshalling",
-    "vektah"
+    "vektah",
+    "yugabyte"
   ]
 }
