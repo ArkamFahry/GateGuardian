@@ -45,7 +45,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 
 	params.Email = strings.ToLower(params.Email)
 
-	existingUser, err := maindb.Provider.GetUserByEmail(params.Email)
+	existingUser, err := maindb.Provider.GetUserByEmail(ctx, params.Email)
 	if err == nil {
 		logrus.Debug("Failed to get user by email: ", err)
 	}
@@ -135,7 +135,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 
 	user.SignUpMethods = constants.AuthRecipeMethodBasicAuth
 
-	user, err = maindb.Provider.AddUser(user)
+	user, err = maindb.Provider.AddUser(ctx, user)
 	if err != nil {
 		logrus.Debug("Failed to add user: ", err)
 		return res, err
@@ -162,7 +162,7 @@ func SignupResolver(ctx context.Context, params model.SignUpInput) (*model.AuthR
 		logrus.Debug("Failed to hash refresh tokens: ", err)
 		return res, err
 	}
-	memorydb.Provider.SetSession(sessionKey, refreshTokenHash)
+	memorydb.Provider.SetSession(ctx, sessionKey, refreshTokenHash)
 
 	res = &model.AuthResponse{
 		Message:      `Signed up successfully.`,

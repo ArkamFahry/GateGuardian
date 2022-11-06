@@ -1,8 +1,10 @@
 package providers
 
+import "context"
+
 type Provider interface {
-	SetSession(key string, value string) (string, error)
-	GetSession(key string) (string, error)
-	UpdateSession(key string, value string) (string, error)
-	DeleteSession(key string) error
+	SetSession(ctx context.Context, key string, value string) (string, error)
+	GetSession(ctx context.Context, key string) (string, error)
+	UpdateSession(ctx context.Context, key string, value string) (string, error)
+	DeleteSession(ctx context.Context, key string) error
 }

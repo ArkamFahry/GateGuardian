@@ -150,7 +150,7 @@ func ValidateAccessToken(gc *gin.Context, accessToken string) (map[string]interf
 		sessionKey = loginMethod.(string) + ":" + userID
 	}
 
-	token, err := memorydb.Provider.GetSession(sessionKey)
+	token, err := memorydb.Provider.GetSession(gc, sessionKey)
 	if nonce == "" || err != nil {
 		return res, fmt.Errorf(`unauthorized`)
 	}
@@ -191,7 +191,7 @@ func ValidateRefreshToken(gc *gin.Context, refreshToken string) (map[string]inte
 		sessionKey = loginMethod.(string) + ":" + userID
 	}
 
-	token, err := memorydb.Provider.GetSession(sessionKey)
+	token, err := memorydb.Provider.GetSession(gc, sessionKey)
 	if nonce == "" || err != nil {
 		return res, fmt.Errorf(`unauthorized`)
 	}
