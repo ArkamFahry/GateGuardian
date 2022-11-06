@@ -8,7 +8,7 @@ type AuthResponse struct {
 	AccessToken         *string `json:"access_token"`
 	IDToken             *string `json:"id_token"`
 	RefreshToken        *string `json:"refresh_token"`
-	ExpiresIn           *string `json:"expires_in"`
+	ExpiresIn           *int64  `json:"expires_in"`
 	User                *User   `json:"user"`
 }
 
@@ -73,8 +73,8 @@ type User struct {
 	PhoneNumberVerified      *bool    `json:"phone_number_verified"`
 	Picture                  *string  `json:"picture"`
 	Roles                    []string `json:"roles"`
-	CreatedAt                *string  `json:"created_at"`
-	UpdatedAt                *string  `json:"updated_at"`
-	RevokedTimestamp         *string  `json:"revoked_timestamp"`
+	CreatedAt                *int64   `json:"created_at"`
+	UpdatedAt                *int64   `json:"updated_at"`
+	RevokedTimestamp         *int64   `json:"revoked_timestamp"`
 	IsMultiFactorAuthEnabled *bool    `json:"is_multi_factor_auth_enabled"`
 }
