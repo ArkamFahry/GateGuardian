@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db/envdb"
 	"github.com/ArkamFahry/GateGuardian/server/db/maindb"
@@ -38,10 +36,6 @@ func main() {
 	if err != nil {
 		logrus.Fatalln("Error while initializing maindb: ", err)
 	}
-
-	res, _ := maindb.Provider.GetUserByEmail("arkam@gmail.com")
-
-	fmt.Println(res)
 
 	router := routes.InitRouter(logrus.New())
 	logrus.Info("Starting GateGuardian: ", VERSION)

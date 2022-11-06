@@ -1,5 +1,13 @@
 package constants
 
 const (
-	DbTypeSqlite = "sqlite"
+	DbTypeSqlite        = "sqlite"
+	DbTypeCockroachDB   = "cockroachdb"
+	DbTypePlanetScaleDB = "planetscale"
+	DbTypeYugabyte      = "yugabyte"
+	DbTypeMariaDB       = "mariadb"
+	DbTypeMysql         = "mysql"
+	DbTypeSqlserver     = "sqlserver"
+	DbTypePostgres      = "postgres"
+	DbTypeMongodb       = "mongodb"
 )
