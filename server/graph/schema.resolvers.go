@@ -18,6 +18,11 @@ func (r *mutationResolver) Signup(ctx context.Context, params model.SignUpInput)
 	return mutations.SignupResolver(ctx, params)
 }
 
+// Login is the resolver for the login field.
+func (r *mutationResolver) Login(ctx context.Context, params model.LoginInput) (*model.AuthResponse, error) {
+	return mutations.LoginResolver(ctx, params)
+}
+
 // UpdateEnv is the resolver for the _update_env field.
 func (r *mutationResolver) UpdateEnv(ctx context.Context, params model.UpdateEnvInput) (*model.Response, error) {
 	return mutations.UpdateEnvResolver(ctx, params)

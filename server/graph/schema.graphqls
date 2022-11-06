@@ -22,32 +22,6 @@ type Env {
   DEFAULT_ROLES: [String!]
 }
 
-input UpdateEnvInput {
-  JWT_TYPE: String
-  JWT_SECRET: String
-  CLIENT_ID: String
-  ROLES: [String!]
-  DEFAULT_ROLES: [String!]
-}
-
-input SignUpInput {
-  email: String!
-  password: String!
-  confirm_password: String!
-  user_name: String
-  family_name: String
-  given_name: String
-  middle_name: String
-  nickname: String
-  gender: String
-  birth_date: String
-  phone_number: String
-  picture: String
-  roles: [String!]
-  redirect_uri: String
-  is_multi_factor_auth_enabled: Boolean
-}
-
 type AuthResponse {
   message: String!
   should_show_otp_screen: Boolean
@@ -80,6 +54,39 @@ type User {
   is_multi_factor_auth_enabled: Boolean
 }
 
+input UpdateEnvInput {
+  JWT_TYPE: String
+  JWT_SECRET: String
+  CLIENT_ID: String
+  ROLES: [String!]
+  DEFAULT_ROLES: [String!]
+}
+
+input SignUpInput {
+  email: String!
+  password: String!
+  confirm_password: String!
+  user_name: String
+  family_name: String
+  given_name: String
+  middle_name: String
+  nickname: String
+  gender: String
+  birth_date: String
+  phone_number: String
+  picture: String
+  roles: [String!]
+  redirect_uri: String
+  is_multi_factor_auth_enabled: Boolean
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+  roles: [String!]
+  scope: [String!]
+}
+
 type Query {
   profile: User!
   # admin only query
@@ -88,6 +95,7 @@ type Query {
 
 type Mutation {
   signup(params: SignUpInput!): AuthResponse!
+  login(params: LoginInput!): AuthResponse!
   # admin only mutation
   _update_env(params: UpdateEnvInput!): Response!
 }

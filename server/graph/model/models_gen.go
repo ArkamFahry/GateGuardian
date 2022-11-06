@@ -27,6 +27,13 @@ type Env struct {
 	DefaultRoles      []string `json:"DEFAULT_ROLES"`
 }
 
+type LoginInput struct {
+	Email    string   `json:"email"`
+	Password string   `json:"password"`
+	Roles    []string `json:"roles"`
+	Scope    []string `json:"scope"`
+}
+
 type Response struct {
 	Message string `json:"message"`
 }
