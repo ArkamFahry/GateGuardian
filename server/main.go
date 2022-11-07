@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
 	"github.com/gofiber/fiber/v2"
@@ -15,6 +16,8 @@ func main() {
 		log.Debug("Failed to initialize env store instance: ", err)
 	}
 
+	env.GetEnv()
+
 	err = sessionstore.InitSessionStore()
 	if err != nil {
 		log.Debug("Failed to initialize session store instance: ", err)
@@ -26,5 +29,5 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":" + "3100"))
 }
