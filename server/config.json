@@ -1,0 +1,11 @@
+{
+    "DB" : {
+        "type": "",
+        "url": "",
+        "name": "",
+        "name_space": "",
+        "key_space": "",
+        "user_name": "",
+        "password": ""
+    } 
+}
