@@ -12,14 +12,35 @@ import (
 
 var VERSION string
 
+type LogUTCFormatter struct {
+	logrus.Formatter
+}
+
+func (u LogUTCFormatter) Format(e *logrus.Entry) ([]byte, error) {
+	e.Time = e.Time.UTC()
+	return u.Formatter.Format(e)
+}
+
 func main() {
 
 	constants.VERSION = VERSION
 
+	logrus.SetFormatter(LogUTCFormatter{&logrus.JSONFormatter{}})
+
+	log := logrus.New()
+	log.SetFormatter(LogUTCFormatter{&logrus.JSONFormatter{}})
+
+	logLevel := logrus.InfoLevel
+
+	logrus.SetLevel(logLevel)
+
+	// set log level for go-gin middleware
+	log.SetLevel(logLevel)
+
 	// initialize envdb provider
 	err := envdb.InitEnvDB()
 	if err != nil {
-		logrus.Fatalln("Error while initializing envdb: ", err)
+		log.Fatal("Error while initializing envdb: ", err)
 	}
 
 	// get envs and persists envs to cache
@@ -28,24 +49,24 @@ func main() {
 	// initialize memorydb provider
 	err = memorydb.InitMemoryDB()
 	if err != nil {
-		logrus.Fatalln("Error while initializing memorydb: ", err)
+		log.Fatal("Error while initializing memorydb: ", err)
 	}
 
 	// initialize maindb provider
 	err = maindb.InitMainDB()
 	if err != nil {
-		logrus.Fatalln("Error while initializing maindb: ", err)
+		log.Fatal("Error while initializing maindb: ", err)
 	}
 
-	router := routes.InitRouter(logrus.New())
-	logrus.Info("Starting GateGuardian: ", VERSION)
+	router := routes.InitRouter(log)
+	log.Info("Starting GateGuardian: ", VERSION)
 	port, err := env.GetEnvByKey(constants.Port)
 	if err != nil {
-		logrus.Error("Error getting port from env: ", err)
+		log.Error("Error getting port from env: ", err)
 		port = "3000"
-		logrus.Info("Switching to default port: ", port)
+		log.Info("Switching to default port: ", port)
 	}
-	logrus.Info("GateGuardian running at PORT: ", port)
+	log.Info("GateGuardian running at PORT: ", port)
 
 	router.Run(":" + port)
 }

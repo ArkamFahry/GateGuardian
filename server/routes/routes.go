@@ -8,6 +8,7 @@ import (
 )
 
 func InitRouter(log *logrus.Logger) *gin.Engine {
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 
 	router.Use(middlewares.Logger(log), gin.Recovery())
