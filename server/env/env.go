@@ -5,46 +5,27 @@ import (
 )
 
 type Envs struct {
-	Environment string
-	App         struct {
-		Port string
-	}
-	Db struct {
-		Type      string
-		Url       string
-		Port      string
-		Host      string
-		Name      string
-		NameSpace string
-		KeySpace  string
-		UserName  string
-		Password  string
-		Cert      string
-	}
-	Jwt struct {
-		Secret string
-	}
-	Role struct {
-		Roles          string
-		DefaultRoles   string
-		ProtectedRoles string
-	}
+	PORT    string
+	DB_TYPE string
+	DB_URL  string
 }
 
 func GetEnv() error {
 	var envs Envs
 
-	viper.SetConfigName("config")
+	viper.SetConfigName("app")
 
 	viper.AddConfigPath(".")
 
 	viper.AutomaticEnv()
 
-	viper.SetConfigType("json")
+	viper.SetConfigType("env")
 
 	viper.ReadInConfig()
 
 	viper.Unmarshal(&envs)
+
+	PersistEnv(envs)
 
 	return nil
 }

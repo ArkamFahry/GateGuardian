@@ -5,6 +5,7 @@
     "envstore",
     "Fahry",
     "gofiber",
+    "gorm",
     "logrus",
     "memorystore",
     "pebbledb",

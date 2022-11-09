@@ -10,7 +10,7 @@ type provider struct {
 	db *pebble.DB
 }
 
-func NewPebbleDbProvider() (*provider, error) {
+func NewProvider() (*provider, error) {
 	properties := pebble.Options{}
 
 	properties.FS = vfs.NewMem()
