@@ -5,6 +5,7 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
+	"github.com/ArkamFahry/GateGuardian/server/routes"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 )
@@ -31,9 +32,8 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	routes.Health(app.Group("/health"))
+	routes.Auth(app.Group("/auth"))
 
 	log.Fatal(app.Listen(":" + "3100"))
 }
