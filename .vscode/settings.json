@@ -11,6 +11,7 @@
     "pebbledb",
     "sessionstore",
     "signup",
-    "sirupsen"
+    "sirupsen",
+    "Sqlserver"
   ]
 }

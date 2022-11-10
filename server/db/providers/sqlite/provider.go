@@ -24,8 +24,36 @@ func NewProvider() (*provider, error) {
 		return nil, err
 	}
 
-	createUsersCollectionQuery := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s (id TEXT PRIMARY KEY, email TEXT UNIQUE, password TEXT, given_name TEXT, family_name TEXT, middle_name TEXT, nick_name TEXT, gender TEXT, created_at INTEGER, updated_at INTEGER)`, models.Models.User)
-	_, err = sqlite.Exec(createUsersCollectionQuery)
+	createUsersCollection := fmt.Sprintf(`
+	CREATE TABLE IF NOT EXISTS %s (
+		id TEXT PRIMARY KEY, 
+		email TEXT UNIQUE, 
+		password TEXT, 
+		given_name TEXT, 
+		family_name TEXT, 
+		middle_name TEXT, 
+		nick_name TEXT, 
+		gender TEXT, 
+		birth_date TEXT,
+		picture TEXT,
+		created_at INTEGER, 
+		updated_at INTEGER
+	)`, models.Model.User)
+	_, err = sqlite.Exec(createUsersCollection)
+	if err != nil {
+		return nil, err
+	}
+
+	createSessionsCollection := fmt.Sprintf(`
+	CREATE TABLE IF NOT EXISTS %s (
+		id TEXT PRIMARY KEY, 
+		user_id TEXT,
+		user_agent TEXT,
+		ip TEXT,
+		created_at INTEGER, 
+		updated_at INTEGER
+	)`, models.Model.Session)
+	_, err = sqlite.Exec(createSessionsCollection)
 	if err != nil {
 		return nil, err
 	}

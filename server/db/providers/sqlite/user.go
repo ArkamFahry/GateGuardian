@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Inserts a user into the database
 func (p *provider) AddUser(ctx context.Context, user models.User) (models.User, error) {
 
 	if user.Id == "" {
@@ -56,12 +57,13 @@ func (p *provider) AddUser(ctx context.Context, user models.User) (models.User, 
 	fields = fields[:len(fields)-1] + ")"
 	values = values[:len(values)-1] + ")"
 
-	insertUserQuery := fmt.Sprintf(`INSERT INTO %s %s Values %s`, models.Models.User, fields, values)
-	p.db.Exec(insertUserQuery)
+	query := fmt.Sprintf(`INSERT INTO %s %s VALUES %s`, models.Model.User, fields, values)
+	p.db.Exec(query)
 
 	return user, nil
 }
 
+// Updates a user by id and before the update omits the null value in the model and selectively updates only the felids that are not null
 func (p *provider) UpdateUser(ctx context.Context, user models.User) (models.User, error) {
 	user.UpdatedAt = time.Now().Unix()
 
@@ -103,9 +105,9 @@ func (p *provider) UpdateUser(ctx context.Context, user models.User) (models.Use
 	updateFields = strings.Trim(updateFields, " ")
 	updateFields = strings.TrimSuffix(updateFields, ",")
 
-	queryUpdateUser := fmt.Sprintf("UPDATE %s SET %s WHERE id = '%s'", models.Models.User, updateFields, user.Id)
+	query := fmt.Sprintf(`UPDATE %s SET %s WHERE id = '%s'`, models.Model.User, updateFields, user.Id)
 
-	_, err = p.db.Exec(queryUpdateUser)
+	_, err = p.db.Exec(query)
 	if err != nil {
 		return user, err
 	}
@@ -113,24 +115,32 @@ func (p *provider) UpdateUser(ctx context.Context, user models.User) (models.Use
 	return user, nil
 }
 
+// Deletes a user by id
 func (p *provider) DeleteUser(ctx context.Context, user models.User) error {
+	query := fmt.Sprintf(`DELETE FROM %s WHERE id = '%s'`, models.Model.User, user.Id)
+
+	_, err := p.db.Exec(query)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
 
-func (p *provider) ListUsers(ctx context.Context) ([]models.User, error) {
+// Gets a list of users
+func (p *provider) ListUsers(ctx context.Context, pagination models.Pagination) ([]models.User, error) {
 	var users []models.User
 	var user models.User
 
-	getUsersQuery := fmt.Sprintf(`SELECT * FROM %s`, models.Models.User)
+	query := fmt.Sprintf(`SELECT * FROM %s LIMIT %d OFFSET %d`, models.Model.User, pagination.Limit, pagination.Offset)
 
-	rows, err := p.db.Query(getUsersQuery)
+	rows, err := p.db.Query(query)
 	if err != nil {
 		return users, err
 	}
 
 	for rows.Next() {
-		rows.Scan(&user.Id, &user.Email, &user.Password, &user.GivenName, &user.FamilyName, &user.MiddleName, &user.NickName, &user.Gender, &user.CreatedAt, &user.UpdatedAt)
+		rows.Scan(&user.Id, &user.Email, &user.Password, &user.GivenName, &user.FamilyName, &user.MiddleName, &user.NickName, &user.Gender, &user.BirthDate, &user.Picture, &user.CreatedAt, &user.UpdatedAt)
 
 		users = append(users, user)
 	}
@@ -138,24 +148,27 @@ func (p *provider) ListUsers(ctx context.Context) ([]models.User, error) {
 	return users, nil
 }
 
+// Gets a single the user by email
 func (p *provider) GetUserByEmail(ctx context.Context, email string) (models.User, error) {
 	var user models.User
 
-	getUserByEmailQuery := fmt.Sprintf(`SELECT * FROM %s WHERE email == '%s'`, models.Models.User, email)
+	query := fmt.Sprintf(`SELECT * FROM %s WHERE email = '%s'`, models.Model.User, email)
 
-	err := p.db.QueryRow(getUserByEmailQuery).Scan(&user.Id, &user.Email, &user.Password, &user.GivenName, &user.FamilyName, &user.MiddleName, &user.NickName, &user.Gender, &user.CreatedAt, &user.UpdatedAt)
+	err := p.db.QueryRow(query).Scan(&user.Id, &user.Email, &user.Password, &user.GivenName, &user.FamilyName, &user.MiddleName, &user.NickName, &user.Gender, &user.BirthDate, &user.Picture, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		return user, err
 	}
+
 	return user, nil
 }
 
+// Gets a single user by id
 func (p *provider) GetUserByID(ctx context.Context, id string) (models.User, error) {
 	var user models.User
 
-	getUserByIdQuery := fmt.Sprintf(`SELECT * FROM %s WHERE id == '%s'`, models.Models.User, id)
+	query := fmt.Sprintf(`SELECT * FROM %s WHERE id = '%s'`, models.Model.User, id)
 
-	err := p.db.QueryRow(getUserByIdQuery).Scan(&user.Id, &user.Email, &user.Password, &user.GivenName, &user.FamilyName, &user.MiddleName, &user.NickName, &user.Gender, &user.CreatedAt, &user.UpdatedAt)
+	err := p.db.QueryRow(query).Scan(&user.Id, &user.Email, &user.Password, &user.GivenName, &user.FamilyName, &user.MiddleName, &user.NickName, &user.Gender, &user.BirthDate, &user.Picture, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		return user, err
 	}
@@ -163,6 +176,7 @@ func (p *provider) GetUserByID(ctx context.Context, id string) (models.User, err
 	return user, nil
 }
 
+// Updates a list of users by ids or if ids not given updates all the users
 func (p *provider) UpdateUsers(ctx context.Context, data map[string]interface{}, ids []string) error {
 
 	return nil

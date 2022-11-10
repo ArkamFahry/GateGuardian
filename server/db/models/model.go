@@ -1,11 +1,13 @@
 package models
 
 type ModelList struct {
-	User string
+	User    string
+	Session string
 }
 
 var (
-	Models = ModelList{
-		User: "users",
+	Model = ModelList{
+		User:    "users",
+		Session: "sessions",
 	}
 )

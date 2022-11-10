@@ -1,11 +1,8 @@
 package main
 
 import (
-	"context"
-	"fmt"
-
+	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db"
-	"github.com/ArkamFahry/GateGuardian/server/db/models"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
@@ -17,43 +14,37 @@ import (
 func main() {
 	var err error
 
+	// Environment variable store initialization
 	err = envstore.InitEnvStore()
 	if err != nil {
 		log.Fatal("Failed to initialize env store instance: ", err)
 	}
 
+	// Get environment variable and persist to store
 	env.GetEnv()
 
+	// Session store initialization
 	err = sessionstore.InitSessionStore()
 	if err != nil {
 		log.Fatal("Failed to initialize session store instance: ", err)
 	}
 
+	// Main database initialization and schema migration
 	err = db.InitDB()
 	if err != nil {
 		log.Fatal("Failed to initialize main database: ", err)
 	}
-
-	ct := context.Background()
-
-	for i := 0; i < 100; i++ {
-		email := fmt.Sprintf("arkam%d@gmail.com", i)
-
-		user := models.User{
-			Email: email,
-		}
-
-		db.Provider.AddUser(ct, user)
-
-	}
-	res, _ := db.Provider.ListUsers(ct)
-
-	log.Info(res)
 
 	app := fiber.New()
 
 	routes.Health(app.Group("/health"))
 	routes.Auth(app.Group("/auth"))
 
-	log.Fatal(app.Listen(":" + "3000"))
+	port, err := envstore.Provider.GetEnv(constants.PORT)
+
+	if err != nil {
+		port = "8080"
+	}
+
+	log.Fatal(app.Listen(":" + port))
 }
