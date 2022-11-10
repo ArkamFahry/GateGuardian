@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/ArkamFahry/GateGuardian/server/db"
+	"github.com/ArkamFahry/GateGuardian/server/db/models"
 	"github.com/ArkamFahry/GateGuardian/server/env"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
@@ -30,10 +34,26 @@ func main() {
 		log.Fatal("Failed to initialize main database: ", err)
 	}
 
+	ct := context.Background()
+
+	for i := 0; i < 100; i++ {
+		email := fmt.Sprintf("arkam%d@gmail.com", i)
+
+		user := models.User{
+			Email: email,
+		}
+
+		db.Provider.AddUser(ct, user)
+
+	}
+	res, _ := db.Provider.ListUsers(ct)
+
+	log.Info(res)
+
 	app := fiber.New()
 
 	routes.Health(app.Group("/health"))
 	routes.Auth(app.Group("/auth"))
 
-	log.Fatal(app.Listen(":" + "3100"))
+	log.Fatal(app.Listen(":" + "3000"))
 }

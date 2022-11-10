@@ -1,5 +1,5 @@
 package constants
 
 const (
-	DbTypeSqlite = "sqlite"
+	DbTypeSqlite = "sqlite3"
 )

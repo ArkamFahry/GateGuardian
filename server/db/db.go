@@ -3,7 +3,7 @@ package db
 import (
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db/providers"
-	"github.com/ArkamFahry/GateGuardian/server/db/providers/sql"
+	"github.com/ArkamFahry/GateGuardian/server/db/providers/sqlite"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
 	log "github.com/sirupsen/logrus"
 )
@@ -15,11 +15,11 @@ func InitDB() error {
 
 	dbType, _ := envstore.Provider.GetEnv(constants.DB_TYPE)
 
-	isSql := dbType == constants.DbTypeSqlite
+	isSqlite := dbType == constants.DbTypeSqlite
 
-	if isSql {
+	if isSqlite {
 		log.Info("Initializing SQL Driver for: ", dbType)
-		Provider, err = sql.NewProvider()
+		Provider, err = sqlite.NewProvider()
 		if err != nil {
 			log.Fatal("Failed to initialize SQL driver: ", err)
 			return err
