@@ -1,12 +1,12 @@
 package main
 
 import (
+	"github.com/ArkamFahry/GateGuardian/server/api/routes"
 	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/db"
-	"github.com/ArkamFahry/GateGuardian/server/env"
+	"github.com/ArkamFahry/GateGuardian/server/internal/env"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
 	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
-	"github.com/ArkamFahry/GateGuardian/server/routes"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 )

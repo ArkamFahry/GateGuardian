@@ -1,7 +1,7 @@
 package routes
 
 import (
-	controllers "github.com/ArkamFahry/GateGuardian/server/controllers/health"
+	controllers "github.com/ArkamFahry/GateGuardian/server/api/controllers/health"
 	"github.com/gofiber/fiber/v2"
 )
 
