@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Inserts a user into the database
+// Adds a user into the database
 func (p *provider) AddUser(ctx context.Context, user models.User) (models.User, error) {
 
 	if user.Id == "" {
@@ -178,6 +178,85 @@ func (p *provider) GetUserByID(ctx context.Context, id string) (models.User, err
 
 // Updates a list of users by ids or if ids not given updates all the users
 func (p *provider) UpdateUsers(ctx context.Context, data map[string]interface{}, ids []string) error {
+	data["updated_at"] = time.Now().Unix()
+
+	updateFields := ""
+	for key, value := range data {
+		if key == "_id" {
+			continue
+		}
+
+		if key == "_key" {
+			continue
+		}
+
+		if value == nil {
+			updateFields += fmt.Sprintf("%s = null,", key)
+			continue
+		}
+
+		valueType := reflect.TypeOf(value)
+		if valueType.Name() == "string" {
+			updateFields += fmt.Sprintf("%s = '%s', ", key, value.(string))
+		} else {
+			updateFields += fmt.Sprintf("%s = %v, ", key, value)
+		}
+	}
+	updateFields = strings.Trim(updateFields, " ")
+	updateFields = strings.TrimSuffix(updateFields, ",")
+
+	query := ""
+	if len(ids) > 0 && ids != nil {
+		idsString := ""
+		for _, id := range ids {
+			idsString += fmt.Sprintf("'%s', ", id)
+		}
+		idsString = strings.Trim(idsString, " ")
+		idsString = strings.TrimSuffix(idsString, ",")
+		query = fmt.Sprintf("UPDATE %s SET %s WHERE id IN (%s)", models.Model.User, updateFields, idsString)
+		_, err := p.db.Exec(query)
+		if err != nil {
+			return err
+		}
+	} else {
+		// get all ids
+		getUserIDsQuery := fmt.Sprintf(`SELECT id FROM %s`, models.Model.User)
+		scanner, err := p.db.Query(getUserIDsQuery)
+		if err != nil {
+			return err
+		}
+		// only 100 ids are allowed in 1 query if its more than 100 we run multiple queries
+		idsString := ""
+		idsStringArray := []string{idsString}
+		counter := 1
+		for scanner.Next() {
+			var id string
+			err := scanner.Scan(&id)
+			if err == nil {
+				idsString += fmt.Sprintf("'%s', ", id)
+			}
+			counter++
+			if counter > 100 {
+				idsStringArray = append(idsStringArray, idsString)
+				counter = 1
+				idsString = ""
+			} else {
+				// update the last index of array when count is less than 100
+				idsStringArray[len(idsStringArray)-1] = idsString
+			}
+		}
+
+		for _, idStr := range idsStringArray {
+			idStr = strings.Trim(idStr, " ")
+			idStr = strings.TrimSuffix(idStr, ",")
+			query = fmt.Sprintf("UPDATE %s SET %s WHERE id IN (%s)", models.Model.User, updateFields, idStr)
+			_, err := p.db.Exec(query)
+			if err != nil {
+				return err
+			}
+		}
+
+	}
 
 	return nil
 }

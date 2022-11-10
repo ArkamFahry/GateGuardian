@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Adds session to the database
 func (p *provider) AddSession(ctx context.Context, session models.Session) error {
 	if session.Id == "" {
 		session.Id = uuid.New().String()

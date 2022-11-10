@@ -1,7 +1,7 @@
 package constants
 
 const (
-	DbTypeSqlite     = "sqlite3"
+	DbTypeSqlite     = "sqlite"
 	DbTypeMysql      = "mysql"
 	DbTypePostgresql = "postgresql"
 	DbTypeSqlserver  = "sqlserver"

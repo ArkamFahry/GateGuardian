@@ -18,7 +18,7 @@ func InitDB() error {
 	isSqlite := dbType == constants.DbTypeSqlite
 
 	if isSqlite {
-		log.Info("Initializing SQL Driver for: ", dbType)
+		log.Info("Initialized db : ", dbType)
 		Provider, err = sqlite.NewProvider()
 		if err != nil {
 			log.Fatal("Failed to initialize SQL driver: ", err)

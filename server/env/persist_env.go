@@ -12,7 +12,7 @@ func PersistEnv(envs Envs) {
 	envstore.Provider.SetEnv(constants.PORT, envs.PORT)
 
 	if envs.DB_TYPE == "" {
-		envs.DB_TYPE = "sqlite3"
+		envs.DB_TYPE = "sqlite"
 	}
 	envstore.Provider.SetEnv(constants.DB_TYPE, envs.DB_TYPE)
 
