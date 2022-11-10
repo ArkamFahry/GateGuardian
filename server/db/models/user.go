@@ -17,7 +17,7 @@ type User struct {
 }
 
 // APi Models
-type SignUpUser struct {
+type UserSignUp struct {
 	Email            string `json:"email"`
 	Password         string `json:"password"`
 	Confirm_Password string `json:"confirm_password"`
@@ -30,7 +30,7 @@ type SignUpUser struct {
 	Picture          string `json:"picture"`
 }
 
-type SignInUser struct {
+type UserSignIn struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
