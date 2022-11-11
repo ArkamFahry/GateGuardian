@@ -10,4 +10,7 @@ const (
 	JwtPrivateKey         = "JWT_PRIVATE_KEY"
 	AccessTokenExpiryTime = "ACCESS_TOKEN_EXPIRY_TIME"
 	ClientId              = "CLIENT_ID"
+	AllowedRoles          = "ALLOWED_ROLES"
+	DefaultRoles          = "DEFAULT_ROLES"
+	DefaultRole           = "DEFAULT_ROLE"
 )

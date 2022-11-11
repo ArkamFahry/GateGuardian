@@ -58,6 +58,20 @@ func NewProvider() (*provider, error) {
 		return nil, err
 	}
 
+	createStateCollection := fmt.Sprintf(`
+	CREATE TABLE IF NOT EXISTS %s (
+		id TEXT PRIMARY KEY, 
+		user_id TEXT,
+		code_challenge TEXT,
+		auth_code TEXT,
+		created_at INTEGER, 
+		updated_at INTEGER
+	)`, models.Model.State)
+	_, err = sqlite.Exec(createStateCollection)
+	if err != nil {
+		return nil, err
+	}
+
 	return &provider{
 		db: sqlite,
 	}, nil

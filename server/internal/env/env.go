@@ -14,6 +14,9 @@ type Envs struct {
 	JWT_PRIVATE_KEY          string
 	ACCESS_TOKEN_EXPIRY_TIME string
 	CLIENT_ID                string
+	ALLOWED_ROLES            string
+	DEFAULT_ROLES            string
+	DEFAULT_ROLE             string
 }
 
 func GetEnv() error {

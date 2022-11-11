@@ -8,8 +8,6 @@ import (
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
 	"github.com/ArkamFahry/GateGuardian/server/db"
 	"github.com/ArkamFahry/GateGuardian/server/db/models"
-	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
-	"github.com/ArkamFahry/GateGuardian/server/tokens"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
@@ -96,32 +94,10 @@ func Signup(c *fiber.Ctx) error {
 		user.Picture = params.Picture
 	}
 
-	res, err := db.Provider.AddUser(c.Context(), user)
+	user, err = db.Provider.AddUser(ctx, user)
 	if err != nil {
 		log.Debug("Failed to insert user to db: ", err)
 	}
 
-	session := models.Session{
-		UserId:    user.Id,
-		UserAgent: string(ctx.UserAgent()),
-		Ip:        c.IP(),
-	}
-
-	err = db.Provider.AddSession(ctx, session)
-	if err != nil {
-		log.Debug("error inserting session to db : ", err)
-	}
-
-	tokens, err := tokens.CreateAuthTokens(user, c.Hostname())
-	if err != nil {
-		log.Debug("error creating auth tokens : ", err)
-	}
-
-	rt_token_hash, err := crypto.EncryptData(tokens.RefreshToken)
-	if err != nil {
-		log.Debug("error hashing refresh token : ", err)
-	}
-	sessionstore.Provider.SetSession(user.Id, rt_token_hash)
-
-	return c.Status(201).JSON(fiber.Map{"message": "successfully signed up", "tokens": tokens, "user": res.AsAPIUser()})
+	return c.Status(201).JSON(fiber.Map{"message": "successfully signed up"})
 }
