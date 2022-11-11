@@ -1,20 +1,46 @@
 package controllers
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/ArkamFahry/GateGuardian/server/api/model"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
 	"github.com/ArkamFahry/GateGuardian/server/db"
 	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 )
 
+func ValidateSignupInput(signUpInput model.SignupInput) []*model.ErrorResponse {
+	var validate = validator.New()
+	var errors []*model.ErrorResponse
+	err := validate.Struct(signUpInput)
+	if err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element model.ErrorResponse
+			element.FailedField = err.Field()
+			element.Tag = err.Tag()
+			element.Value = err.Param()
+
+			errors = append(errors, &element)
+		}
+	}
+
+	return errors
+}
+
 func Signup(c *fiber.Ctx) error {
 	var params model.SignupInput
 	var user models.User
+
 	c.BodyParser(&params)
+
+	errors := ValidateSignupInput(params)
+	if errors != nil {
+		return c.Status(400).JSON(errors)
+	}
 
 	params.Email = strings.ToLower(params.Email)
 
@@ -24,47 +50,52 @@ func Signup(c *fiber.Ctx) error {
 	}
 
 	if existingUser.Id != "" {
-		return c.Status(400).JSON("user with the email already exists")
+		return c.Status(400).JSON(fiber.Map{
+			"error":  "user with the email already exists",
+			"reason": fmt.Sprintf("%s has already signed up", existingUser.Email)})
 	} else {
 		user.Email = params.Email
 	}
 
 	if params.Password != params.ConfirmPassword {
-		return c.Status(400).JSON("Password and Confirm Password are not equal")
+		return c.Status(400).JSON(fiber.Map{"error": "Password and Confirm Password are not equal"})
 	} else {
 		password, _ := crypto.EncryptPassword(params.Password)
-		user.Password = password
+		user.Password = &password
 	}
 
-	if params.GivenName != "" {
+	if params.GivenName != nil {
 		user.GivenName = params.GivenName
 	}
 
-	if params.FamilyName != "" {
+	if params.FamilyName != nil {
 		user.FamilyName = params.FamilyName
 	}
 
-	if params.MiddleName != "" {
+	if params.MiddleName != nil {
 		user.MiddleName = params.MiddleName
 	}
 
-	if params.NickName != "" {
+	if params.NickName != nil {
 		user.NickName = params.NickName
 	}
 
-	if params.Gender != "" {
+	if params.Gender != nil {
 		user.Gender = params.Gender
 	}
 
-	if params.BirthDate != "" {
+	if params.BirthDate != nil {
 		user.BirthDate = params.BirthDate
 	}
 
-	if params.Picture != "" {
+	if params.Picture != nil {
 		user.Picture = params.Picture
 	}
 
-	db.Provider.AddUser(c.Context(), user)
+	res, err := db.Provider.AddUser(c.Context(), user)
+	if err != nil {
+		log.Debug("Failed to insert user to db: ", err)
+	}
 
-	return nil
+	return c.Status(201).JSON(fiber.Map{"message": "successfully signed up", "user": res.AsAPIUser()})
 }
