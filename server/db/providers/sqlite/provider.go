@@ -36,6 +36,9 @@ func NewProvider() (*provider, error) {
 		gender TEXT, 
 		birth_date TEXT,
 		picture TEXT,
+		allowed_roles TEXT,
+		default_roles TEXT,
+		default_role TEXT,
 		created_at INTEGER, 
 		updated_at INTEGER
 	)`, models.Model.User)
