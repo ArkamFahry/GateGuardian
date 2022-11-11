@@ -13,34 +13,34 @@ func PersistEnv(envs Envs) error {
 	if envs.PORT == "" {
 		envs.PORT = "8080"
 	}
-	envstore.Provider.SetEnv(constants.PORT, envs.PORT)
+	envstore.Provider.SetEnv(constants.Port, envs.PORT)
 
 	if envs.DB_TYPE == "" {
 		envs.DB_TYPE = "sqlite"
 	}
-	envstore.Provider.SetEnv(constants.DB_TYPE, envs.DB_TYPE)
+	envstore.Provider.SetEnv(constants.DbType, envs.DB_TYPE)
 
 	if envs.DB_URL == "" {
 		envs.DB_URL = "../data.db"
 	}
-	envstore.Provider.SetEnv(constants.DB_URL, envs.DB_URL)
+	envstore.Provider.SetEnv(constants.DbUrl, envs.DB_URL)
 
 	if envs.JWT_SECRET == "" {
 		envs.JWT_SECRET = (uuid.New().String() + uuid.New().String())
 	}
-	envstore.Provider.SetEnv(constants.JWT_SECRET, envs.JWT_SECRET)
+	envstore.Provider.SetEnv(constants.JwtSecret, envs.JWT_SECRET)
 
 	if envs.ACCESS_TOKEN_EXPIRY_TIME == "" {
 		envs.ACCESS_TOKEN_EXPIRY_TIME = "15m"
 	}
-	envstore.Provider.SetEnv(constants.ACCESS_TOKEN_EXPIRY_TIME, envs.ACCESS_TOKEN_EXPIRY_TIME)
+	envstore.Provider.SetEnv(constants.AccessTokenExpiryTime, envs.ACCESS_TOKEN_EXPIRY_TIME)
 
 	clientID := envs.CLIENT_ID
 
 	if clientID == "" {
 		clientID = uuid.New().String()
 	}
-	envstore.Provider.SetEnv(constants.CLIENT_ID, clientID)
+	envstore.Provider.SetEnv(constants.ClientId, clientID)
 
 	algo := envs.JWT_TYPE
 
@@ -51,7 +51,7 @@ func PersistEnv(envs Envs) error {
 			log.Debug("Invalid JWT Algorithm")
 		}
 	}
-	envstore.Provider.SetEnv(constants.JWT_TYPE, algo)
+	envstore.Provider.SetEnv(constants.JwtType, algo)
 
 	private_key := envs.JWT_PRIVATE_KEY
 	public_key := envs.JWT_PUBLIC_KEY
@@ -63,15 +63,15 @@ func PersistEnv(envs Envs) error {
 				return err
 			}
 
-			envstore.Provider.SetEnv(constants.JWT_PRIVATE_KEY, private_key)
-			envstore.Provider.SetEnv(constants.JWT_PUBLIC_KEY, public_key)
+			envstore.Provider.SetEnv(constants.JwtPrivateKey, private_key)
+			envstore.Provider.SetEnv(constants.JwtPublicKey, public_key)
 		} else if crypto.IsECDSA(algo) {
 			_, private_key, public_key, _, err = crypto.NewECDSAKey(algo, clientID)
 			if err != nil {
 				return err
 			}
-			envstore.Provider.SetEnv(constants.JWT_PRIVATE_KEY, private_key)
-			envstore.Provider.SetEnv(constants.JWT_PUBLIC_KEY, public_key)
+			envstore.Provider.SetEnv(constants.JwtPrivateKey, private_key)
+			envstore.Provider.SetEnv(constants.JwtPublicKey, public_key)
 		}
 	} else {
 		// parse keys to make sure they are valid

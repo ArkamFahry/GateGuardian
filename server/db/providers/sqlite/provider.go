@@ -16,7 +16,7 @@ type provider struct {
 
 func NewProvider() (*provider, error) {
 	dbType := "sqlite3"
-	dbUrl, _ := envstore.Provider.GetEnv(constants.DB_URL)
+	dbUrl, _ := envstore.Provider.GetEnv(constants.DbUrl)
 
 	sqlite, err := sql.Open(dbType, dbUrl)
 

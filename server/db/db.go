@@ -13,7 +13,7 @@ var Provider providers.Provider
 func InitDB() error {
 	var err error
 
-	dbType, _ := envstore.Provider.GetEnv(constants.DB_TYPE)
+	dbType, _ := envstore.Provider.GetEnv(constants.DbType)
 
 	isSqlite := dbType == constants.DbTypeSqlite
 

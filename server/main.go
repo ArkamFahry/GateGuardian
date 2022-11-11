@@ -40,7 +40,7 @@ func main() {
 	routes.Health(app.Group("/health"))
 	routes.Auth(app.Group("/auth"))
 
-	port, err := envstore.Provider.GetEnv(constants.PORT)
+	port, err := envstore.Provider.GetEnv(constants.Port)
 
 	if err != nil {
 		port = "8080"

@@ -33,16 +33,16 @@ func GetPubJWK(algo, keyID string, publicKey interface{}) (string, error) {
 
 func GenerateJWKBasedOnEnv() (string, error) {
 	jwk := ""
-	algo, err := envstore.Provider.GetEnv(constants.JWT_TYPE)
+	algo, err := envstore.Provider.GetEnv(constants.JwtType)
 	if err != nil {
 		return jwk, err
 	}
-	clientID, err := envstore.Provider.GetEnv(constants.CLIENT_ID)
+	clientID, err := envstore.Provider.GetEnv(constants.ClientId)
 	if err != nil {
 		return jwk, err
 	}
 
-	jwtSecret, err := envstore.Provider.GetEnv(constants.JWT_SECRET)
+	jwtSecret, err := envstore.Provider.GetEnv(constants.JwtSecret)
 	if err != nil {
 		return jwk, err
 	}
@@ -55,7 +55,7 @@ func GenerateJWKBasedOnEnv() (string, error) {
 		}
 	}
 
-	jwtPublicKey, err := envstore.Provider.GetEnv(constants.JWT_PUBLIC_KEY)
+	jwtPublicKey, err := envstore.Provider.GetEnv(constants.JwtPublicKey)
 	if err != nil {
 		return jwk, err
 	}
@@ -73,7 +73,7 @@ func GenerateJWKBasedOnEnv() (string, error) {
 	}
 
 	if IsECDSA(algo) {
-		jwtPublicKey, err = envstore.Provider.GetEnv(constants.JWT_PUBLIC_KEY)
+		jwtPublicKey, err = envstore.Provider.GetEnv(constants.JwtPrivateKey)
 		if err != nil {
 			return jwk, err
 		}
@@ -91,8 +91,8 @@ func GenerateJWKBasedOnEnv() (string, error) {
 	return jwk, nil
 }
 
-func EncryptPassword(password string) (string, error) {
-	pw, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+func EncryptData(data string) (string, error) {
+	pw, err := bcrypt.GenerateFromPassword([]byte(data), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
 	}

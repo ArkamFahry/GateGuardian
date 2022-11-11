@@ -1,13 +1,13 @@
 package constants
 
 const (
-	PORT                     = "PORT"
-	DB_TYPE                  = "DB_TYPE"
-	DB_URL                   = "DB_URL"
-	JWT_SECRET               = "JWT_SECRET"
-	JWT_TYPE                 = "JWT_TYPE"
-	JWT_PUBLIC_KEY           = "JWT_PUBLIC_KEY"
-	JWT_PRIVATE_KEY          = "JWT_PRIVATE_KEY"
-	ACCESS_TOKEN_EXPIRY_TIME = "ACCESS_TOKEN_EXPIRY_TIME"
-	CLIENT_ID                = "CLIENT_ID"
+	Port                  = "PORT"
+	DbType                = "DB_TYPE"
+	DbUrl                 = "DB_URL"
+	JwtSecret             = "JWT_SECRET"
+	JwtType               = "JWT_TYPE"
+	JwtPublicKey          = "JWT_PUBLIC_KEY"
+	JwtPrivateKey         = "JWT_PRIVATE_KEY"
+	AccessTokenExpiryTime = "ACCESS_TOKEN_EXPIRY_TIME"
+	ClientId              = "CLIENT_ID"
 )
