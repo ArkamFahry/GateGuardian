@@ -56,6 +56,7 @@ require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/cockroachdb/pebble v0.0.0-20221104214247-8dc60b62ebbf
 	github.com/go-playground/validator/v10 v10.11.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/klauspost/compress v1.15.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
@@ -66,4 +67,5 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/crypto v0.2.0
 	golang.org/x/sys v0.2.0 // indirect
+	gopkg.in/square/go-jose.v2 v2.6.0
 )

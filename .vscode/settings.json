@@ -6,6 +6,8 @@
     "Fahry",
     "gofiber",
     "gorm",
+    "HMACA",
+    "HMCA",
     "logrus",
     "memorystore",
     "pebbledb",

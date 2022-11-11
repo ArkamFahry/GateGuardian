@@ -5,9 +5,15 @@ import (
 )
 
 type Envs struct {
-	PORT    string
-	DB_TYPE string
-	DB_URL  string
+	PORT                     string
+	DB_TYPE                  string
+	DB_URL                   string
+	JWT_SECRET               string
+	JWT_TYPE                 string
+	JWT_PUBLIC_KEY           string
+	JWT_PRIVATE_KEY          string
+	ACCESS_TOKEN_EXPIRY_TIME string
+	CLIENT_ID                string
 }
 
 func GetEnv() error {

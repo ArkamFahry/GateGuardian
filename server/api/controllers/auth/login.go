@@ -5,8 +5,11 @@ import (
 
 	"github.com/ArkamFahry/GateGuardian/server/api/model"
 	"github.com/ArkamFahry/GateGuardian/server/db"
+	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/ArkamFahry/GateGuardian/server/memorystore/sessionstore"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -33,6 +36,8 @@ func Login(c *fiber.Ctx) error {
 
 	c.BodyParser(&params)
 
+	ctx := c.Context()
+
 	errors := ValidateLoginInput(params)
 	if errors != nil {
 		return c.Status(400).JSON(errors)
@@ -40,7 +45,7 @@ func Login(c *fiber.Ctx) error {
 
 	params.Email = strings.ToLower(params.Email)
 
-	user, err := db.Provider.GetUserByEmail(c.Context(), params.Email)
+	user, err := db.Provider.GetUserByEmail(ctx, params.Email)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "bad user credentials", "reason": "wrong user email"})
 	}
@@ -49,6 +54,19 @@ func Login(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "bad user credentials", "reason": "wrong user password"})
 	}
+
+	session := models.Session{
+		UserId:    user.Id,
+		UserAgent: string(ctx.UserAgent()),
+		Ip:        string(ctx.RemoteIP()),
+	}
+
+	err = db.Provider.AddSession(ctx, session)
+	if err != nil {
+		log.Debug("error inserting session to db : ", err)
+	}
+
+	sessionstore.Provider.SetSession(user.Id, "")
 
 	return c.Status(201).JSON(fiber.Map{"message": "successfully login"})
 }

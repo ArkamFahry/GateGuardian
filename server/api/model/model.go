@@ -37,3 +37,12 @@ type ErrorResponse struct {
 	Tag         string `json:"tag"`
 	Value       string `json:"value"`
 }
+
+type AuthResponse struct {
+	AccessToken         string `json:"access_token"`
+	AccessTokenExpires  int64  `json:"access_token_expires"`
+	RefreshToken        string `json:"refresh_token"`
+	RefreshTokenExpires int64  `json:"refresh_token_expires"`
+	IdToken             string `json:"id_token"`
+	IdTokenExpires      int64  `json:"id_token_expires"`
+}
