@@ -8,5 +8,5 @@ import (
 func Auth(router fiber.Router) {
 	router.Post("/signup", controllers.Signup)
 	router.Post("/login", controllers.Login)
-	router.Post("/refresh", controllers.Login)
+	router.Post("/token", controllers.Login)
 }
