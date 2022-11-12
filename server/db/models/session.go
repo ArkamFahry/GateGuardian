@@ -1,7 +1,7 @@
 package models
 
 type Session struct {
-	Id        string `json:"id" db:"id"`
+	Id        string `gorm:"primaryKey;type:char(36)" json:"id" db:"id"`
 	UserId    string `json:"user_id" db:"user_id"`
 	UserAgent string `json:"user_agent" db:"user_agent"`
 	Ip        string `json:"ip" db:"ip"`

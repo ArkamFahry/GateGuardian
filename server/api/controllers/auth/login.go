@@ -52,5 +52,5 @@ func Login(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "bad user credentials", "reason": "wrong user password"})
 	}
 
-	return c.Status(201).JSON(fiber.Map{"message": "successfully login"})
+	return c.Status(201).JSON(fiber.Map{"message": "successfully login", "user": user.AsAPIUser()})
 }

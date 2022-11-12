@@ -108,22 +108,15 @@ func PersistEnv(envs Envs) error {
 	envstore.Provider.SetEnv(constants.AllowedRoles, envs.ALLOWED_ROLES)
 
 	allowedRoles := strings.Split(envs.ALLOWED_ROLES, ",")
-	defaultRoles := strings.Split(envs.DEFAULT_ROLES, ",")
-	defaultRole := strings.Split(envs.DEFAULT_ROLE, ",")
+	Roles := strings.Split(envs.ROLES, ",")
 
-	if !validators.IsValidRoles(allowedRoles, defaultRoles) {
-		envs.DEFAULT_ROLES = allowedRoles[0]
+	if !validators.IsValidRoles(allowedRoles, Roles) {
+		envs.ROLES = allowedRoles[0]
 	}
-	envstore.Provider.SetEnv(constants.DefaultRoles, envs.DEFAULT_ROLES)
-
-	if !validators.IsValidRoles(allowedRoles, defaultRole) {
-		envs.DEFAULT_ROLE = allowedRoles[0]
-	}
-	envstore.Provider.SetEnv(constants.DefaultRole, envs.DEFAULT_ROLE)
+	envstore.Provider.SetEnv(constants.Roles, envs.ROLES)
 
 	log.Info("allowedRoles : ", envs.ALLOWED_ROLES)
-	log.Info("defaultRoles : ", envs.DEFAULT_ROLES)
-	log.Info("defaultRole : ", envs.DEFAULT_ROLE)
+	log.Info("Roles : ", envs.ROLES)
 
 	return nil
 }

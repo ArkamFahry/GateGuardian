@@ -1,6 +1,7 @@
 package tokens
 
 import (
+	"strings"
 	"time"
 
 	"github.com/ArkamFahry/GateGuardian/server/api/model"
@@ -43,6 +44,11 @@ func CreateAccessToken(user models.User, hostName, nonce string) (string, int64,
 
 	expiresAt := time.Now().Add(expiryBound).Unix()
 
+	AllowedRoles, _ := envstore.Provider.GetEnv(constants.AllowedRoles)
+	allowedRoles := strings.Split(AllowedRoles, ",")
+
+	roles := strings.Split(user.Roles, ",")
+
 	clientID, err := envstore.Provider.GetEnv(constants.ClientId)
 	if err != nil {
 		return "", 0, err
@@ -56,8 +62,8 @@ func CreateAccessToken(user models.User, hostName, nonce string) (string, int64,
 		"iat":        time.Now().Unix(),
 		"token_type": constants.AccessToken,
 		"https://hasura.io/jwt/claims": map[string]interface{}{
-			"x-hasura-allowed-roles": []string{"user", "anon", "admin"},
-			"x-hasura-default-role":  "user",
+			"x-hasura-allowed-roles": allowedRoles,
+			"x-hasura-default-role":  roles,
 			"x-hasura-user-id":       user.Id,
 			"x-hasura-user-email":    user.Email,
 		},

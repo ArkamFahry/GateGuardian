@@ -5,9 +5,12 @@ import (
 	"strings"
 
 	"github.com/ArkamFahry/GateGuardian/server/api/model"
+	"github.com/ArkamFahry/GateGuardian/server/constants"
 	"github.com/ArkamFahry/GateGuardian/server/crypto"
 	"github.com/ArkamFahry/GateGuardian/server/db"
 	"github.com/ArkamFahry/GateGuardian/server/db/models"
+	"github.com/ArkamFahry/GateGuardian/server/memorystore/envstore"
+	"github.com/ArkamFahry/GateGuardian/server/validators"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
@@ -66,6 +69,25 @@ func Signup(c *fiber.Ctx) error {
 		user.Password = &password
 	}
 
+	if len(params.Roles) > 0 {
+		AllowedRoles, err := envstore.Provider.GetEnv(constants.AllowedRoles)
+		allowedRoles := strings.Split(AllowedRoles, ",")
+		if err != nil {
+			log.Debug("can't fetch allowed roles from env")
+		}
+		if validators.IsValidRoles(allowedRoles, params.Roles) {
+			user.Roles = strings.Join(params.Roles, ",")
+		} else {
+			return c.Status(400).JSON(fiber.Map{"error": "Invalid user role", "reason": "user role doesn't exist on allowed role list"})
+		}
+	} else {
+		roles, err := envstore.Provider.GetEnv(constants.Roles)
+		if err != nil {
+			log.Debug("can't fetch roles from env")
+		}
+		user.Roles = roles
+	}
+
 	if params.GivenName != nil {
 		user.GivenName = params.GivenName
 	}
@@ -99,5 +121,5 @@ func Signup(c *fiber.Ctx) error {
 		log.Debug("Failed to insert user to db: ", err)
 	}
 
-	return c.Status(201).JSON(fiber.Map{"message": "successfully signed up"})
+	return c.Status(201).JSON(fiber.Map{"message": "successfully signed up", "user": user.AsAPIUser()})
 }

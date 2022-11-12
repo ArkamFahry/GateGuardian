@@ -15,8 +15,7 @@ type Envs struct {
 	ACCESS_TOKEN_EXPIRY_TIME string
 	CLIENT_ID                string
 	ALLOWED_ROLES            string
-	DEFAULT_ROLES            string
-	DEFAULT_ROLE             string
+	ROLES                    string
 }
 
 func GetEnv() error {
