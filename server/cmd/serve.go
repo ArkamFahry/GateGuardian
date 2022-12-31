@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// Serve function servers the newly bootstrapped server
 func Serve() error {
 	var err error
 

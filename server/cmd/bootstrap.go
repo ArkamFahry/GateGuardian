@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Bootstrap function bootstraps all the needed functionality to start the server
 func BootStrap() error {
 	var err error
 
@@ -16,6 +17,7 @@ func BootStrap() error {
 		log.Error("Error loading required env : ", err)
 	}
 
+	// Initialize a in-memory store required for application startup
 	err = memorydb.InitMemStore()
 	if err != nil {
 		log.Error("Error initializing memorydb instance : ", err)
