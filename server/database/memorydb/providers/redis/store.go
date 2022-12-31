@@ -13,7 +13,7 @@ var (
 )
 
 // Gets the complete env store
-func (c *provider) GetEnvStore() (map[string]interface{}, error) {
+func (c *provider) GetEnvStore() (map[string]any, error) {
 	res := make(map[string]interface{})
 	data, err := c.store.HGetAll(c.ctx, envStorePrefix).Result()
 	if err != nil {
@@ -27,7 +27,7 @@ func (c *provider) GetEnvStore() (map[string]interface{}, error) {
 }
 
 // Updates the total env store
-func (c *provider) UpdateEnvStore(store map[string]interface{}) error {
+func (c *provider) UpdateEnvStore(store map[string]any) error {
 	for key, value := range store {
 		err := c.store.HSet(c.ctx, envStorePrefix, key, value).Err()
 		if err != nil {
@@ -38,7 +38,7 @@ func (c *provider) UpdateEnvStore(store map[string]interface{}) error {
 }
 
 // Updates a single variable in the env store
-func (c *provider) UpdateEnvVariable(key string, value interface{}) error {
+func (c *provider) UpdateEnvVariable(key string, value any) error {
 	err := c.store.HSet(c.ctx, envStorePrefix, key, value).Err()
 	if err != nil {
 		log.Debug("Error saving redis token: ", err)

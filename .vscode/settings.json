@@ -4,6 +4,7 @@
     "Citus",
     "citusdata",
     "cockroachdb",
+    "gategaurdian",
     "logrus",
     "maindb",
     "memorydb",
@@ -12,6 +13,7 @@
     "scylladb",
     "sirupsen",
     "sqlserver",
+    "unmarshalling",
     "yugabytedb"
   ]
 }

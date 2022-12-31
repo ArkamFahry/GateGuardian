@@ -5,7 +5,7 @@ type Provider interface {
 	UpdateEnvStore(store map[string]any) error
 
 	// Gets the complete env store
-	GetEnvStore(map[string]any, error)
+	GetEnvStore() (map[string]any, error)
 
 	// Updates a single variable in the env store
 	UpdateEnvVariable(key string, value any) error
