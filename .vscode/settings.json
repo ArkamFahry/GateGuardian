@@ -1,0 +1,17 @@
+{
+  "cSpell.words": [
+    "cassandradb",
+    "Citus",
+    "citusdata",
+    "cockroachdb",
+    "logrus",
+    "maindb",
+    "memorydb",
+    "objectdb",
+    "planetscale",
+    "scylladb",
+    "sirupsen",
+    "sqlserver",
+    "yugabytedb"
+  ]
+}
