@@ -4,6 +4,7 @@
     "Citus",
     "citusdata",
     "cockroachdb",
+    "fasthttpadaptor",
     "gategaurdian",
     "logrus",
     "maindb",

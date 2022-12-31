@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"gategaurdian/server/handlers"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -10,9 +12,8 @@ func Serve() error {
 
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	app.All("/graphql", handlers.Graphql)
+	app.All("/", handlers.PlayGround)
 
 	err = app.Listen(":3000")
 
