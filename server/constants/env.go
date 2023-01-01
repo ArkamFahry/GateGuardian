@@ -15,4 +15,7 @@ const (
 
 	// EnvRedisUrl env variable to REDIS_URL
 	EnvRedisUrl = "REDIS_URL"
+
+	// EnvEncryptionKey env variable to ENCRYPTION_KEY
+	EnvEncryptionKey = "ENCRYPTION_KEY"
 )
