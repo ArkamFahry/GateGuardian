@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"gategaurdian/server/database/memorydb/providers"
 	"gategaurdian/server/database/memorydb/providers/redis"
-	"gategaurdian/server/env"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -17,7 +16,7 @@ func InitMemoryDb() error {
 
 	defaultEnvs := map[string]any{}
 
-	requiredEnvs := env.RequiredEnvStoreObj.GetRequiredEnv()
+	requiredEnvs := RequiredEnvStoreObj.GetRequiredEnv()
 	requiredEnvMap := make(map[string]any)
 	requiredEnvBytes, err := json.Marshal(requiredEnvs)
 	if err != nil {

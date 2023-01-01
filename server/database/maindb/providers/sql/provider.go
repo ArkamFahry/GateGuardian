@@ -3,7 +3,7 @@ package sql
 import (
 	"gategaurdian/server/constants"
 	"gategaurdian/server/database/maindb/models"
-	"gategaurdian/server/env"
+	"gategaurdian/server/database/memorydb"
 	"time"
 
 	"github.com/glebarez/sqlite"
@@ -41,8 +41,8 @@ func NewProvider() (*provider, error) {
 		AllowGlobalUpdate: true,
 	}
 
-	dbType := env.RequiredEnvStoreObj.GetRequiredEnv().DatabaseType
-	dbUrl := env.RequiredEnvStoreObj.GetRequiredEnv().DatabaseUrl
+	dbType := memorydb.RequiredEnvStoreObj.GetRequiredEnv().DatabaseType
+	dbUrl := memorydb.RequiredEnvStoreObj.GetRequiredEnv().DatabaseUrl
 
 	// Depending on the sql db type specific database driver is initialized
 	switch dbType {
