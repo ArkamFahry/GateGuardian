@@ -6,6 +6,7 @@
     "cockroachdb",
     "fasthttpadaptor",
     "gategaurdian",
+    "gorm",
     "logrus",
     "maindb",
     "memorydb",
