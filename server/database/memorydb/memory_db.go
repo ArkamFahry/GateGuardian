@@ -11,7 +11,8 @@ import (
 
 var Provider providers.Provider
 
-func InitMemStore() error {
+// InitMemoryDb is used to initialize the caching database used by the application
+func InitMemoryDb() error {
 	var err error
 
 	defaultEnvs := map[string]any{}
@@ -38,6 +39,7 @@ func InitMemStore() error {
 	log.Info("Initializing Redis memory store")
 	Provider, err = redis.NewRedisProvider(redisURL)
 	if err != nil {
+		log.Fatal("Failed to initialize Redis driver: ")
 		return err
 	}
 
