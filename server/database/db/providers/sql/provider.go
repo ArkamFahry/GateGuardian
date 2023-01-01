@@ -55,7 +55,7 @@ func NewProvider() (*provider, error) {
 	}
 
 	// Runs an automatic migration on sql database create the tables required by gate_guardian to operate
-	err = sqlDb.AutoMigrate(models.User{}, models.VerificationRequest{}, models.Session{}, models.Env{})
+	err = sqlDb.AutoMigrate(&models.User{}, &models.VerificationRequest{}, &models.Session{}, &models.Env{})
 	if err != nil {
 		return nil, err
 	}
