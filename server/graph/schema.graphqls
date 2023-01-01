@@ -2,27 +2,20 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+type Env {
+  DATABASE_URL: String!
+  REDIS_URL: String!
 }
 
-type User {
-  id: ID!
-  name: String!
+input UpdateEnv {
+  DATABASE_URL: String!
+  REDIS_URL: String!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  _env: Env!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  _update_env(input: UpdateEnv!): Env!
 }

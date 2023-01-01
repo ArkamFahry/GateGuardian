@@ -10,14 +10,14 @@ import (
 	"gategaurdian/server/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// UpdateEnv is the resolver for the _update_env field.
+func (r *mutationResolver) UpdateEnv(ctx context.Context, input model.UpdateEnv) (*model.Env, error) {
+	panic(fmt.Errorf("not implemented: UpdateEnv - _update_env"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// Env is the resolver for the _env field.
+func (r *queryResolver) Env(ctx context.Context) (*model.Env, error) {
+	panic(fmt.Errorf("not implemented: Env - _env"))
 }
 
 // Mutation returns MutationResolver implementation.
