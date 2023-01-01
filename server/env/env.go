@@ -1,5 +1,6 @@
 package env
 
-func InitAllEnv() {
+func InitAllEnv() error {
 
+	return nil
 }
