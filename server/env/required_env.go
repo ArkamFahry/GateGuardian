@@ -11,8 +11,9 @@ import (
 )
 
 type RequiredEnv struct {
-	DatabaseUrl string `json:"DATABASE_URL"`
-	RedisUrl    string `json:"REDIS_URL"`
+	DatabaseType string `json:"DATABASE_TYPE"`
+	DatabaseUrl  string `json:"DATABASE_URL"`
+	RedisUrl     string `json:"REDIS_URL"`
 }
 
 // RequiredEnvStore is a simple in-memory store for required envs
@@ -39,16 +40,24 @@ func (r *RequiredEnvStore) SetRequiredEnv(requiredEnv RequiredEnv) {
 // RequiredEnvStoreObj represents the in-memory required env store
 var RequiredEnvStoreObj *RequiredEnvStore
 
+// Initialize the required env load the envs required for application startup
 func InitRequiredEnv() error {
+	// Viper is used for easy loading of config data
 	viper.SetConfigFile(".env")
+
 	err := viper.ReadInConfig()
 
 	if err != nil {
 		log.Error("couldn't load env from .env : ", err)
 	}
 
+	dbType := viper.GetString(constants.EnvDatabaseType)
 	dbUrl := viper.GetString(constants.EnvDatabaseUrl)
 	redisUrl := viper.GetString(constants.EnvRedisUrl)
+
+	if dbType == "" {
+		dbType = "sqlite"
+	}
 
 	if strings.TrimSpace(dbUrl) == "" {
 		log.Debug("DATABASE_URL is not set")
@@ -61,8 +70,9 @@ func InitRequiredEnv() error {
 	}
 
 	requiredEnv := RequiredEnv{
-		DatabaseUrl: dbUrl,
-		RedisUrl:    redisUrl,
+		DatabaseType: dbType,
+		DatabaseUrl:  dbUrl,
+		RedisUrl:     redisUrl,
 	}
 
 	RequiredEnvStoreObj = &RequiredEnvStore{
