@@ -2,7 +2,7 @@ package providers
 
 import (
 	"context"
-	"gategaurdian/server/database/maindb/models"
+	"gategaurdian/server/database/db/models"
 )
 
 type Provider interface {

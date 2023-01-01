@@ -2,7 +2,7 @@ package sql
 
 import (
 	"context"
-	"gategaurdian/server/database/maindb/models"
+	"gategaurdian/server/database/db/models"
 	"time"
 
 	"github.com/google/uuid"

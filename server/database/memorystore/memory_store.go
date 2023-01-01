@@ -1,9 +1,9 @@
-package memorydb
+package memorystore
 
 import (
 	"encoding/json"
-	"gategaurdian/server/database/memorydb/providers"
-	"gategaurdian/server/database/memorydb/providers/redis"
+	"gategaurdian/server/database/memorystore/providers"
+	"gategaurdian/server/database/memorystore/providers/redis"
 
 	log "github.com/sirupsen/logrus"
 )

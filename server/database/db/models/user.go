@@ -2,13 +2,13 @@ package models
 
 // Database model for user
 type User struct {
-	ID                        string  `json:"id"`
-	Email                     string  `json:"email"`
+	ID                        string  `json:"_id" gorm:"primaryKey;type:char(36)"`
+	Email                     string  `json:"email" gorm:"unique"`
 	EmailVerified             *bool   `json:"email_verified"`
 	EmailVerifiedAt           *int64  `json:"email_verified_at"`
 	PasswordHash              string  `json:"password_hash"`
 	Roles                     string  `json:"roles"`
-	PhoneNumber               *string `json:"phone_number"`
+	PhoneNumber               *string `gorm:"index" json:"phone_number"`
 	PhoneNumberVerified       *bool   `json:"phone_number_verified"`
 	PhoneNumberVerifiedAt     *int64  `json:"phone_number_verified_at"`
 	Name                      *string `json:"name"`

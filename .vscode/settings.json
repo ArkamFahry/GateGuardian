@@ -10,12 +10,15 @@
     "logrus",
     "maindb",
     "memorydb",
+    "memorystore",
     "objectdb",
+    "objectstore",
     "planetscale",
     "scylladb",
     "sirupsen",
     "sqlserver",
     "unmarshalling",
+    "varchar",
     "yugabytedb"
   ]
 }

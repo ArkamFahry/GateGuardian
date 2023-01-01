@@ -1,4 +1,4 @@
-package memorydb
+package memorystore
 
 import (
 	"errors"

@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"gategaurdian/server/database/maindb"
-	"gategaurdian/server/database/memorydb"
+	"gategaurdian/server/database/db"
+	"gategaurdian/server/database/memorystore"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -12,19 +12,19 @@ func BootStrap() error {
 	var err error
 
 	// Initialize the required env store load the envs required for application startup
-	err = memorydb.InitRequiredEnv()
+	err = memorystore.InitRequiredEnv()
 	if err != nil {
 		log.Error("Error loading required env : ", err)
 	}
 
 	// Initialize the memorydb required for application startup
-	err = memorydb.InitMemoryDb()
+	err = memorystore.InitMemoryDb()
 	if err != nil {
 		log.Error("Error initializing memorydb instance : ", err)
 	}
 
 	// Initialize the maindb required for application startup
-	err = maindb.InitMainDb()
+	err = db.InitMainDb()
 	if err != nil {
 		log.Error("Error initializing memorydb instance : ", err)
 	}

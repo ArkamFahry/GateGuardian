@@ -2,8 +2,8 @@ package sql
 
 import (
 	"gategaurdian/server/constants"
-	"gategaurdian/server/database/maindb/models"
-	"gategaurdian/server/database/memorydb"
+	"gategaurdian/server/database/db/models"
+	"gategaurdian/server/database/memorystore"
 	"time"
 
 	"github.com/glebarez/sqlite"
@@ -41,8 +41,8 @@ func NewProvider() (*provider, error) {
 		AllowGlobalUpdate: true,
 	}
 
-	dbType := memorydb.RequiredEnvStoreObj.GetRequiredEnv().DatabaseType
-	dbUrl := memorydb.RequiredEnvStoreObj.GetRequiredEnv().DatabaseUrl
+	dbType := memorystore.RequiredEnvStoreObj.GetRequiredEnv().DatabaseType
+	dbUrl := memorystore.RequiredEnvStoreObj.GetRequiredEnv().DatabaseUrl
 
 	// Depending on the sql db type specific database driver is initialized
 	switch dbType {
@@ -55,7 +55,7 @@ func NewProvider() (*provider, error) {
 	}
 
 	// Runs an automatic migration on sql database create the tables required by gate_guardian to operate
-	err = sqlDb.AutoMigrate(&models.User{}, &models.VerificationRequest{}, &models.Session{}, &models.Env{})
+	err = sqlDb.AutoMigrate(models.User{}, models.VerificationRequest{}, models.Session{}, models.Env{})
 	if err != nil {
 		return nil, err
 	}

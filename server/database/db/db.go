@@ -1,10 +1,10 @@
-package maindb
+package db
 
 import (
 	"gategaurdian/server/constants"
-	"gategaurdian/server/database/maindb/providers"
-	"gategaurdian/server/database/maindb/providers/sql"
-	"gategaurdian/server/database/memorydb"
+	"gategaurdian/server/database/db/providers"
+	"gategaurdian/server/database/db/providers/sql"
+	"gategaurdian/server/database/memorystore"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -15,7 +15,7 @@ var Provider providers.Provider
 func InitMainDb() error {
 	var err error
 
-	dbType := memorydb.RequiredEnvStoreObj.GetRequiredEnv().DatabaseType
+	dbType := memorystore.RequiredEnvStoreObj.GetRequiredEnv().DatabaseType
 
 	isSql := dbType != constants.DbTypeMongoDb && dbType != constants.DbTypeCassandraDb && dbType != constants.DbTypeScyllaDb
 
