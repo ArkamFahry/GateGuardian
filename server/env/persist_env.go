@@ -8,11 +8,11 @@ import (
 	"gategaurdian/server/database/db"
 	"gategaurdian/server/database/db/models"
 	"gategaurdian/server/database/memorystore"
-	"os"
 	"strings"
 
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // GetEnvData returns the env data from database
@@ -56,7 +56,7 @@ func GetEnvData() (map[string]interface{}, error) {
 }
 
 // PersistEnv persists the environment variables to the database
-func PersistEnv() error {
+func PersistEnvData() error {
 	ctx := context.Background()
 	env, err := db.Provider.GetEnv(ctx)
 	// config not found in db
@@ -135,7 +135,8 @@ func PersistEnv() error {
 			// No need to check for ENCRYPTION_KEY which special key we use for encrypting config data
 			// as we have removed it from json
 			if key != constants.EnvEncryptionKey {
-				envValue := strings.TrimSpace(os.Getenv(key))
+				viper.AutomaticEnv()
+				envValue := strings.TrimSpace(viper.GetString(key))
 				if envValue != "" {
 					if value != nil && value.(string) != envValue {
 						storeData[key] = envValue
