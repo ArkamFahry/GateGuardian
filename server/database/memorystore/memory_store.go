@@ -2,7 +2,9 @@ package memorystore
 
 import (
 	"encoding/json"
+	"gategaurdian/server/constants"
 	"gategaurdian/server/database/memorystore/providers"
+	"gategaurdian/server/database/memorystore/providers/inmemory"
 	"gategaurdian/server/database/memorystore/providers/redis"
 
 	log "github.com/sirupsen/logrus"
@@ -13,6 +15,7 @@ var Provider providers.Provider
 // InitMemoryDb is used to initialize the caching database used by the application
 func InitMemoryDb() error {
 	var err error
+	memoryStoreType := RequiredEnvStoreObj.GetRequiredEnv().MemoryStoreType
 
 	defaultEnvs := map[string]any{}
 
@@ -34,12 +37,27 @@ func InitMemoryDb() error {
 		defaultEnvs[key] = val
 	}
 
-	redisURL := requiredEnvs.RedisUrl
-	log.Info("Initializing Redis memory store")
-	Provider, err = redis.NewRedisProvider(redisURL)
-	if err != nil {
-		log.Fatal("Failed to initialize Redis driver: ")
-		return err
+	isInmemory := memoryStoreType != constants.MemoryStoreTypeRedis && memoryStoreType != constants.MemoryStoreTypeDragonFly && memoryStoreType != constants.MemoryStoreTypeKeyDb && memoryStoreType != constants.MemoryStoreTypeKvrocks
+	isDedicated := memoryStoreType != constants.MemoryStoreTypeInmemory
+
+	if isInmemory {
+		memoryStoreUrl := requiredEnvs.MemoryStoreUrl
+		log.Info("Initializing in memory store")
+		Provider, err = inmemory.NewMemoryStoreProvider(memoryStoreUrl)
+		if err != nil {
+			log.Fatal("Failed to initialize in memory store: ")
+			return err
+		}
+	}
+
+	if isDedicated {
+		memoryStoreUrl := requiredEnvs.MemoryStoreUrl
+		log.Info("Initializing Redis memory store")
+		Provider, err = redis.NewMemoryStoreProvider(memoryStoreUrl)
+		if err != nil {
+			log.Fatal("Failed to initialize Redis driver: ")
+			return err
+		}
 	}
 
 	// set default envs in redis
