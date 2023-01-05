@@ -29,7 +29,7 @@ type provider struct {
 }
 
 // Return a new redis client
-func NewRedisProvider(redisURL string) (*provider, error) {
+func NewMemoryStoreProvider(redisURL string) (*provider, error) {
 	redisURLHostPortsList := strings.Split(redisURL, ",")
 
 	if len(redisURLHostPortsList) > 1 {
