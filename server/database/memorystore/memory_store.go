@@ -60,8 +60,12 @@ func InitMemoryDb() error {
 		}
 	}
 
-	// set default envs in redis
-	Provider.UpdateEnvStore(defaultEnvs)
+	// set default envs in memorystore
+	err = Provider.UpdateEnvStore(defaultEnvs)
+	if err != nil {
+		log.Error("Failed to update env store on memory store initialization : ", err)
+		return err
+	}
 
 	return nil
 }

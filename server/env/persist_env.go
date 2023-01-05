@@ -33,7 +33,12 @@ func GetEnvData() (map[string]interface{}, error) {
 		return result, err
 	}
 
-	memorystore.Provider.UpdateEnvVariable(constants.EnvEncryptionKey, decryptedEncryptionKey)
+	err = memorystore.Provider.UpdateEnvVariable(constants.EnvEncryptionKey, decryptedEncryptionKey)
+	if err != nil {
+		log.Debug("Error while updating env encryption env variable : ", err)
+		return result, err
+	}
+
 	b64DecryptedConfig, err := crypto.DecryptB64(env.Data)
 	if err != nil {
 		log.Debug("Error while decrypting env data from B64: ", err)
@@ -102,7 +107,11 @@ func PersistEnvData() error {
 			return err
 		}
 
-		memorystore.Provider.UpdateEnvVariable(constants.EnvEncryptionKey, decryptedEncryptionKey)
+		err = memorystore.Provider.UpdateEnvVariable(constants.EnvEncryptionKey, decryptedEncryptionKey)
+		if err != nil {
+			log.Debug("Error while updating env encryption env variable : ", err)
+			return err
+		}
 
 		b64DecryptedConfig, err := crypto.DecryptB64(env.Data)
 		if err != nil {

@@ -41,7 +41,7 @@ func (c *provider) UpdateEnvStore(store map[string]any) error {
 func (c *provider) UpdateEnvVariable(key string, value any) error {
 	err := c.store.HSet(c.ctx, envStorePrefix, key, value).Err()
 	if err != nil {
-		log.Debug("Error saving redis : ", err)
+		log.Debug("Error saving to redis : ", err)
 		return err
 	}
 	return nil
