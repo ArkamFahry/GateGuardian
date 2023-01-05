@@ -11,6 +11,7 @@ import (
 )
 
 type RequiredEnv struct {
+	Port            string `json:"PORT"`
 	DatabaseType    string `json:"DATABASE_TYPE"`
 	DatabaseUrl     string `json:"DATABASE_URL"`
 	MemoryStoreType string `json:"MEMORYSTORE_TYPE"`
@@ -53,16 +54,26 @@ func InitRequiredEnv() error {
 		viper.AutomaticEnv()
 	}
 
+	port := viper.GetString(constants.EnvPort)
 	dbType := viper.GetString(constants.EnvDatabaseType)
 	dbUrl := viper.GetString(constants.EnvDatabaseUrl)
 	memoryStoreType := viper.GetString(constants.EnvMemoryStoreType)
 	memoryStoreUrl := viper.GetString(constants.EnvMemoryStoreUrl)
 
+	// If the port is not set in env it will default to 8000
+	if port == "" {
+		port = "8000"
+	}
+
+	// If the dbType is not set in env it will default to sqlite
 	if dbType == "" {
 		dbType = constants.DbTypeSqlite
 	}
 
+	// Check if db url is set in env
 	if strings.TrimSpace(dbUrl) == "" {
+		// If dbType is sqlite and database url or in this case sqlite data path is not set in env it will default to data.db
+		// If the dbType is other than sqlite it will throw an error
 		if dbType == constants.DbTypeSqlite {
 			dbUrl = "data.db"
 		} else {
@@ -71,13 +82,20 @@ func InitRequiredEnv() error {
 		}
 	}
 
+	// If the memoryStoreType is not set it will default to inmemory
 	if memoryStoreType == "" {
 		memoryStoreType = constants.MemoryStoreTypeInmemory
 	}
 
+	// If the memoryStoreType is inmemory it will default the memoryStoreUrl to :memory:
+	if memoryStoreType == constants.MemoryStoreTypeInmemory {
+		memoryStoreUrl = ":memory:"
+	}
+
+	// Check if memoryStoreUrl is set in env
 	if strings.TrimSpace(memoryStoreUrl) == "" {
 		if memoryStoreType == constants.MemoryStoreTypeInmemory {
-			memoryStoreUrl = ""
+			memoryStoreUrl = ":memory:"
 		} else {
 			log.Debug("REDIS_URL is not set")
 			return errors.New("invalid redis url. REDIS_URL is required")
@@ -85,6 +103,7 @@ func InitRequiredEnv() error {
 	}
 
 	requiredEnv := RequiredEnv{
+		Port:            port,
 		DatabaseType:    dbType,
 		DatabaseUrl:     dbUrl,
 		MemoryStoreType: memoryStoreType,
