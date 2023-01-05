@@ -26,7 +26,7 @@ func BootStrap() error {
 	// Initialize the maindb required for application startup
 	err = db.InitMainDb()
 	if err != nil {
-		log.Error("Error initializing memorydb instance : ", err)
+		log.Error("Error initializing maindb instance : ", err)
 	}
 
 	return err
