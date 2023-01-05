@@ -11,9 +11,10 @@ import (
 )
 
 type RequiredEnv struct {
-	DatabaseType string `json:"DATABASE_TYPE"`
-	DatabaseUrl  string `json:"DATABASE_URL"`
-	RedisUrl     string `json:"REDIS_URL"`
+	DatabaseType    string `json:"DATABASE_TYPE"`
+	DatabaseUrl     string `json:"DATABASE_URL"`
+	MemoryStoreType string `json:"MEMORYSTORE_TYPE"`
+	MemoryStoreUrl  string `json:"MEMORYSTORE_URL"`
 }
 
 // RequiredEnvStore is a simple in-memory store for required envs
@@ -49,30 +50,45 @@ func InitRequiredEnv() error {
 
 	if err != nil {
 		log.Error("couldn't load env from .env : ", err)
+		viper.AutomaticEnv()
 	}
 
 	dbType := viper.GetString(constants.EnvDatabaseType)
 	dbUrl := viper.GetString(constants.EnvDatabaseUrl)
-	redisUrl := viper.GetString(constants.EnvRedisUrl)
+	memoryStoreType := viper.GetString(constants.EnvMemoryStoreType)
+	memoryStoreUrl := viper.GetString(constants.EnvMemoryStoreUrl)
 
 	if dbType == "" {
-		dbType = "sqlite"
+		dbType = constants.DbTypeSqlite
 	}
 
 	if strings.TrimSpace(dbUrl) == "" {
-		log.Debug("DATABASE_URL is not set")
-		return errors.New("invalid database url. DATABASE_URL is required")
+		if dbType == constants.DbTypeSqlite {
+			dbUrl = "data.db"
+		} else {
+			log.Debug("DATABASE_URL is not set")
+			return errors.New("invalid database url. DATABASE_URL is required")
+		}
 	}
 
-	if strings.TrimSpace(redisUrl) == "" {
-		log.Debug("REDIS_URL is not set")
-		return errors.New("invalid redis url. REDIS_URL is required")
+	if memoryStoreType == "" {
+		memoryStoreType = constants.MemoryStoreTypeInmemory
+	}
+
+	if strings.TrimSpace(memoryStoreUrl) == "" {
+		if memoryStoreType == constants.MemoryStoreTypeInmemory {
+			memoryStoreUrl = ""
+		} else {
+			log.Debug("REDIS_URL is not set")
+			return errors.New("invalid redis url. REDIS_URL is required")
+		}
 	}
 
 	requiredEnv := RequiredEnv{
-		DatabaseType: dbType,
-		DatabaseUrl:  dbUrl,
-		RedisUrl:     redisUrl,
+		DatabaseType:    dbType,
+		DatabaseUrl:     dbUrl,
+		MemoryStoreType: memoryStoreType,
+		MemoryStoreUrl:  memoryStoreUrl,
 	}
 
 	RequiredEnvStoreObj = &RequiredEnvStore{

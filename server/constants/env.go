@@ -13,8 +13,11 @@ const (
 	// EnvDatabaseName env variable to DATABASE_NAME
 	EnvDatabaseName = "DATABASE_NAME"
 
-	// EnvRedisUrl env variable to REDIS_URL
-	EnvRedisUrl = "REDIS_URL"
+	// EnvMemoryStoreType env variable to MEMORYSTORE_TYPE
+	EnvMemoryStoreType = "MEMORYSTORE_TYPE"
+
+	// EnvMemoryStoreUrl env variable to MEMORYSTORE_URL
+	EnvMemoryStoreUrl = "MEMORYSTORE_URL"
 
 	// EnvEncryptionKey env variable to ENCRYPTION_KEY
 	EnvEncryptionKey = "ENCRYPTION_KEY"
